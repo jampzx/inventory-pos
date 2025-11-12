@@ -1,0 +1,144 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Product {
+  id           Int     @id @default(autoincrement())
+  name         String  @db.VarChar(255)
+  description  String? @db.Text
+  product_type String
+  price        Decimal @db.Decimal(10, 2)
+  image_url    String? @db.Text
+  stock        Int     @default(0)
+
+  status     String   @default("active")
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  // Relations
+  transactionItems TransactionItem[]
+  orders           Order[]
+
+  @@map("products")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  full_name  String
+  username   String   @unique
+  password   String
+  user_type  String
+  status     String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  transactions Transaction[]
+
+  @@map("users")
+}
+
+model PaymentType {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  status      String   @default("active")
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  @@map("payment_types")
+}
+
+model Transaction {
+  id             Int          @id @default(autoincrement())
+  user_id        Int?
+  subtotal       Decimal
+  total_paid     Decimal
+  discount_type  DiscountType @default(AMOUNT)
+  discount_value Decimal      @default(0.00)
+  change         Decimal      @default(0)
+  status         String       @default("completed")
+  created_at     DateTime     @default(now())
+
+  user     User?                @relation(fields: [user_id], references: [id])
+  items    TransactionItem[]
+  payments TransactionPayment[]
+  details  TransactionDetail[]
+
+  @@map("transactions")
+}
+
+model TransactionItem {
+  id             Int     @id @default(autoincrement())
+  transaction_id Int
+  product_id     Int
+  quantity       Int
+  price          Decimal
+
+  transaction Transaction @relation(fields: [transaction_id], references: [id])
+  product     Product     @relation(fields: [product_id], references: [id])
+
+  @@map("transaction_items")
+}
+
+model TransactionPayment {
+  id             Int     @id @default(autoincrement())
+  transaction_id Int
+  payment_method String
+  amount         Decimal
+
+  transaction Transaction @relation(fields: [transaction_id], references: [id])
+
+  @@map("transaction_payments")
+}
+
+model TransactionDetail {
+  id             Int      @id @default(autoincrement())
+  transaction_id Int
+  product_name   String
+  quantity       Int
+  price          Decimal
+  payment_method String?
+  payment_amount Decimal?
+  created_at     DateTime @default(now())
+
+  transaction Transaction @relation(fields: [transaction_id], references: [id])
+
+  @@map("transaction_details")
+}
+
+model Order {
+  id                 Int      @id @default(autoincrement())
+  product_id         Int
+  product            String   @db.VarChar(255)
+  quantity           Int
+  order_price        Decimal  @db.Decimal(10, 2)
+  selling_price      Decimal  @db.Decimal(10, 2)
+  profit_per_unit    Decimal  @db.Decimal(10, 2)
+  net_profit         Decimal  @db.Decimal(12, 2)
+  order_date         DateTime
+  remaining_quantity Int      @default(0)
+  status             String   @default("pending")
+
+  // Relation
+  productRef Product @relation(fields: [product_id], references: [id])
+
+  @@map("orders")
+}
+
+enum DiscountType {
+  AMOUNT
+  PERCENT
+}
