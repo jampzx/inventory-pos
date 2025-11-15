@@ -22,7 +22,7 @@ model Product {
   product_type String
   price        Decimal @db.Decimal(10, 2)
   image_url    String? @db.Text
-
+  stock        Int     @default(0)
   status     String   @default("active")
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
@@ -136,6 +136,17 @@ model Order {
   productRef Product @relation(fields: [product_id], references: [id])
 
   @@map("orders")
+}
+
+model Expense {
+  id          Int             @id @default(autoincrement())
+  description String
+  amount      Float
+  date        DateTime        @default(now())
+  created_at  DateTime        @default(now())
+  updated_at  DateTime        @updatedAt
+
+  @@map("expenses")
 }
 
 enum DiscountType {

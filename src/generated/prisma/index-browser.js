@@ -205,6 +205,15 @@ exports.Prisma.OrderScalarFieldEnum = {
   status: 'status'
 };
 
+exports.Prisma.ExpenseScalarFieldEnum = {
+  id: 'id',
+  description: 'description',
+  amount: 'amount',
+  date: 'date',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -232,7 +241,8 @@ exports.Prisma.ModelName = {
   TransactionItem: 'TransactionItem',
   TransactionPayment: 'TransactionPayment',
   TransactionDetail: 'TransactionDetail',
-  Order: 'Order'
+  Order: 'Order',
+  Expense: 'Expense'
 };
 
 /**

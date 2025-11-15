@@ -13,12 +13,26 @@ const OrderForm = dynamic(() => import("./forms/OrderForm"), {
   loading: () => <h1>Loading...</h1>,
 });
 
+const UserForm = dynamic(() => import("./forms/UserForm"), {
+  loading: () => <h1>Loading...</h1>,
+});
+
+const ExpenseForm = dynamic(() => import("./forms/ExpenseForm"), {
+  loading: () => <h1>Loading...</h1>,
+});
+
 const forms: Record<string, any> = {
   product: (type: string, data: any, props: any) => (
     <ProductForm type={type} data={data} {...props} />
   ),
   order: (type: string, data: any, props: any) => (
     <OrderForm type={type} data={data} {...props} />
+  ),
+  user: (type: string, data: any, props: any) => (
+    <UserForm type={type} data={data} {...props} />
+  ),
+  expense: (type: string, data: any, props: any) => (
+    <ExpenseForm type={type} data={data} {...props} />
   ),
 };
 

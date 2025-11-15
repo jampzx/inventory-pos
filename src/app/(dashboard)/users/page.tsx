@@ -9,7 +9,6 @@ import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { useUser } from "@/hooks/useUser";
 import SingleUserModal from "@/components/SingleUserModal";
-import { usePermissions } from "@/context/PermissionContext";
 
 type User = {
   id: number;
@@ -17,7 +16,6 @@ type User = {
   username?: string;
   user_type: string;
   status: string;
-  branches: { name: string }[];
 };
 
 const columns = [
@@ -25,7 +23,6 @@ const columns = [
   { header: "User Name", accessor: "username" },
   { header: "User Type", accessor: "user_type" },
   { header: "Status", accessor: "status" },
-  { header: "Branches", accessor: "branches" },
   { header: "Actions", accessor: "action" },
 ];
 
@@ -40,7 +37,6 @@ const UsersListPage = () => {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const { can } = usePermissions();
   const fetchUsers = async () => {
     setLoading(true);
     try {
@@ -68,8 +64,7 @@ const UsersListPage = () => {
       filtered = filtered.filter(
         (u) =>
           u.name.toLowerCase().includes(lowerSearch) ||
-          u.username?.toLowerCase().includes(lowerSearch) ||
-          u.branches?.some((b) => b.name.toLowerCase().includes(lowerSearch))
+          u.username?.toLowerCase().includes(lowerSearch)
       );
     }
 
@@ -114,11 +109,7 @@ const UsersListPage = () => {
           {item.status}
         </span>
       </td>
-      <td className="p-2">
-        {Array.isArray(item.branches) && item.branches.length > 0
-          ? item.branches.map((b) => b.name).join(", ")
-          : "—"}
-      </td>
+
       <td className="p-2">
         <div className="flex items-center gap-2">
           <button
@@ -128,23 +119,20 @@ const UsersListPage = () => {
             <Image src="/view.png" alt="View" width={16} height={16} />
           </button>
           <>
-            {can("System Management", "UPDATE") && (
-              <FormModal
-                table="user"
-                type="update"
-                id={item.id}
-                data={item}
-                onSuccess={fetchUsers}
-              />
-            )}
-            {can("System Management", "DELETE") && (
-              <FormModal
-                table="user"
-                type="delete"
-                id={item.id}
-                onSuccess={fetchUsers}
-              />
-            )}
+            <FormModal
+              table="user"
+              type="update"
+              id={item.id}
+              data={item}
+              onSuccess={fetchUsers}
+            />
+
+            <FormModal
+              table="user"
+              type="delete"
+              id={item.id}
+              onSuccess={fetchUsers}
+            />
           </>
         </div>
       </td>
@@ -176,9 +164,7 @@ const UsersListPage = () => {
             >
               <Image src="/sort.png" alt="sort" width={14} height={14} />
             </button>
-            {can("System Management", "CREATE") && (
-              <FormModal table="user" type="create" onSuccess={fetchUsers} />
-            )}
+            <FormModal table="user" type="create" onSuccess={fetchUsers} />
           </div>
         </div>
       </div>

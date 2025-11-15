@@ -35,23 +35,33 @@ const menuItems: { title: string; items: MenuItem[] }[] = [
       {
         icon: <FiShoppingCart />,
         label: "Transactions",
-        href: "/transaction/pos",
+        href: "/transactions",
       },
       {
         icon: <FiTruck />,
         label: "Purchase Order",
-        href: "/transaction/orders",
+        href: "/orders",
       },
       {
         icon: <FiPackage />,
         label: "Products",
-        href: "/list/products",
+        href: "/products",
+      },
+      {
+        icon: <FiFileText />,
+        label: "Daily Sales Summary",
+        href: "/report/daily-summary",
       },
     ],
   },
   {
     title: "Account",
     items: [
+      {
+        icon: <FiPackage />,
+        label: "Users",
+        href: "/users",
+      },
       {
         icon: <FiLogOut />,
         label: "Logout",
