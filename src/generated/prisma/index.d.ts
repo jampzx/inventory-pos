@@ -58,6 +58,11 @@ export type Order = $Result.DefaultSelection<Prisma.$OrderPayload>
  * 
  */
 export type Expense = $Result.DefaultSelection<Prisma.$ExpensePayload>
+/**
+ * Model Company
+ * 
+ */
+export type Company = $Result.DefaultSelection<Prisma.$CompanyPayload>
 
 /**
  * Enums
@@ -290,6 +295,16 @@ export class PrismaClient<
     * ```
     */
   get expense(): Prisma.ExpenseDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.company`: Exposes CRUD operations for the **Company** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Companies
+    * const companies = await prisma.company.findMany()
+    * ```
+    */
+  get company(): Prisma.CompanyDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -738,7 +753,8 @@ export namespace Prisma {
     TransactionPayment: 'TransactionPayment',
     TransactionDetail: 'TransactionDetail',
     Order: 'Order',
-    Expense: 'Expense'
+    Expense: 'Expense',
+    Company: 'Company'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -757,7 +773,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "product" | "user" | "paymentType" | "transaction" | "transactionItem" | "transactionPayment" | "transactionDetail" | "order" | "expense"
+      modelProps: "product" | "user" | "paymentType" | "transaction" | "transactionItem" | "transactionPayment" | "transactionDetail" | "order" | "expense" | "company"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1427,6 +1443,80 @@ export namespace Prisma {
           }
         }
       }
+      Company: {
+        payload: Prisma.$CompanyPayload<ExtArgs>
+        fields: Prisma.CompanyFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CompanyFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CompanyFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload>
+          }
+          findFirst: {
+            args: Prisma.CompanyFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CompanyFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload>
+          }
+          findMany: {
+            args: Prisma.CompanyFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload>[]
+          }
+          create: {
+            args: Prisma.CompanyCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload>
+          }
+          createMany: {
+            args: Prisma.CompanyCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CompanyCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload>[]
+          }
+          delete: {
+            args: Prisma.CompanyDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload>
+          }
+          update: {
+            args: Prisma.CompanyUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload>
+          }
+          deleteMany: {
+            args: Prisma.CompanyDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CompanyUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CompanyUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload>[]
+          }
+          upsert: {
+            args: Prisma.CompanyUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyPayload>
+          }
+          aggregate: {
+            args: Prisma.CompanyAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCompany>
+          }
+          groupBy: {
+            args: Prisma.CompanyGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CompanyGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CompanyCountArgs<ExtArgs>
+            result: $Utils.Optional<CompanyCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1520,6 +1610,7 @@ export namespace Prisma {
     transactionDetail?: TransactionDetailOmit
     order?: OrderOmit
     expense?: ExpenseOmit
+    company?: CompanyOmit
   }
 
   /* Types for Logging */
@@ -1730,6 +1821,109 @@ export namespace Prisma {
 
 
   /**
+   * Count Type CompanyCountOutputType
+   */
+
+  export type CompanyCountOutputType = {
+    products: number
+    users: number
+    paymentTypes: number
+    transactions: number
+    transactionItems: number
+    transactionPayments: number
+    transactionDetails: number
+    orders: number
+    expenses: number
+  }
+
+  export type CompanyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    products?: boolean | CompanyCountOutputTypeCountProductsArgs
+    users?: boolean | CompanyCountOutputTypeCountUsersArgs
+    paymentTypes?: boolean | CompanyCountOutputTypeCountPaymentTypesArgs
+    transactions?: boolean | CompanyCountOutputTypeCountTransactionsArgs
+    transactionItems?: boolean | CompanyCountOutputTypeCountTransactionItemsArgs
+    transactionPayments?: boolean | CompanyCountOutputTypeCountTransactionPaymentsArgs
+    transactionDetails?: boolean | CompanyCountOutputTypeCountTransactionDetailsArgs
+    orders?: boolean | CompanyCountOutputTypeCountOrdersArgs
+    expenses?: boolean | CompanyCountOutputTypeCountExpensesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyCountOutputType
+     */
+    select?: CompanyCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountProductsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProductWhereInput
+  }
+
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
+  }
+
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountPaymentTypesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentTypeWhereInput
+  }
+
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountTransactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TransactionWhereInput
+  }
+
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountTransactionItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TransactionItemWhereInput
+  }
+
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountTransactionPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TransactionPaymentWhereInput
+  }
+
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountTransactionDetailsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TransactionDetailWhereInput
+  }
+
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrderWhereInput
+  }
+
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountExpensesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ExpenseWhereInput
+  }
+
+
+  /**
    * Models
    */
 
@@ -1749,12 +1943,14 @@ export namespace Prisma {
     id: number | null
     price: Decimal | null
     stock: number | null
+    company_id: number | null
   }
 
   export type ProductSumAggregateOutputType = {
     id: number | null
     price: Decimal | null
     stock: number | null
+    company_id: number | null
   }
 
   export type ProductMinAggregateOutputType = {
@@ -1768,6 +1964,7 @@ export namespace Prisma {
     status: string | null
     created_at: Date | null
     updated_at: Date | null
+    company_id: number | null
   }
 
   export type ProductMaxAggregateOutputType = {
@@ -1781,6 +1978,7 @@ export namespace Prisma {
     status: string | null
     created_at: Date | null
     updated_at: Date | null
+    company_id: number | null
   }
 
   export type ProductCountAggregateOutputType = {
@@ -1794,6 +1992,7 @@ export namespace Prisma {
     status: number
     created_at: number
     updated_at: number
+    company_id: number
     _all: number
   }
 
@@ -1802,12 +2001,14 @@ export namespace Prisma {
     id?: true
     price?: true
     stock?: true
+    company_id?: true
   }
 
   export type ProductSumAggregateInputType = {
     id?: true
     price?: true
     stock?: true
+    company_id?: true
   }
 
   export type ProductMinAggregateInputType = {
@@ -1821,6 +2022,7 @@ export namespace Prisma {
     status?: true
     created_at?: true
     updated_at?: true
+    company_id?: true
   }
 
   export type ProductMaxAggregateInputType = {
@@ -1834,6 +2036,7 @@ export namespace Prisma {
     status?: true
     created_at?: true
     updated_at?: true
+    company_id?: true
   }
 
   export type ProductCountAggregateInputType = {
@@ -1847,6 +2050,7 @@ export namespace Prisma {
     status?: true
     created_at?: true
     updated_at?: true
+    company_id?: true
     _all?: true
   }
 
@@ -1947,6 +2151,7 @@ export namespace Prisma {
     status: string
     created_at: Date
     updated_at: Date
+    company_id: number
     _count: ProductCountAggregateOutputType | null
     _avg: ProductAvgAggregateOutputType | null
     _sum: ProductSumAggregateOutputType | null
@@ -1979,6 +2184,8 @@ export namespace Prisma {
     status?: boolean
     created_at?: boolean
     updated_at?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transactionItems?: boolean | Product$transactionItemsArgs<ExtArgs>
     orders?: boolean | Product$ordersArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
@@ -1995,6 +2202,8 @@ export namespace Prisma {
     status?: boolean
     created_at?: boolean
     updated_at?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
   export type ProductSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2008,6 +2217,8 @@ export namespace Prisma {
     status?: boolean
     created_at?: boolean
     updated_at?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
   export type ProductSelectScalar = {
@@ -2021,20 +2232,27 @@ export namespace Prisma {
     status?: boolean
     created_at?: boolean
     updated_at?: boolean
+    company_id?: boolean
   }
 
-  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "product_type" | "price" | "image_url" | "stock" | "status" | "created_at" | "updated_at", ExtArgs["result"]["product"]>
+  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "product_type" | "price" | "image_url" | "stock" | "status" | "created_at" | "updated_at" | "company_id", ExtArgs["result"]["product"]>
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transactionItems?: boolean | Product$transactionItemsArgs<ExtArgs>
     orders?: boolean | Product$ordersArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type ProductIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type ProductIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ProductIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
+  export type ProductIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
 
   export type $ProductPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Product"
     objects: {
+      company: Prisma.$CompanyPayload<ExtArgs>
       transactionItems: Prisma.$TransactionItemPayload<ExtArgs>[]
       orders: Prisma.$OrderPayload<ExtArgs>[]
     }
@@ -2049,6 +2267,7 @@ export namespace Prisma {
       status: string
       created_at: Date
       updated_at: Date
+      company_id: number
     }, ExtArgs["result"]["product"]>
     composites: {}
   }
@@ -2443,6 +2662,7 @@ export namespace Prisma {
    */
   export interface Prisma__ProductClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     transactionItems<T extends Product$transactionItemsArgs<ExtArgs> = {}>(args?: Subset<T, Product$transactionItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     orders<T extends Product$ordersArgs<ExtArgs> = {}>(args?: Subset<T, Product$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -2484,6 +2704,7 @@ export namespace Prisma {
     readonly status: FieldRef<"Product", 'String'>
     readonly created_at: FieldRef<"Product", 'DateTime'>
     readonly updated_at: FieldRef<"Product", 'DateTime'>
+    readonly company_id: FieldRef<"Product", 'Int'>
   }
     
 
@@ -2733,6 +2954,10 @@ export namespace Prisma {
      */
     data: ProductCreateManyInput | ProductCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -2803,6 +3028,10 @@ export namespace Prisma {
      * Limit how many Products to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -2952,10 +3181,12 @@ export namespace Prisma {
 
   export type UserAvgAggregateOutputType = {
     id: number | null
+    company_id: number | null
   }
 
   export type UserSumAggregateOutputType = {
     id: number | null
+    company_id: number | null
   }
 
   export type UserMinAggregateOutputType = {
@@ -2967,6 +3198,7 @@ export namespace Prisma {
     status: string | null
     created_at: Date | null
     updated_at: Date | null
+    company_id: number | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -2978,6 +3210,7 @@ export namespace Prisma {
     status: string | null
     created_at: Date | null
     updated_at: Date | null
+    company_id: number | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -2989,16 +3222,19 @@ export namespace Prisma {
     status: number
     created_at: number
     updated_at: number
+    company_id: number
     _all: number
   }
 
 
   export type UserAvgAggregateInputType = {
     id?: true
+    company_id?: true
   }
 
   export type UserSumAggregateInputType = {
     id?: true
+    company_id?: true
   }
 
   export type UserMinAggregateInputType = {
@@ -3010,6 +3246,7 @@ export namespace Prisma {
     status?: true
     created_at?: true
     updated_at?: true
+    company_id?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -3021,6 +3258,7 @@ export namespace Prisma {
     status?: true
     created_at?: true
     updated_at?: true
+    company_id?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -3032,6 +3270,7 @@ export namespace Prisma {
     status?: true
     created_at?: true
     updated_at?: true
+    company_id?: true
     _all?: true
   }
 
@@ -3130,6 +3369,7 @@ export namespace Prisma {
     status: string
     created_at: Date
     updated_at: Date
+    company_id: number
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -3160,6 +3400,8 @@ export namespace Prisma {
     status?: boolean
     created_at?: boolean
     updated_at?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transactions?: boolean | User$transactionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -3173,6 +3415,8 @@ export namespace Prisma {
     status?: boolean
     created_at?: boolean
     updated_at?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3184,6 +3428,8 @@ export namespace Prisma {
     status?: boolean
     created_at?: boolean
     updated_at?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -3195,19 +3441,26 @@ export namespace Prisma {
     status?: boolean
     created_at?: boolean
     updated_at?: boolean
+    company_id?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "full_name" | "username" | "password" | "user_type" | "status" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "full_name" | "username" | "password" | "user_type" | "status" | "created_at" | "updated_at" | "company_id", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transactions?: boolean | User$transactionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
+  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
+      company: Prisma.$CompanyPayload<ExtArgs>
       transactions: Prisma.$TransactionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -3219,6 +3472,7 @@ export namespace Prisma {
       status: string
       created_at: Date
       updated_at: Date
+      company_id: number
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -3613,6 +3867,7 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     transactions<T extends User$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3651,6 +3906,7 @@ export namespace Prisma {
     readonly status: FieldRef<"User", 'String'>
     readonly created_at: FieldRef<"User", 'DateTime'>
     readonly updated_at: FieldRef<"User", 'DateTime'>
+    readonly company_id: FieldRef<"User", 'Int'>
   }
     
 
@@ -3900,6 +4156,10 @@ export namespace Prisma {
      */
     data: UserCreateManyInput | UserCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -3970,6 +4230,10 @@ export namespace Prisma {
      * Limit how many Users to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4095,10 +4359,12 @@ export namespace Prisma {
 
   export type PaymentTypeAvgAggregateOutputType = {
     id: number | null
+    company_id: number | null
   }
 
   export type PaymentTypeSumAggregateOutputType = {
     id: number | null
+    company_id: number | null
   }
 
   export type PaymentTypeMinAggregateOutputType = {
@@ -4108,6 +4374,7 @@ export namespace Prisma {
     status: string | null
     created_at: Date | null
     updated_at: Date | null
+    company_id: number | null
   }
 
   export type PaymentTypeMaxAggregateOutputType = {
@@ -4117,6 +4384,7 @@ export namespace Prisma {
     status: string | null
     created_at: Date | null
     updated_at: Date | null
+    company_id: number | null
   }
 
   export type PaymentTypeCountAggregateOutputType = {
@@ -4126,16 +4394,19 @@ export namespace Prisma {
     status: number
     created_at: number
     updated_at: number
+    company_id: number
     _all: number
   }
 
 
   export type PaymentTypeAvgAggregateInputType = {
     id?: true
+    company_id?: true
   }
 
   export type PaymentTypeSumAggregateInputType = {
     id?: true
+    company_id?: true
   }
 
   export type PaymentTypeMinAggregateInputType = {
@@ -4145,6 +4416,7 @@ export namespace Prisma {
     status?: true
     created_at?: true
     updated_at?: true
+    company_id?: true
   }
 
   export type PaymentTypeMaxAggregateInputType = {
@@ -4154,6 +4426,7 @@ export namespace Prisma {
     status?: true
     created_at?: true
     updated_at?: true
+    company_id?: true
   }
 
   export type PaymentTypeCountAggregateInputType = {
@@ -4163,6 +4436,7 @@ export namespace Prisma {
     status?: true
     created_at?: true
     updated_at?: true
+    company_id?: true
     _all?: true
   }
 
@@ -4259,6 +4533,7 @@ export namespace Prisma {
     status: string
     created_at: Date
     updated_at: Date
+    company_id: number
     _count: PaymentTypeCountAggregateOutputType | null
     _avg: PaymentTypeAvgAggregateOutputType | null
     _sum: PaymentTypeSumAggregateOutputType | null
@@ -4287,6 +4562,8 @@ export namespace Prisma {
     status?: boolean
     created_at?: boolean
     updated_at?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["paymentType"]>
 
   export type PaymentTypeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4296,6 +4573,8 @@ export namespace Prisma {
     status?: boolean
     created_at?: boolean
     updated_at?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["paymentType"]>
 
   export type PaymentTypeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4305,6 +4584,8 @@ export namespace Prisma {
     status?: boolean
     created_at?: boolean
     updated_at?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["paymentType"]>
 
   export type PaymentTypeSelectScalar = {
@@ -4314,13 +4595,25 @@ export namespace Prisma {
     status?: boolean
     created_at?: boolean
     updated_at?: boolean
+    company_id?: boolean
   }
 
-  export type PaymentTypeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "status" | "created_at" | "updated_at", ExtArgs["result"]["paymentType"]>
+  export type PaymentTypeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "status" | "created_at" | "updated_at" | "company_id", ExtArgs["result"]["paymentType"]>
+  export type PaymentTypeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
+  export type PaymentTypeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
+  export type PaymentTypeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
 
   export type $PaymentTypePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PaymentType"
-    objects: {}
+    objects: {
+      company: Prisma.$CompanyPayload<ExtArgs>
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
@@ -4328,6 +4621,7 @@ export namespace Prisma {
       status: string
       created_at: Date
       updated_at: Date
+      company_id: number
     }, ExtArgs["result"]["paymentType"]>
     composites: {}
   }
@@ -4722,6 +5016,7 @@ export namespace Prisma {
    */
   export interface Prisma__PaymentTypeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4757,6 +5052,7 @@ export namespace Prisma {
     readonly status: FieldRef<"PaymentType", 'String'>
     readonly created_at: FieldRef<"PaymentType", 'DateTime'>
     readonly updated_at: FieldRef<"PaymentType", 'DateTime'>
+    readonly company_id: FieldRef<"PaymentType", 'Int'>
   }
     
 
@@ -4773,6 +5069,10 @@ export namespace Prisma {
      * Omit specific fields from the PaymentType
      */
     omit?: PaymentTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTypeInclude<ExtArgs> | null
     /**
      * Filter, which PaymentType to fetch.
      */
@@ -4792,6 +5092,10 @@ export namespace Prisma {
      */
     omit?: PaymentTypeOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTypeInclude<ExtArgs> | null
+    /**
      * Filter, which PaymentType to fetch.
      */
     where: PaymentTypeWhereUniqueInput
@@ -4809,6 +5113,10 @@ export namespace Prisma {
      * Omit specific fields from the PaymentType
      */
     omit?: PaymentTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTypeInclude<ExtArgs> | null
     /**
      * Filter, which PaymentType to fetch.
      */
@@ -4858,6 +5166,10 @@ export namespace Prisma {
      */
     omit?: PaymentTypeOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTypeInclude<ExtArgs> | null
+    /**
      * Filter, which PaymentType to fetch.
      */
     where?: PaymentTypeWhereInput
@@ -4906,6 +5218,10 @@ export namespace Prisma {
      */
     omit?: PaymentTypeOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTypeInclude<ExtArgs> | null
+    /**
      * Filter, which PaymentTypes to fetch.
      */
     where?: PaymentTypeWhereInput
@@ -4949,6 +5265,10 @@ export namespace Prisma {
      */
     omit?: PaymentTypeOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTypeInclude<ExtArgs> | null
+    /**
      * The data needed to create a PaymentType.
      */
     data: XOR<PaymentTypeCreateInput, PaymentTypeUncheckedCreateInput>
@@ -4982,6 +5302,10 @@ export namespace Prisma {
      */
     data: PaymentTypeCreateManyInput | PaymentTypeCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTypeIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4996,6 +5320,10 @@ export namespace Prisma {
      * Omit specific fields from the PaymentType
      */
     omit?: PaymentTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTypeInclude<ExtArgs> | null
     /**
      * The data needed to update a PaymentType.
      */
@@ -5048,6 +5376,10 @@ export namespace Prisma {
      * Limit how many PaymentTypes to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTypeIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -5062,6 +5394,10 @@ export namespace Prisma {
      * Omit specific fields from the PaymentType
      */
     omit?: PaymentTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTypeInclude<ExtArgs> | null
     /**
      * The filter to search for the PaymentType to update in case it exists.
      */
@@ -5088,6 +5424,10 @@ export namespace Prisma {
      * Omit specific fields from the PaymentType
      */
     omit?: PaymentTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTypeInclude<ExtArgs> | null
     /**
      * Filter which PaymentType to delete.
      */
@@ -5120,6 +5460,10 @@ export namespace Prisma {
      * Omit specific fields from the PaymentType
      */
     omit?: PaymentTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTypeInclude<ExtArgs> | null
   }
 
 
@@ -5142,6 +5486,7 @@ export namespace Prisma {
     total_paid: Decimal | null
     discount_value: Decimal | null
     change: Decimal | null
+    company_id: number | null
   }
 
   export type TransactionSumAggregateOutputType = {
@@ -5151,6 +5496,7 @@ export namespace Prisma {
     total_paid: Decimal | null
     discount_value: Decimal | null
     change: Decimal | null
+    company_id: number | null
   }
 
   export type TransactionMinAggregateOutputType = {
@@ -5163,6 +5509,7 @@ export namespace Prisma {
     change: Decimal | null
     status: string | null
     created_at: Date | null
+    company_id: number | null
   }
 
   export type TransactionMaxAggregateOutputType = {
@@ -5175,6 +5522,7 @@ export namespace Prisma {
     change: Decimal | null
     status: string | null
     created_at: Date | null
+    company_id: number | null
   }
 
   export type TransactionCountAggregateOutputType = {
@@ -5187,6 +5535,7 @@ export namespace Prisma {
     change: number
     status: number
     created_at: number
+    company_id: number
     _all: number
   }
 
@@ -5198,6 +5547,7 @@ export namespace Prisma {
     total_paid?: true
     discount_value?: true
     change?: true
+    company_id?: true
   }
 
   export type TransactionSumAggregateInputType = {
@@ -5207,6 +5557,7 @@ export namespace Prisma {
     total_paid?: true
     discount_value?: true
     change?: true
+    company_id?: true
   }
 
   export type TransactionMinAggregateInputType = {
@@ -5219,6 +5570,7 @@ export namespace Prisma {
     change?: true
     status?: true
     created_at?: true
+    company_id?: true
   }
 
   export type TransactionMaxAggregateInputType = {
@@ -5231,6 +5583,7 @@ export namespace Prisma {
     change?: true
     status?: true
     created_at?: true
+    company_id?: true
   }
 
   export type TransactionCountAggregateInputType = {
@@ -5243,6 +5596,7 @@ export namespace Prisma {
     change?: true
     status?: true
     created_at?: true
+    company_id?: true
     _all?: true
   }
 
@@ -5342,6 +5696,7 @@ export namespace Prisma {
     change: Decimal
     status: string
     created_at: Date
+    company_id: number
     _count: TransactionCountAggregateOutputType | null
     _avg: TransactionAvgAggregateOutputType | null
     _sum: TransactionSumAggregateOutputType | null
@@ -5373,6 +5728,8 @@ export namespace Prisma {
     change?: boolean
     status?: boolean
     created_at?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     user?: boolean | Transaction$userArgs<ExtArgs>
     items?: boolean | Transaction$itemsArgs<ExtArgs>
     payments?: boolean | Transaction$paymentsArgs<ExtArgs>
@@ -5390,6 +5747,8 @@ export namespace Prisma {
     change?: boolean
     status?: boolean
     created_at?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     user?: boolean | Transaction$userArgs<ExtArgs>
   }, ExtArgs["result"]["transaction"]>
 
@@ -5403,6 +5762,8 @@ export namespace Prisma {
     change?: boolean
     status?: boolean
     created_at?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     user?: boolean | Transaction$userArgs<ExtArgs>
   }, ExtArgs["result"]["transaction"]>
 
@@ -5416,10 +5777,12 @@ export namespace Prisma {
     change?: boolean
     status?: boolean
     created_at?: boolean
+    company_id?: boolean
   }
 
-  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "subtotal" | "total_paid" | "discount_type" | "discount_value" | "change" | "status" | "created_at", ExtArgs["result"]["transaction"]>
+  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "subtotal" | "total_paid" | "discount_type" | "discount_value" | "change" | "status" | "created_at" | "company_id", ExtArgs["result"]["transaction"]>
   export type TransactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     user?: boolean | Transaction$userArgs<ExtArgs>
     items?: boolean | Transaction$itemsArgs<ExtArgs>
     payments?: boolean | Transaction$paymentsArgs<ExtArgs>
@@ -5427,15 +5790,18 @@ export namespace Prisma {
     _count?: boolean | TransactionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TransactionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     user?: boolean | Transaction$userArgs<ExtArgs>
   }
   export type TransactionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     user?: boolean | Transaction$userArgs<ExtArgs>
   }
 
   export type $TransactionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Transaction"
     objects: {
+      company: Prisma.$CompanyPayload<ExtArgs>
       user: Prisma.$UserPayload<ExtArgs> | null
       items: Prisma.$TransactionItemPayload<ExtArgs>[]
       payments: Prisma.$TransactionPaymentPayload<ExtArgs>[]
@@ -5451,6 +5817,7 @@ export namespace Prisma {
       change: Prisma.Decimal
       status: string
       created_at: Date
+      company_id: number
     }, ExtArgs["result"]["transaction"]>
     composites: {}
   }
@@ -5845,6 +6212,7 @@ export namespace Prisma {
    */
   export interface Prisma__TransactionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     user<T extends Transaction$userArgs<ExtArgs> = {}>(args?: Subset<T, Transaction$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     items<T extends Transaction$itemsArgs<ExtArgs> = {}>(args?: Subset<T, Transaction$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     payments<T extends Transaction$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, Transaction$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -5887,6 +6255,7 @@ export namespace Prisma {
     readonly change: FieldRef<"Transaction", 'Decimal'>
     readonly status: FieldRef<"Transaction", 'String'>
     readonly created_at: FieldRef<"Transaction", 'DateTime'>
+    readonly company_id: FieldRef<"Transaction", 'Int'>
   }
     
 
@@ -6410,6 +6779,7 @@ export namespace Prisma {
     product_id: number | null
     quantity: number | null
     price: Decimal | null
+    company_id: number | null
   }
 
   export type TransactionItemSumAggregateOutputType = {
@@ -6418,6 +6788,7 @@ export namespace Prisma {
     product_id: number | null
     quantity: number | null
     price: Decimal | null
+    company_id: number | null
   }
 
   export type TransactionItemMinAggregateOutputType = {
@@ -6426,6 +6797,7 @@ export namespace Prisma {
     product_id: number | null
     quantity: number | null
     price: Decimal | null
+    company_id: number | null
   }
 
   export type TransactionItemMaxAggregateOutputType = {
@@ -6434,6 +6806,7 @@ export namespace Prisma {
     product_id: number | null
     quantity: number | null
     price: Decimal | null
+    company_id: number | null
   }
 
   export type TransactionItemCountAggregateOutputType = {
@@ -6442,6 +6815,7 @@ export namespace Prisma {
     product_id: number
     quantity: number
     price: number
+    company_id: number
     _all: number
   }
 
@@ -6452,6 +6826,7 @@ export namespace Prisma {
     product_id?: true
     quantity?: true
     price?: true
+    company_id?: true
   }
 
   export type TransactionItemSumAggregateInputType = {
@@ -6460,6 +6835,7 @@ export namespace Prisma {
     product_id?: true
     quantity?: true
     price?: true
+    company_id?: true
   }
 
   export type TransactionItemMinAggregateInputType = {
@@ -6468,6 +6844,7 @@ export namespace Prisma {
     product_id?: true
     quantity?: true
     price?: true
+    company_id?: true
   }
 
   export type TransactionItemMaxAggregateInputType = {
@@ -6476,6 +6853,7 @@ export namespace Prisma {
     product_id?: true
     quantity?: true
     price?: true
+    company_id?: true
   }
 
   export type TransactionItemCountAggregateInputType = {
@@ -6484,6 +6862,7 @@ export namespace Prisma {
     product_id?: true
     quantity?: true
     price?: true
+    company_id?: true
     _all?: true
   }
 
@@ -6579,6 +6958,7 @@ export namespace Prisma {
     product_id: number
     quantity: number
     price: Decimal
+    company_id: number
     _count: TransactionItemCountAggregateOutputType | null
     _avg: TransactionItemAvgAggregateOutputType | null
     _sum: TransactionItemSumAggregateOutputType | null
@@ -6606,6 +6986,8 @@ export namespace Prisma {
     product_id?: boolean
     quantity?: boolean
     price?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["transactionItem"]>
@@ -6616,6 +6998,8 @@ export namespace Prisma {
     product_id?: boolean
     quantity?: boolean
     price?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["transactionItem"]>
@@ -6626,6 +7010,8 @@ export namespace Prisma {
     product_id?: boolean
     quantity?: boolean
     price?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["transactionItem"]>
@@ -6636,18 +7022,22 @@ export namespace Prisma {
     product_id?: boolean
     quantity?: boolean
     price?: boolean
+    company_id?: boolean
   }
 
-  export type TransactionItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "transaction_id" | "product_id" | "quantity" | "price", ExtArgs["result"]["transactionItem"]>
+  export type TransactionItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "transaction_id" | "product_id" | "quantity" | "price" | "company_id", ExtArgs["result"]["transactionItem"]>
   export type TransactionItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
   }
   export type TransactionItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
   }
   export type TransactionItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
   }
@@ -6655,6 +7045,7 @@ export namespace Prisma {
   export type $TransactionItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "TransactionItem"
     objects: {
+      company: Prisma.$CompanyPayload<ExtArgs>
       transaction: Prisma.$TransactionPayload<ExtArgs>
       product: Prisma.$ProductPayload<ExtArgs>
     }
@@ -6664,6 +7055,7 @@ export namespace Prisma {
       product_id: number
       quantity: number
       price: Prisma.Decimal
+      company_id: number
     }, ExtArgs["result"]["transactionItem"]>
     composites: {}
   }
@@ -7058,6 +7450,7 @@ export namespace Prisma {
    */
   export interface Prisma__TransactionItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     transaction<T extends TransactionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TransactionDefaultArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
@@ -7094,6 +7487,7 @@ export namespace Prisma {
     readonly product_id: FieldRef<"TransactionItem", 'Int'>
     readonly quantity: FieldRef<"TransactionItem", 'Int'>
     readonly price: FieldRef<"TransactionItem", 'Decimal'>
+    readonly company_id: FieldRef<"TransactionItem", 'Int'>
   }
     
 
@@ -7524,12 +7918,14 @@ export namespace Prisma {
     id: number | null
     transaction_id: number | null
     amount: Decimal | null
+    company_id: number | null
   }
 
   export type TransactionPaymentSumAggregateOutputType = {
     id: number | null
     transaction_id: number | null
     amount: Decimal | null
+    company_id: number | null
   }
 
   export type TransactionPaymentMinAggregateOutputType = {
@@ -7537,6 +7933,7 @@ export namespace Prisma {
     transaction_id: number | null
     payment_method: string | null
     amount: Decimal | null
+    company_id: number | null
   }
 
   export type TransactionPaymentMaxAggregateOutputType = {
@@ -7544,6 +7941,7 @@ export namespace Prisma {
     transaction_id: number | null
     payment_method: string | null
     amount: Decimal | null
+    company_id: number | null
   }
 
   export type TransactionPaymentCountAggregateOutputType = {
@@ -7551,6 +7949,7 @@ export namespace Prisma {
     transaction_id: number
     payment_method: number
     amount: number
+    company_id: number
     _all: number
   }
 
@@ -7559,12 +7958,14 @@ export namespace Prisma {
     id?: true
     transaction_id?: true
     amount?: true
+    company_id?: true
   }
 
   export type TransactionPaymentSumAggregateInputType = {
     id?: true
     transaction_id?: true
     amount?: true
+    company_id?: true
   }
 
   export type TransactionPaymentMinAggregateInputType = {
@@ -7572,6 +7973,7 @@ export namespace Prisma {
     transaction_id?: true
     payment_method?: true
     amount?: true
+    company_id?: true
   }
 
   export type TransactionPaymentMaxAggregateInputType = {
@@ -7579,6 +7981,7 @@ export namespace Prisma {
     transaction_id?: true
     payment_method?: true
     amount?: true
+    company_id?: true
   }
 
   export type TransactionPaymentCountAggregateInputType = {
@@ -7586,6 +7989,7 @@ export namespace Prisma {
     transaction_id?: true
     payment_method?: true
     amount?: true
+    company_id?: true
     _all?: true
   }
 
@@ -7680,6 +8084,7 @@ export namespace Prisma {
     transaction_id: number
     payment_method: string
     amount: Decimal
+    company_id: number
     _count: TransactionPaymentCountAggregateOutputType | null
     _avg: TransactionPaymentAvgAggregateOutputType | null
     _sum: TransactionPaymentSumAggregateOutputType | null
@@ -7706,6 +8111,8 @@ export namespace Prisma {
     transaction_id?: boolean
     payment_method?: boolean
     amount?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["transactionPayment"]>
 
@@ -7714,6 +8121,8 @@ export namespace Prisma {
     transaction_id?: boolean
     payment_method?: boolean
     amount?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["transactionPayment"]>
 
@@ -7722,6 +8131,8 @@ export namespace Prisma {
     transaction_id?: boolean
     payment_method?: boolean
     amount?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["transactionPayment"]>
 
@@ -7730,22 +8141,27 @@ export namespace Prisma {
     transaction_id?: boolean
     payment_method?: boolean
     amount?: boolean
+    company_id?: boolean
   }
 
-  export type TransactionPaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "transaction_id" | "payment_method" | "amount", ExtArgs["result"]["transactionPayment"]>
+  export type TransactionPaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "transaction_id" | "payment_method" | "amount" | "company_id", ExtArgs["result"]["transactionPayment"]>
   export type TransactionPaymentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
   }
   export type TransactionPaymentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
   }
   export type TransactionPaymentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
   }
 
   export type $TransactionPaymentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "TransactionPayment"
     objects: {
+      company: Prisma.$CompanyPayload<ExtArgs>
       transaction: Prisma.$TransactionPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -7753,6 +8169,7 @@ export namespace Prisma {
       transaction_id: number
       payment_method: string
       amount: Prisma.Decimal
+      company_id: number
     }, ExtArgs["result"]["transactionPayment"]>
     composites: {}
   }
@@ -8147,6 +8564,7 @@ export namespace Prisma {
    */
   export interface Prisma__TransactionPaymentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     transaction<T extends TransactionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TransactionDefaultArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -8181,6 +8599,7 @@ export namespace Prisma {
     readonly transaction_id: FieldRef<"TransactionPayment", 'Int'>
     readonly payment_method: FieldRef<"TransactionPayment", 'String'>
     readonly amount: FieldRef<"TransactionPayment", 'Decimal'>
+    readonly company_id: FieldRef<"TransactionPayment", 'Int'>
   }
     
 
@@ -8613,6 +9032,7 @@ export namespace Prisma {
     quantity: number | null
     price: Decimal | null
     payment_amount: Decimal | null
+    company_id: number | null
   }
 
   export type TransactionDetailSumAggregateOutputType = {
@@ -8621,6 +9041,7 @@ export namespace Prisma {
     quantity: number | null
     price: Decimal | null
     payment_amount: Decimal | null
+    company_id: number | null
   }
 
   export type TransactionDetailMinAggregateOutputType = {
@@ -8632,6 +9053,7 @@ export namespace Prisma {
     payment_method: string | null
     payment_amount: Decimal | null
     created_at: Date | null
+    company_id: number | null
   }
 
   export type TransactionDetailMaxAggregateOutputType = {
@@ -8643,6 +9065,7 @@ export namespace Prisma {
     payment_method: string | null
     payment_amount: Decimal | null
     created_at: Date | null
+    company_id: number | null
   }
 
   export type TransactionDetailCountAggregateOutputType = {
@@ -8654,6 +9077,7 @@ export namespace Prisma {
     payment_method: number
     payment_amount: number
     created_at: number
+    company_id: number
     _all: number
   }
 
@@ -8664,6 +9088,7 @@ export namespace Prisma {
     quantity?: true
     price?: true
     payment_amount?: true
+    company_id?: true
   }
 
   export type TransactionDetailSumAggregateInputType = {
@@ -8672,6 +9097,7 @@ export namespace Prisma {
     quantity?: true
     price?: true
     payment_amount?: true
+    company_id?: true
   }
 
   export type TransactionDetailMinAggregateInputType = {
@@ -8683,6 +9109,7 @@ export namespace Prisma {
     payment_method?: true
     payment_amount?: true
     created_at?: true
+    company_id?: true
   }
 
   export type TransactionDetailMaxAggregateInputType = {
@@ -8694,6 +9121,7 @@ export namespace Prisma {
     payment_method?: true
     payment_amount?: true
     created_at?: true
+    company_id?: true
   }
 
   export type TransactionDetailCountAggregateInputType = {
@@ -8705,6 +9133,7 @@ export namespace Prisma {
     payment_method?: true
     payment_amount?: true
     created_at?: true
+    company_id?: true
     _all?: true
   }
 
@@ -8803,6 +9232,7 @@ export namespace Prisma {
     payment_method: string | null
     payment_amount: Decimal | null
     created_at: Date
+    company_id: number
     _count: TransactionDetailCountAggregateOutputType | null
     _avg: TransactionDetailAvgAggregateOutputType | null
     _sum: TransactionDetailSumAggregateOutputType | null
@@ -8833,6 +9263,8 @@ export namespace Prisma {
     payment_method?: boolean
     payment_amount?: boolean
     created_at?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["transactionDetail"]>
 
@@ -8845,6 +9277,8 @@ export namespace Prisma {
     payment_method?: boolean
     payment_amount?: boolean
     created_at?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["transactionDetail"]>
 
@@ -8857,6 +9291,8 @@ export namespace Prisma {
     payment_method?: boolean
     payment_amount?: boolean
     created_at?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["transactionDetail"]>
 
@@ -8869,22 +9305,27 @@ export namespace Prisma {
     payment_method?: boolean
     payment_amount?: boolean
     created_at?: boolean
+    company_id?: boolean
   }
 
-  export type TransactionDetailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "transaction_id" | "product_name" | "quantity" | "price" | "payment_method" | "payment_amount" | "created_at", ExtArgs["result"]["transactionDetail"]>
+  export type TransactionDetailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "transaction_id" | "product_name" | "quantity" | "price" | "payment_method" | "payment_amount" | "created_at" | "company_id", ExtArgs["result"]["transactionDetail"]>
   export type TransactionDetailInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
   }
   export type TransactionDetailIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
   }
   export type TransactionDetailIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
   }
 
   export type $TransactionDetailPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "TransactionDetail"
     objects: {
+      company: Prisma.$CompanyPayload<ExtArgs>
       transaction: Prisma.$TransactionPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -8896,6 +9337,7 @@ export namespace Prisma {
       payment_method: string | null
       payment_amount: Prisma.Decimal | null
       created_at: Date
+      company_id: number
     }, ExtArgs["result"]["transactionDetail"]>
     composites: {}
   }
@@ -9290,6 +9732,7 @@ export namespace Prisma {
    */
   export interface Prisma__TransactionDetailClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     transaction<T extends TransactionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TransactionDefaultArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -9328,6 +9771,7 @@ export namespace Prisma {
     readonly payment_method: FieldRef<"TransactionDetail", 'String'>
     readonly payment_amount: FieldRef<"TransactionDetail", 'Decimal'>
     readonly created_at: FieldRef<"TransactionDetail", 'DateTime'>
+    readonly company_id: FieldRef<"TransactionDetail", 'Int'>
   }
     
 
@@ -9763,6 +10207,7 @@ export namespace Prisma {
     profit_per_unit: Decimal | null
     net_profit: Decimal | null
     remaining_quantity: number | null
+    company_id: number | null
   }
 
   export type OrderSumAggregateOutputType = {
@@ -9774,6 +10219,7 @@ export namespace Prisma {
     profit_per_unit: Decimal | null
     net_profit: Decimal | null
     remaining_quantity: number | null
+    company_id: number | null
   }
 
   export type OrderMinAggregateOutputType = {
@@ -9788,6 +10234,7 @@ export namespace Prisma {
     order_date: Date | null
     remaining_quantity: number | null
     status: string | null
+    company_id: number | null
   }
 
   export type OrderMaxAggregateOutputType = {
@@ -9802,6 +10249,7 @@ export namespace Prisma {
     order_date: Date | null
     remaining_quantity: number | null
     status: string | null
+    company_id: number | null
   }
 
   export type OrderCountAggregateOutputType = {
@@ -9816,6 +10264,7 @@ export namespace Prisma {
     order_date: number
     remaining_quantity: number
     status: number
+    company_id: number
     _all: number
   }
 
@@ -9829,6 +10278,7 @@ export namespace Prisma {
     profit_per_unit?: true
     net_profit?: true
     remaining_quantity?: true
+    company_id?: true
   }
 
   export type OrderSumAggregateInputType = {
@@ -9840,6 +10290,7 @@ export namespace Prisma {
     profit_per_unit?: true
     net_profit?: true
     remaining_quantity?: true
+    company_id?: true
   }
 
   export type OrderMinAggregateInputType = {
@@ -9854,6 +10305,7 @@ export namespace Prisma {
     order_date?: true
     remaining_quantity?: true
     status?: true
+    company_id?: true
   }
 
   export type OrderMaxAggregateInputType = {
@@ -9868,6 +10320,7 @@ export namespace Prisma {
     order_date?: true
     remaining_quantity?: true
     status?: true
+    company_id?: true
   }
 
   export type OrderCountAggregateInputType = {
@@ -9882,6 +10335,7 @@ export namespace Prisma {
     order_date?: true
     remaining_quantity?: true
     status?: true
+    company_id?: true
     _all?: true
   }
 
@@ -9983,6 +10437,7 @@ export namespace Prisma {
     order_date: Date
     remaining_quantity: number
     status: string
+    company_id: number
     _count: OrderCountAggregateOutputType | null
     _avg: OrderAvgAggregateOutputType | null
     _sum: OrderSumAggregateOutputType | null
@@ -10016,6 +10471,8 @@ export namespace Prisma {
     order_date?: boolean
     remaining_quantity?: boolean
     status?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     productRef?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
@@ -10031,6 +10488,8 @@ export namespace Prisma {
     order_date?: boolean
     remaining_quantity?: boolean
     status?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     productRef?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
@@ -10046,6 +10505,8 @@ export namespace Prisma {
     order_date?: boolean
     remaining_quantity?: boolean
     status?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     productRef?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
@@ -10061,22 +10522,27 @@ export namespace Prisma {
     order_date?: boolean
     remaining_quantity?: boolean
     status?: boolean
+    company_id?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "product_id" | "product" | "quantity" | "order_price" | "selling_price" | "profit_per_unit" | "net_profit" | "order_date" | "remaining_quantity" | "status", ExtArgs["result"]["order"]>
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "product_id" | "product" | "quantity" | "order_price" | "selling_price" | "profit_per_unit" | "net_profit" | "order_date" | "remaining_quantity" | "status" | "company_id", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     productRef?: boolean | ProductDefaultArgs<ExtArgs>
   }
   export type OrderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     productRef?: boolean | ProductDefaultArgs<ExtArgs>
   }
   export type OrderIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     productRef?: boolean | ProductDefaultArgs<ExtArgs>
   }
 
   export type $OrderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Order"
     objects: {
+      company: Prisma.$CompanyPayload<ExtArgs>
       productRef: Prisma.$ProductPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -10091,6 +10557,7 @@ export namespace Prisma {
       order_date: Date
       remaining_quantity: number
       status: string
+      company_id: number
     }, ExtArgs["result"]["order"]>
     composites: {}
   }
@@ -10485,6 +10952,7 @@ export namespace Prisma {
    */
   export interface Prisma__OrderClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     productRef<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -10526,6 +10994,7 @@ export namespace Prisma {
     readonly order_date: FieldRef<"Order", 'DateTime'>
     readonly remaining_quantity: FieldRef<"Order", 'Int'>
     readonly status: FieldRef<"Order", 'String'>
+    readonly company_id: FieldRef<"Order", 'Int'>
   }
     
 
@@ -10955,11 +11424,13 @@ export namespace Prisma {
   export type ExpenseAvgAggregateOutputType = {
     id: number | null
     amount: number | null
+    company_id: number | null
   }
 
   export type ExpenseSumAggregateOutputType = {
     id: number | null
     amount: number | null
+    company_id: number | null
   }
 
   export type ExpenseMinAggregateOutputType = {
@@ -10969,6 +11440,7 @@ export namespace Prisma {
     date: Date | null
     created_at: Date | null
     updated_at: Date | null
+    company_id: number | null
   }
 
   export type ExpenseMaxAggregateOutputType = {
@@ -10978,6 +11450,7 @@ export namespace Prisma {
     date: Date | null
     created_at: Date | null
     updated_at: Date | null
+    company_id: number | null
   }
 
   export type ExpenseCountAggregateOutputType = {
@@ -10987,6 +11460,7 @@ export namespace Prisma {
     date: number
     created_at: number
     updated_at: number
+    company_id: number
     _all: number
   }
 
@@ -10994,11 +11468,13 @@ export namespace Prisma {
   export type ExpenseAvgAggregateInputType = {
     id?: true
     amount?: true
+    company_id?: true
   }
 
   export type ExpenseSumAggregateInputType = {
     id?: true
     amount?: true
+    company_id?: true
   }
 
   export type ExpenseMinAggregateInputType = {
@@ -11008,6 +11484,7 @@ export namespace Prisma {
     date?: true
     created_at?: true
     updated_at?: true
+    company_id?: true
   }
 
   export type ExpenseMaxAggregateInputType = {
@@ -11017,6 +11494,7 @@ export namespace Prisma {
     date?: true
     created_at?: true
     updated_at?: true
+    company_id?: true
   }
 
   export type ExpenseCountAggregateInputType = {
@@ -11026,6 +11504,7 @@ export namespace Prisma {
     date?: true
     created_at?: true
     updated_at?: true
+    company_id?: true
     _all?: true
   }
 
@@ -11122,6 +11601,7 @@ export namespace Prisma {
     date: Date
     created_at: Date
     updated_at: Date
+    company_id: number
     _count: ExpenseCountAggregateOutputType | null
     _avg: ExpenseAvgAggregateOutputType | null
     _sum: ExpenseSumAggregateOutputType | null
@@ -11150,6 +11630,8 @@ export namespace Prisma {
     date?: boolean
     created_at?: boolean
     updated_at?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["expense"]>
 
   export type ExpenseSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11159,6 +11641,8 @@ export namespace Prisma {
     date?: boolean
     created_at?: boolean
     updated_at?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["expense"]>
 
   export type ExpenseSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11168,6 +11652,8 @@ export namespace Prisma {
     date?: boolean
     created_at?: boolean
     updated_at?: boolean
+    company_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["expense"]>
 
   export type ExpenseSelectScalar = {
@@ -11177,13 +11663,25 @@ export namespace Prisma {
     date?: boolean
     created_at?: boolean
     updated_at?: boolean
+    company_id?: boolean
   }
 
-  export type ExpenseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "description" | "amount" | "date" | "created_at" | "updated_at", ExtArgs["result"]["expense"]>
+  export type ExpenseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "description" | "amount" | "date" | "created_at" | "updated_at" | "company_id", ExtArgs["result"]["expense"]>
+  export type ExpenseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
+  export type ExpenseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
+  export type ExpenseIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
 
   export type $ExpensePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Expense"
-    objects: {}
+    objects: {
+      company: Prisma.$CompanyPayload<ExtArgs>
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       description: string
@@ -11191,6 +11689,7 @@ export namespace Prisma {
       date: Date
       created_at: Date
       updated_at: Date
+      company_id: number
     }, ExtArgs["result"]["expense"]>
     composites: {}
   }
@@ -11585,6 +12084,7 @@ export namespace Prisma {
    */
   export interface Prisma__ExpenseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11620,6 +12120,7 @@ export namespace Prisma {
     readonly date: FieldRef<"Expense", 'DateTime'>
     readonly created_at: FieldRef<"Expense", 'DateTime'>
     readonly updated_at: FieldRef<"Expense", 'DateTime'>
+    readonly company_id: FieldRef<"Expense", 'Int'>
   }
     
 
@@ -11636,6 +12137,10 @@ export namespace Prisma {
      * Omit specific fields from the Expense
      */
     omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
     /**
      * Filter, which Expense to fetch.
      */
@@ -11655,6 +12160,10 @@ export namespace Prisma {
      */
     omit?: ExpenseOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    /**
      * Filter, which Expense to fetch.
      */
     where: ExpenseWhereUniqueInput
@@ -11672,6 +12181,10 @@ export namespace Prisma {
      * Omit specific fields from the Expense
      */
     omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
     /**
      * Filter, which Expense to fetch.
      */
@@ -11721,6 +12234,10 @@ export namespace Prisma {
      */
     omit?: ExpenseOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    /**
      * Filter, which Expense to fetch.
      */
     where?: ExpenseWhereInput
@@ -11769,6 +12286,10 @@ export namespace Prisma {
      */
     omit?: ExpenseOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    /**
      * Filter, which Expenses to fetch.
      */
     where?: ExpenseWhereInput
@@ -11812,6 +12333,10 @@ export namespace Prisma {
      */
     omit?: ExpenseOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    /**
      * The data needed to create a Expense.
      */
     data: XOR<ExpenseCreateInput, ExpenseUncheckedCreateInput>
@@ -11845,6 +12370,10 @@ export namespace Prisma {
      */
     data: ExpenseCreateManyInput | ExpenseCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -11859,6 +12388,10 @@ export namespace Prisma {
      * Omit specific fields from the Expense
      */
     omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
     /**
      * The data needed to update a Expense.
      */
@@ -11911,6 +12444,10 @@ export namespace Prisma {
      * Limit how many Expenses to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -11925,6 +12462,10 @@ export namespace Prisma {
      * Omit specific fields from the Expense
      */
     omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
     /**
      * The filter to search for the Expense to update in case it exists.
      */
@@ -11951,6 +12492,10 @@ export namespace Prisma {
      * Omit specific fields from the Expense
      */
     omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
     /**
      * Filter which Expense to delete.
      */
@@ -11983,6 +12528,1364 @@ export namespace Prisma {
      * Omit specific fields from the Expense
      */
     omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Company
+   */
+
+  export type AggregateCompany = {
+    _count: CompanyCountAggregateOutputType | null
+    _avg: CompanyAvgAggregateOutputType | null
+    _sum: CompanySumAggregateOutputType | null
+    _min: CompanyMinAggregateOutputType | null
+    _max: CompanyMaxAggregateOutputType | null
+  }
+
+  export type CompanyAvgAggregateOutputType = {
+    company_id: number | null
+  }
+
+  export type CompanySumAggregateOutputType = {
+    company_id: number | null
+  }
+
+  export type CompanyMinAggregateOutputType = {
+    company_id: number | null
+    company_name: string | null
+    company_email: string | null
+    company_contact_number: string | null
+    company_address: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type CompanyMaxAggregateOutputType = {
+    company_id: number | null
+    company_name: string | null
+    company_email: string | null
+    company_contact_number: string | null
+    company_address: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type CompanyCountAggregateOutputType = {
+    company_id: number
+    company_name: number
+    company_email: number
+    company_contact_number: number
+    company_address: number
+    created_at: number
+    updated_at: number
+    _all: number
+  }
+
+
+  export type CompanyAvgAggregateInputType = {
+    company_id?: true
+  }
+
+  export type CompanySumAggregateInputType = {
+    company_id?: true
+  }
+
+  export type CompanyMinAggregateInputType = {
+    company_id?: true
+    company_name?: true
+    company_email?: true
+    company_contact_number?: true
+    company_address?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type CompanyMaxAggregateInputType = {
+    company_id?: true
+    company_name?: true
+    company_email?: true
+    company_contact_number?: true
+    company_address?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type CompanyCountAggregateInputType = {
+    company_id?: true
+    company_name?: true
+    company_email?: true
+    company_contact_number?: true
+    company_address?: true
+    created_at?: true
+    updated_at?: true
+    _all?: true
+  }
+
+  export type CompanyAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Company to aggregate.
+     */
+    where?: CompanyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Companies to fetch.
+     */
+    orderBy?: CompanyOrderByWithRelationInput | CompanyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CompanyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Companies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Companies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Companies
+    **/
+    _count?: true | CompanyCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CompanyAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CompanySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CompanyMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CompanyMaxAggregateInputType
+  }
+
+  export type GetCompanyAggregateType<T extends CompanyAggregateArgs> = {
+        [P in keyof T & keyof AggregateCompany]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCompany[P]>
+      : GetScalarType<T[P], AggregateCompany[P]>
+  }
+
+
+
+
+  export type CompanyGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompanyWhereInput
+    orderBy?: CompanyOrderByWithAggregationInput | CompanyOrderByWithAggregationInput[]
+    by: CompanyScalarFieldEnum[] | CompanyScalarFieldEnum
+    having?: CompanyScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CompanyCountAggregateInputType | true
+    _avg?: CompanyAvgAggregateInputType
+    _sum?: CompanySumAggregateInputType
+    _min?: CompanyMinAggregateInputType
+    _max?: CompanyMaxAggregateInputType
+  }
+
+  export type CompanyGroupByOutputType = {
+    company_id: number
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at: Date
+    updated_at: Date
+    _count: CompanyCountAggregateOutputType | null
+    _avg: CompanyAvgAggregateOutputType | null
+    _sum: CompanySumAggregateOutputType | null
+    _min: CompanyMinAggregateOutputType | null
+    _max: CompanyMaxAggregateOutputType | null
+  }
+
+  type GetCompanyGroupByPayload<T extends CompanyGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CompanyGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CompanyGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CompanyGroupByOutputType[P]>
+            : GetScalarType<T[P], CompanyGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CompanySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    company_id?: boolean
+    company_name?: boolean
+    company_email?: boolean
+    company_contact_number?: boolean
+    company_address?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    products?: boolean | Company$productsArgs<ExtArgs>
+    users?: boolean | Company$usersArgs<ExtArgs>
+    paymentTypes?: boolean | Company$paymentTypesArgs<ExtArgs>
+    transactions?: boolean | Company$transactionsArgs<ExtArgs>
+    transactionItems?: boolean | Company$transactionItemsArgs<ExtArgs>
+    transactionPayments?: boolean | Company$transactionPaymentsArgs<ExtArgs>
+    transactionDetails?: boolean | Company$transactionDetailsArgs<ExtArgs>
+    orders?: boolean | Company$ordersArgs<ExtArgs>
+    expenses?: boolean | Company$expensesArgs<ExtArgs>
+    _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["company"]>
+
+  export type CompanySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    company_id?: boolean
+    company_name?: boolean
+    company_email?: boolean
+    company_contact_number?: boolean
+    company_address?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }, ExtArgs["result"]["company"]>
+
+  export type CompanySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    company_id?: boolean
+    company_name?: boolean
+    company_email?: boolean
+    company_contact_number?: boolean
+    company_address?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }, ExtArgs["result"]["company"]>
+
+  export type CompanySelectScalar = {
+    company_id?: boolean
+    company_name?: boolean
+    company_email?: boolean
+    company_contact_number?: boolean
+    company_address?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }
+
+  export type CompanyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"company_id" | "company_name" | "company_email" | "company_contact_number" | "company_address" | "created_at" | "updated_at", ExtArgs["result"]["company"]>
+  export type CompanyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    products?: boolean | Company$productsArgs<ExtArgs>
+    users?: boolean | Company$usersArgs<ExtArgs>
+    paymentTypes?: boolean | Company$paymentTypesArgs<ExtArgs>
+    transactions?: boolean | Company$transactionsArgs<ExtArgs>
+    transactionItems?: boolean | Company$transactionItemsArgs<ExtArgs>
+    transactionPayments?: boolean | Company$transactionPaymentsArgs<ExtArgs>
+    transactionDetails?: boolean | Company$transactionDetailsArgs<ExtArgs>
+    orders?: boolean | Company$ordersArgs<ExtArgs>
+    expenses?: boolean | Company$expensesArgs<ExtArgs>
+    _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type CompanyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type CompanyIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $CompanyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Company"
+    objects: {
+      products: Prisma.$ProductPayload<ExtArgs>[]
+      users: Prisma.$UserPayload<ExtArgs>[]
+      paymentTypes: Prisma.$PaymentTypePayload<ExtArgs>[]
+      transactions: Prisma.$TransactionPayload<ExtArgs>[]
+      transactionItems: Prisma.$TransactionItemPayload<ExtArgs>[]
+      transactionPayments: Prisma.$TransactionPaymentPayload<ExtArgs>[]
+      transactionDetails: Prisma.$TransactionDetailPayload<ExtArgs>[]
+      orders: Prisma.$OrderPayload<ExtArgs>[]
+      expenses: Prisma.$ExpensePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      company_id: number
+      company_name: string
+      company_email: string
+      company_contact_number: string
+      company_address: string
+      created_at: Date
+      updated_at: Date
+    }, ExtArgs["result"]["company"]>
+    composites: {}
+  }
+
+  type CompanyGetPayload<S extends boolean | null | undefined | CompanyDefaultArgs> = $Result.GetResult<Prisma.$CompanyPayload, S>
+
+  type CompanyCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CompanyFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CompanyCountAggregateInputType | true
+    }
+
+  export interface CompanyDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Company'], meta: { name: 'Company' } }
+    /**
+     * Find zero or one Company that matches the filter.
+     * @param {CompanyFindUniqueArgs} args - Arguments to find a Company
+     * @example
+     * // Get one Company
+     * const company = await prisma.company.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CompanyFindUniqueArgs>(args: SelectSubset<T, CompanyFindUniqueArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Company that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CompanyFindUniqueOrThrowArgs} args - Arguments to find a Company
+     * @example
+     * // Get one Company
+     * const company = await prisma.company.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CompanyFindUniqueOrThrowArgs>(args: SelectSubset<T, CompanyFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Company that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyFindFirstArgs} args - Arguments to find a Company
+     * @example
+     * // Get one Company
+     * const company = await prisma.company.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CompanyFindFirstArgs>(args?: SelectSubset<T, CompanyFindFirstArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Company that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyFindFirstOrThrowArgs} args - Arguments to find a Company
+     * @example
+     * // Get one Company
+     * const company = await prisma.company.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CompanyFindFirstOrThrowArgs>(args?: SelectSubset<T, CompanyFindFirstOrThrowArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Companies that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Companies
+     * const companies = await prisma.company.findMany()
+     * 
+     * // Get first 10 Companies
+     * const companies = await prisma.company.findMany({ take: 10 })
+     * 
+     * // Only select the `company_id`
+     * const companyWithCompany_idOnly = await prisma.company.findMany({ select: { company_id: true } })
+     * 
+     */
+    findMany<T extends CompanyFindManyArgs>(args?: SelectSubset<T, CompanyFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Company.
+     * @param {CompanyCreateArgs} args - Arguments to create a Company.
+     * @example
+     * // Create one Company
+     * const Company = await prisma.company.create({
+     *   data: {
+     *     // ... data to create a Company
+     *   }
+     * })
+     * 
+     */
+    create<T extends CompanyCreateArgs>(args: SelectSubset<T, CompanyCreateArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Companies.
+     * @param {CompanyCreateManyArgs} args - Arguments to create many Companies.
+     * @example
+     * // Create many Companies
+     * const company = await prisma.company.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CompanyCreateManyArgs>(args?: SelectSubset<T, CompanyCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Companies and returns the data saved in the database.
+     * @param {CompanyCreateManyAndReturnArgs} args - Arguments to create many Companies.
+     * @example
+     * // Create many Companies
+     * const company = await prisma.company.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Companies and only return the `company_id`
+     * const companyWithCompany_idOnly = await prisma.company.createManyAndReturn({
+     *   select: { company_id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CompanyCreateManyAndReturnArgs>(args?: SelectSubset<T, CompanyCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Company.
+     * @param {CompanyDeleteArgs} args - Arguments to delete one Company.
+     * @example
+     * // Delete one Company
+     * const Company = await prisma.company.delete({
+     *   where: {
+     *     // ... filter to delete one Company
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CompanyDeleteArgs>(args: SelectSubset<T, CompanyDeleteArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Company.
+     * @param {CompanyUpdateArgs} args - Arguments to update one Company.
+     * @example
+     * // Update one Company
+     * const company = await prisma.company.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CompanyUpdateArgs>(args: SelectSubset<T, CompanyUpdateArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Companies.
+     * @param {CompanyDeleteManyArgs} args - Arguments to filter Companies to delete.
+     * @example
+     * // Delete a few Companies
+     * const { count } = await prisma.company.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CompanyDeleteManyArgs>(args?: SelectSubset<T, CompanyDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Companies.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Companies
+     * const company = await prisma.company.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CompanyUpdateManyArgs>(args: SelectSubset<T, CompanyUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Companies and returns the data updated in the database.
+     * @param {CompanyUpdateManyAndReturnArgs} args - Arguments to update many Companies.
+     * @example
+     * // Update many Companies
+     * const company = await prisma.company.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Companies and only return the `company_id`
+     * const companyWithCompany_idOnly = await prisma.company.updateManyAndReturn({
+     *   select: { company_id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CompanyUpdateManyAndReturnArgs>(args: SelectSubset<T, CompanyUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Company.
+     * @param {CompanyUpsertArgs} args - Arguments to update or create a Company.
+     * @example
+     * // Update or create a Company
+     * const company = await prisma.company.upsert({
+     *   create: {
+     *     // ... data to create a Company
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Company we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CompanyUpsertArgs>(args: SelectSubset<T, CompanyUpsertArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Companies.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyCountArgs} args - Arguments to filter Companies to count.
+     * @example
+     * // Count the number of Companies
+     * const count = await prisma.company.count({
+     *   where: {
+     *     // ... the filter for the Companies we want to count
+     *   }
+     * })
+    **/
+    count<T extends CompanyCountArgs>(
+      args?: Subset<T, CompanyCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CompanyCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Company.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CompanyAggregateArgs>(args: Subset<T, CompanyAggregateArgs>): Prisma.PrismaPromise<GetCompanyAggregateType<T>>
+
+    /**
+     * Group by Company.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CompanyGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CompanyGroupByArgs['orderBy'] }
+        : { orderBy?: CompanyGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CompanyGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCompanyGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Company model
+   */
+  readonly fields: CompanyFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Company.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CompanyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    products<T extends Company$productsArgs<ExtArgs> = {}>(args?: Subset<T, Company$productsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    users<T extends Company$usersArgs<ExtArgs> = {}>(args?: Subset<T, Company$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    paymentTypes<T extends Company$paymentTypesArgs<ExtArgs> = {}>(args?: Subset<T, Company$paymentTypesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    transactions<T extends Company$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, Company$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    transactionItems<T extends Company$transactionItemsArgs<ExtArgs> = {}>(args?: Subset<T, Company$transactionItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    transactionPayments<T extends Company$transactionPaymentsArgs<ExtArgs> = {}>(args?: Subset<T, Company$transactionPaymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    transactionDetails<T extends Company$transactionDetailsArgs<ExtArgs> = {}>(args?: Subset<T, Company$transactionDetailsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    orders<T extends Company$ordersArgs<ExtArgs> = {}>(args?: Subset<T, Company$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    expenses<T extends Company$expensesArgs<ExtArgs> = {}>(args?: Subset<T, Company$expensesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Company model
+   */
+  interface CompanyFieldRefs {
+    readonly company_id: FieldRef<"Company", 'Int'>
+    readonly company_name: FieldRef<"Company", 'String'>
+    readonly company_email: FieldRef<"Company", 'String'>
+    readonly company_contact_number: FieldRef<"Company", 'String'>
+    readonly company_address: FieldRef<"Company", 'String'>
+    readonly created_at: FieldRef<"Company", 'DateTime'>
+    readonly updated_at: FieldRef<"Company", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Company findUnique
+   */
+  export type CompanyFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyInclude<ExtArgs> | null
+    /**
+     * Filter, which Company to fetch.
+     */
+    where: CompanyWhereUniqueInput
+  }
+
+  /**
+   * Company findUniqueOrThrow
+   */
+  export type CompanyFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyInclude<ExtArgs> | null
+    /**
+     * Filter, which Company to fetch.
+     */
+    where: CompanyWhereUniqueInput
+  }
+
+  /**
+   * Company findFirst
+   */
+  export type CompanyFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyInclude<ExtArgs> | null
+    /**
+     * Filter, which Company to fetch.
+     */
+    where?: CompanyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Companies to fetch.
+     */
+    orderBy?: CompanyOrderByWithRelationInput | CompanyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Companies.
+     */
+    cursor?: CompanyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Companies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Companies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Companies.
+     */
+    distinct?: CompanyScalarFieldEnum | CompanyScalarFieldEnum[]
+  }
+
+  /**
+   * Company findFirstOrThrow
+   */
+  export type CompanyFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyInclude<ExtArgs> | null
+    /**
+     * Filter, which Company to fetch.
+     */
+    where?: CompanyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Companies to fetch.
+     */
+    orderBy?: CompanyOrderByWithRelationInput | CompanyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Companies.
+     */
+    cursor?: CompanyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Companies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Companies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Companies.
+     */
+    distinct?: CompanyScalarFieldEnum | CompanyScalarFieldEnum[]
+  }
+
+  /**
+   * Company findMany
+   */
+  export type CompanyFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyInclude<ExtArgs> | null
+    /**
+     * Filter, which Companies to fetch.
+     */
+    where?: CompanyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Companies to fetch.
+     */
+    orderBy?: CompanyOrderByWithRelationInput | CompanyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Companies.
+     */
+    cursor?: CompanyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Companies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Companies.
+     */
+    skip?: number
+    distinct?: CompanyScalarFieldEnum | CompanyScalarFieldEnum[]
+  }
+
+  /**
+   * Company create
+   */
+  export type CompanyCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Company.
+     */
+    data: XOR<CompanyCreateInput, CompanyUncheckedCreateInput>
+  }
+
+  /**
+   * Company createMany
+   */
+  export type CompanyCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Companies.
+     */
+    data: CompanyCreateManyInput | CompanyCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Company createManyAndReturn
+   */
+  export type CompanyCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * The data used to create many Companies.
+     */
+    data: CompanyCreateManyInput | CompanyCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Company update
+   */
+  export type CompanyUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Company.
+     */
+    data: XOR<CompanyUpdateInput, CompanyUncheckedUpdateInput>
+    /**
+     * Choose, which Company to update.
+     */
+    where: CompanyWhereUniqueInput
+  }
+
+  /**
+   * Company updateMany
+   */
+  export type CompanyUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Companies.
+     */
+    data: XOR<CompanyUpdateManyMutationInput, CompanyUncheckedUpdateManyInput>
+    /**
+     * Filter which Companies to update
+     */
+    where?: CompanyWhereInput
+    /**
+     * Limit how many Companies to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Company updateManyAndReturn
+   */
+  export type CompanyUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * The data used to update Companies.
+     */
+    data: XOR<CompanyUpdateManyMutationInput, CompanyUncheckedUpdateManyInput>
+    /**
+     * Filter which Companies to update
+     */
+    where?: CompanyWhereInput
+    /**
+     * Limit how many Companies to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Company upsert
+   */
+  export type CompanyUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Company to update in case it exists.
+     */
+    where: CompanyWhereUniqueInput
+    /**
+     * In case the Company found by the `where` argument doesn't exist, create a new Company with this data.
+     */
+    create: XOR<CompanyCreateInput, CompanyUncheckedCreateInput>
+    /**
+     * In case the Company was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CompanyUpdateInput, CompanyUncheckedUpdateInput>
+  }
+
+  /**
+   * Company delete
+   */
+  export type CompanyDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyInclude<ExtArgs> | null
+    /**
+     * Filter which Company to delete.
+     */
+    where: CompanyWhereUniqueInput
+  }
+
+  /**
+   * Company deleteMany
+   */
+  export type CompanyDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Companies to delete
+     */
+    where?: CompanyWhereInput
+    /**
+     * Limit how many Companies to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Company.products
+   */
+  export type Company$productsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Product
+     */
+    select?: ProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Product
+     */
+    omit?: ProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductInclude<ExtArgs> | null
+    where?: ProductWhereInput
+    orderBy?: ProductOrderByWithRelationInput | ProductOrderByWithRelationInput[]
+    cursor?: ProductWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProductScalarFieldEnum | ProductScalarFieldEnum[]
+  }
+
+  /**
+   * Company.users
+   */
+  export type Company$usersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * Company.paymentTypes
+   */
+  export type Company$paymentTypesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentType
+     */
+    select?: PaymentTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentType
+     */
+    omit?: PaymentTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTypeInclude<ExtArgs> | null
+    where?: PaymentTypeWhereInput
+    orderBy?: PaymentTypeOrderByWithRelationInput | PaymentTypeOrderByWithRelationInput[]
+    cursor?: PaymentTypeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PaymentTypeScalarFieldEnum | PaymentTypeScalarFieldEnum[]
+  }
+
+  /**
+   * Company.transactions
+   */
+  export type Company$transactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    where?: TransactionWhereInput
+    orderBy?: TransactionOrderByWithRelationInput | TransactionOrderByWithRelationInput[]
+    cursor?: TransactionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TransactionScalarFieldEnum | TransactionScalarFieldEnum[]
+  }
+
+  /**
+   * Company.transactionItems
+   */
+  export type Company$transactionItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TransactionItem
+     */
+    select?: TransactionItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TransactionItem
+     */
+    omit?: TransactionItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionItemInclude<ExtArgs> | null
+    where?: TransactionItemWhereInput
+    orderBy?: TransactionItemOrderByWithRelationInput | TransactionItemOrderByWithRelationInput[]
+    cursor?: TransactionItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TransactionItemScalarFieldEnum | TransactionItemScalarFieldEnum[]
+  }
+
+  /**
+   * Company.transactionPayments
+   */
+  export type Company$transactionPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TransactionPayment
+     */
+    select?: TransactionPaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TransactionPayment
+     */
+    omit?: TransactionPaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionPaymentInclude<ExtArgs> | null
+    where?: TransactionPaymentWhereInput
+    orderBy?: TransactionPaymentOrderByWithRelationInput | TransactionPaymentOrderByWithRelationInput[]
+    cursor?: TransactionPaymentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TransactionPaymentScalarFieldEnum | TransactionPaymentScalarFieldEnum[]
+  }
+
+  /**
+   * Company.transactionDetails
+   */
+  export type Company$transactionDetailsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TransactionDetail
+     */
+    select?: TransactionDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TransactionDetail
+     */
+    omit?: TransactionDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionDetailInclude<ExtArgs> | null
+    where?: TransactionDetailWhereInput
+    orderBy?: TransactionDetailOrderByWithRelationInput | TransactionDetailOrderByWithRelationInput[]
+    cursor?: TransactionDetailWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TransactionDetailScalarFieldEnum | TransactionDetailScalarFieldEnum[]
+  }
+
+  /**
+   * Company.orders
+   */
+  export type Company$ordersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderInclude<ExtArgs> | null
+    where?: OrderWhereInput
+    orderBy?: OrderOrderByWithRelationInput | OrderOrderByWithRelationInput[]
+    cursor?: OrderWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
+  }
+
+  /**
+   * Company.expenses
+   */
+  export type Company$expensesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Expense
+     */
+    select?: ExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Expense
+     */
+    omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    where?: ExpenseWhereInput
+    orderBy?: ExpenseOrderByWithRelationInput | ExpenseOrderByWithRelationInput[]
+    cursor?: ExpenseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ExpenseScalarFieldEnum | ExpenseScalarFieldEnum[]
+  }
+
+  /**
+   * Company without action
+   */
+  export type CompanyDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyInclude<ExtArgs> | null
   }
 
 
@@ -12010,7 +13913,8 @@ export namespace Prisma {
     stock: 'stock',
     status: 'status',
     created_at: 'created_at',
-    updated_at: 'updated_at'
+    updated_at: 'updated_at',
+    company_id: 'company_id'
   };
 
   export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
@@ -12024,7 +13928,8 @@ export namespace Prisma {
     user_type: 'user_type',
     status: 'status',
     created_at: 'created_at',
-    updated_at: 'updated_at'
+    updated_at: 'updated_at',
+    company_id: 'company_id'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -12036,7 +13941,8 @@ export namespace Prisma {
     description: 'description',
     status: 'status',
     created_at: 'created_at',
-    updated_at: 'updated_at'
+    updated_at: 'updated_at',
+    company_id: 'company_id'
   };
 
   export type PaymentTypeScalarFieldEnum = (typeof PaymentTypeScalarFieldEnum)[keyof typeof PaymentTypeScalarFieldEnum]
@@ -12051,7 +13957,8 @@ export namespace Prisma {
     discount_value: 'discount_value',
     change: 'change',
     status: 'status',
-    created_at: 'created_at'
+    created_at: 'created_at',
+    company_id: 'company_id'
   };
 
   export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
@@ -12062,7 +13969,8 @@ export namespace Prisma {
     transaction_id: 'transaction_id',
     product_id: 'product_id',
     quantity: 'quantity',
-    price: 'price'
+    price: 'price',
+    company_id: 'company_id'
   };
 
   export type TransactionItemScalarFieldEnum = (typeof TransactionItemScalarFieldEnum)[keyof typeof TransactionItemScalarFieldEnum]
@@ -12072,7 +13980,8 @@ export namespace Prisma {
     id: 'id',
     transaction_id: 'transaction_id',
     payment_method: 'payment_method',
-    amount: 'amount'
+    amount: 'amount',
+    company_id: 'company_id'
   };
 
   export type TransactionPaymentScalarFieldEnum = (typeof TransactionPaymentScalarFieldEnum)[keyof typeof TransactionPaymentScalarFieldEnum]
@@ -12086,7 +13995,8 @@ export namespace Prisma {
     price: 'price',
     payment_method: 'payment_method',
     payment_amount: 'payment_amount',
-    created_at: 'created_at'
+    created_at: 'created_at',
+    company_id: 'company_id'
   };
 
   export type TransactionDetailScalarFieldEnum = (typeof TransactionDetailScalarFieldEnum)[keyof typeof TransactionDetailScalarFieldEnum]
@@ -12103,7 +14013,8 @@ export namespace Prisma {
     net_profit: 'net_profit',
     order_date: 'order_date',
     remaining_quantity: 'remaining_quantity',
-    status: 'status'
+    status: 'status',
+    company_id: 'company_id'
   };
 
   export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
@@ -12115,10 +14026,24 @@ export namespace Prisma {
     amount: 'amount',
     date: 'date',
     created_at: 'created_at',
-    updated_at: 'updated_at'
+    updated_at: 'updated_at',
+    company_id: 'company_id'
   };
 
   export type ExpenseScalarFieldEnum = (typeof ExpenseScalarFieldEnum)[keyof typeof ExpenseScalarFieldEnum]
+
+
+  export const CompanyScalarFieldEnum: {
+    company_id: 'company_id',
+    company_name: 'company_name',
+    company_email: 'company_email',
+    company_contact_number: 'company_contact_number',
+    company_address: 'company_address',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
+
+  export type CompanyScalarFieldEnum = (typeof CompanyScalarFieldEnum)[keyof typeof CompanyScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -12251,6 +14176,8 @@ export namespace Prisma {
     status?: StringFilter<"Product"> | string
     created_at?: DateTimeFilter<"Product"> | Date | string
     updated_at?: DateTimeFilter<"Product"> | Date | string
+    company_id?: IntFilter<"Product"> | number
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     transactionItems?: TransactionItemListRelationFilter
     orders?: OrderListRelationFilter
   }
@@ -12266,6 +14193,8 @@ export namespace Prisma {
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    company_id?: SortOrder
+    company?: CompanyOrderByWithRelationInput
     transactionItems?: TransactionItemOrderByRelationAggregateInput
     orders?: OrderOrderByRelationAggregateInput
   }
@@ -12284,6 +14213,8 @@ export namespace Prisma {
     status?: StringFilter<"Product"> | string
     created_at?: DateTimeFilter<"Product"> | Date | string
     updated_at?: DateTimeFilter<"Product"> | Date | string
+    company_id?: IntFilter<"Product"> | number
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     transactionItems?: TransactionItemListRelationFilter
     orders?: OrderListRelationFilter
   }, "id">
@@ -12299,6 +14230,7 @@ export namespace Prisma {
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    company_id?: SortOrder
     _count?: ProductCountOrderByAggregateInput
     _avg?: ProductAvgOrderByAggregateInput
     _max?: ProductMaxOrderByAggregateInput
@@ -12320,6 +14252,7 @@ export namespace Prisma {
     status?: StringWithAggregatesFilter<"Product"> | string
     created_at?: DateTimeWithAggregatesFilter<"Product"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"Product"> | Date | string
+    company_id?: IntWithAggregatesFilter<"Product"> | number
   }
 
   export type UserWhereInput = {
@@ -12334,6 +14267,8 @@ export namespace Prisma {
     status?: StringFilter<"User"> | string
     created_at?: DateTimeFilter<"User"> | Date | string
     updated_at?: DateTimeFilter<"User"> | Date | string
+    company_id?: IntFilter<"User"> | number
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     transactions?: TransactionListRelationFilter
   }
 
@@ -12346,6 +14281,8 @@ export namespace Prisma {
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    company_id?: SortOrder
+    company?: CompanyOrderByWithRelationInput
     transactions?: TransactionOrderByRelationAggregateInput
   }
 
@@ -12361,6 +14298,8 @@ export namespace Prisma {
     status?: StringFilter<"User"> | string
     created_at?: DateTimeFilter<"User"> | Date | string
     updated_at?: DateTimeFilter<"User"> | Date | string
+    company_id?: IntFilter<"User"> | number
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     transactions?: TransactionListRelationFilter
   }, "id" | "username">
 
@@ -12373,6 +14312,7 @@ export namespace Prisma {
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    company_id?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -12392,6 +14332,7 @@ export namespace Prisma {
     status?: StringWithAggregatesFilter<"User"> | string
     created_at?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    company_id?: IntWithAggregatesFilter<"User"> | number
   }
 
   export type PaymentTypeWhereInput = {
@@ -12404,6 +14345,8 @@ export namespace Prisma {
     status?: StringFilter<"PaymentType"> | string
     created_at?: DateTimeFilter<"PaymentType"> | Date | string
     updated_at?: DateTimeFilter<"PaymentType"> | Date | string
+    company_id?: IntFilter<"PaymentType"> | number
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
   }
 
   export type PaymentTypeOrderByWithRelationInput = {
@@ -12413,6 +14356,8 @@ export namespace Prisma {
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    company_id?: SortOrder
+    company?: CompanyOrderByWithRelationInput
   }
 
   export type PaymentTypeWhereUniqueInput = Prisma.AtLeast<{
@@ -12425,6 +14370,8 @@ export namespace Prisma {
     status?: StringFilter<"PaymentType"> | string
     created_at?: DateTimeFilter<"PaymentType"> | Date | string
     updated_at?: DateTimeFilter<"PaymentType"> | Date | string
+    company_id?: IntFilter<"PaymentType"> | number
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
   }, "id">
 
   export type PaymentTypeOrderByWithAggregationInput = {
@@ -12434,6 +14381,7 @@ export namespace Prisma {
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    company_id?: SortOrder
     _count?: PaymentTypeCountOrderByAggregateInput
     _avg?: PaymentTypeAvgOrderByAggregateInput
     _max?: PaymentTypeMaxOrderByAggregateInput
@@ -12451,6 +14399,7 @@ export namespace Prisma {
     status?: StringWithAggregatesFilter<"PaymentType"> | string
     created_at?: DateTimeWithAggregatesFilter<"PaymentType"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"PaymentType"> | Date | string
+    company_id?: IntWithAggregatesFilter<"PaymentType"> | number
   }
 
   export type TransactionWhereInput = {
@@ -12466,6 +14415,8 @@ export namespace Prisma {
     change?: DecimalFilter<"Transaction"> | Decimal | DecimalJsLike | number | string
     status?: StringFilter<"Transaction"> | string
     created_at?: DateTimeFilter<"Transaction"> | Date | string
+    company_id?: IntFilter<"Transaction"> | number
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     items?: TransactionItemListRelationFilter
     payments?: TransactionPaymentListRelationFilter
@@ -12482,6 +14433,8 @@ export namespace Prisma {
     change?: SortOrder
     status?: SortOrder
     created_at?: SortOrder
+    company_id?: SortOrder
+    company?: CompanyOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
     items?: TransactionItemOrderByRelationAggregateInput
     payments?: TransactionPaymentOrderByRelationAggregateInput
@@ -12501,6 +14454,8 @@ export namespace Prisma {
     change?: DecimalFilter<"Transaction"> | Decimal | DecimalJsLike | number | string
     status?: StringFilter<"Transaction"> | string
     created_at?: DateTimeFilter<"Transaction"> | Date | string
+    company_id?: IntFilter<"Transaction"> | number
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     items?: TransactionItemListRelationFilter
     payments?: TransactionPaymentListRelationFilter
@@ -12517,6 +14472,7 @@ export namespace Prisma {
     change?: SortOrder
     status?: SortOrder
     created_at?: SortOrder
+    company_id?: SortOrder
     _count?: TransactionCountOrderByAggregateInput
     _avg?: TransactionAvgOrderByAggregateInput
     _max?: TransactionMaxOrderByAggregateInput
@@ -12537,6 +14493,7 @@ export namespace Prisma {
     change?: DecimalWithAggregatesFilter<"Transaction"> | Decimal | DecimalJsLike | number | string
     status?: StringWithAggregatesFilter<"Transaction"> | string
     created_at?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
+    company_id?: IntWithAggregatesFilter<"Transaction"> | number
   }
 
   export type TransactionItemWhereInput = {
@@ -12548,6 +14505,8 @@ export namespace Prisma {
     product_id?: IntFilter<"TransactionItem"> | number
     quantity?: IntFilter<"TransactionItem"> | number
     price?: DecimalFilter<"TransactionItem"> | Decimal | DecimalJsLike | number | string
+    company_id?: IntFilter<"TransactionItem"> | number
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     transaction?: XOR<TransactionScalarRelationFilter, TransactionWhereInput>
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
   }
@@ -12558,6 +14517,8 @@ export namespace Prisma {
     product_id?: SortOrder
     quantity?: SortOrder
     price?: SortOrder
+    company_id?: SortOrder
+    company?: CompanyOrderByWithRelationInput
     transaction?: TransactionOrderByWithRelationInput
     product?: ProductOrderByWithRelationInput
   }
@@ -12571,6 +14532,8 @@ export namespace Prisma {
     product_id?: IntFilter<"TransactionItem"> | number
     quantity?: IntFilter<"TransactionItem"> | number
     price?: DecimalFilter<"TransactionItem"> | Decimal | DecimalJsLike | number | string
+    company_id?: IntFilter<"TransactionItem"> | number
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     transaction?: XOR<TransactionScalarRelationFilter, TransactionWhereInput>
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
   }, "id">
@@ -12581,6 +14544,7 @@ export namespace Prisma {
     product_id?: SortOrder
     quantity?: SortOrder
     price?: SortOrder
+    company_id?: SortOrder
     _count?: TransactionItemCountOrderByAggregateInput
     _avg?: TransactionItemAvgOrderByAggregateInput
     _max?: TransactionItemMaxOrderByAggregateInput
@@ -12597,6 +14561,7 @@ export namespace Prisma {
     product_id?: IntWithAggregatesFilter<"TransactionItem"> | number
     quantity?: IntWithAggregatesFilter<"TransactionItem"> | number
     price?: DecimalWithAggregatesFilter<"TransactionItem"> | Decimal | DecimalJsLike | number | string
+    company_id?: IntWithAggregatesFilter<"TransactionItem"> | number
   }
 
   export type TransactionPaymentWhereInput = {
@@ -12607,6 +14572,8 @@ export namespace Prisma {
     transaction_id?: IntFilter<"TransactionPayment"> | number
     payment_method?: StringFilter<"TransactionPayment"> | string
     amount?: DecimalFilter<"TransactionPayment"> | Decimal | DecimalJsLike | number | string
+    company_id?: IntFilter<"TransactionPayment"> | number
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     transaction?: XOR<TransactionScalarRelationFilter, TransactionWhereInput>
   }
 
@@ -12615,6 +14582,8 @@ export namespace Prisma {
     transaction_id?: SortOrder
     payment_method?: SortOrder
     amount?: SortOrder
+    company_id?: SortOrder
+    company?: CompanyOrderByWithRelationInput
     transaction?: TransactionOrderByWithRelationInput
   }
 
@@ -12626,6 +14595,8 @@ export namespace Prisma {
     transaction_id?: IntFilter<"TransactionPayment"> | number
     payment_method?: StringFilter<"TransactionPayment"> | string
     amount?: DecimalFilter<"TransactionPayment"> | Decimal | DecimalJsLike | number | string
+    company_id?: IntFilter<"TransactionPayment"> | number
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     transaction?: XOR<TransactionScalarRelationFilter, TransactionWhereInput>
   }, "id">
 
@@ -12634,6 +14605,7 @@ export namespace Prisma {
     transaction_id?: SortOrder
     payment_method?: SortOrder
     amount?: SortOrder
+    company_id?: SortOrder
     _count?: TransactionPaymentCountOrderByAggregateInput
     _avg?: TransactionPaymentAvgOrderByAggregateInput
     _max?: TransactionPaymentMaxOrderByAggregateInput
@@ -12649,6 +14621,7 @@ export namespace Prisma {
     transaction_id?: IntWithAggregatesFilter<"TransactionPayment"> | number
     payment_method?: StringWithAggregatesFilter<"TransactionPayment"> | string
     amount?: DecimalWithAggregatesFilter<"TransactionPayment"> | Decimal | DecimalJsLike | number | string
+    company_id?: IntWithAggregatesFilter<"TransactionPayment"> | number
   }
 
   export type TransactionDetailWhereInput = {
@@ -12663,6 +14636,8 @@ export namespace Prisma {
     payment_method?: StringNullableFilter<"TransactionDetail"> | string | null
     payment_amount?: DecimalNullableFilter<"TransactionDetail"> | Decimal | DecimalJsLike | number | string | null
     created_at?: DateTimeFilter<"TransactionDetail"> | Date | string
+    company_id?: IntFilter<"TransactionDetail"> | number
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     transaction?: XOR<TransactionScalarRelationFilter, TransactionWhereInput>
   }
 
@@ -12675,6 +14650,8 @@ export namespace Prisma {
     payment_method?: SortOrderInput | SortOrder
     payment_amount?: SortOrderInput | SortOrder
     created_at?: SortOrder
+    company_id?: SortOrder
+    company?: CompanyOrderByWithRelationInput
     transaction?: TransactionOrderByWithRelationInput
   }
 
@@ -12690,6 +14667,8 @@ export namespace Prisma {
     payment_method?: StringNullableFilter<"TransactionDetail"> | string | null
     payment_amount?: DecimalNullableFilter<"TransactionDetail"> | Decimal | DecimalJsLike | number | string | null
     created_at?: DateTimeFilter<"TransactionDetail"> | Date | string
+    company_id?: IntFilter<"TransactionDetail"> | number
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     transaction?: XOR<TransactionScalarRelationFilter, TransactionWhereInput>
   }, "id">
 
@@ -12702,6 +14681,7 @@ export namespace Prisma {
     payment_method?: SortOrderInput | SortOrder
     payment_amount?: SortOrderInput | SortOrder
     created_at?: SortOrder
+    company_id?: SortOrder
     _count?: TransactionDetailCountOrderByAggregateInput
     _avg?: TransactionDetailAvgOrderByAggregateInput
     _max?: TransactionDetailMaxOrderByAggregateInput
@@ -12721,6 +14701,7 @@ export namespace Prisma {
     payment_method?: StringNullableWithAggregatesFilter<"TransactionDetail"> | string | null
     payment_amount?: DecimalNullableWithAggregatesFilter<"TransactionDetail"> | Decimal | DecimalJsLike | number | string | null
     created_at?: DateTimeWithAggregatesFilter<"TransactionDetail"> | Date | string
+    company_id?: IntWithAggregatesFilter<"TransactionDetail"> | number
   }
 
   export type OrderWhereInput = {
@@ -12738,6 +14719,8 @@ export namespace Prisma {
     order_date?: DateTimeFilter<"Order"> | Date | string
     remaining_quantity?: IntFilter<"Order"> | number
     status?: StringFilter<"Order"> | string
+    company_id?: IntFilter<"Order"> | number
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     productRef?: XOR<ProductScalarRelationFilter, ProductWhereInput>
   }
 
@@ -12753,6 +14736,8 @@ export namespace Prisma {
     order_date?: SortOrder
     remaining_quantity?: SortOrder
     status?: SortOrder
+    company_id?: SortOrder
+    company?: CompanyOrderByWithRelationInput
     productRef?: ProductOrderByWithRelationInput
   }
 
@@ -12771,6 +14756,8 @@ export namespace Prisma {
     order_date?: DateTimeFilter<"Order"> | Date | string
     remaining_quantity?: IntFilter<"Order"> | number
     status?: StringFilter<"Order"> | string
+    company_id?: IntFilter<"Order"> | number
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     productRef?: XOR<ProductScalarRelationFilter, ProductWhereInput>
   }, "id">
 
@@ -12786,6 +14773,7 @@ export namespace Prisma {
     order_date?: SortOrder
     remaining_quantity?: SortOrder
     status?: SortOrder
+    company_id?: SortOrder
     _count?: OrderCountOrderByAggregateInput
     _avg?: OrderAvgOrderByAggregateInput
     _max?: OrderMaxOrderByAggregateInput
@@ -12808,6 +14796,7 @@ export namespace Prisma {
     order_date?: DateTimeWithAggregatesFilter<"Order"> | Date | string
     remaining_quantity?: IntWithAggregatesFilter<"Order"> | number
     status?: StringWithAggregatesFilter<"Order"> | string
+    company_id?: IntWithAggregatesFilter<"Order"> | number
   }
 
   export type ExpenseWhereInput = {
@@ -12820,6 +14809,8 @@ export namespace Prisma {
     date?: DateTimeFilter<"Expense"> | Date | string
     created_at?: DateTimeFilter<"Expense"> | Date | string
     updated_at?: DateTimeFilter<"Expense"> | Date | string
+    company_id?: IntFilter<"Expense"> | number
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
   }
 
   export type ExpenseOrderByWithRelationInput = {
@@ -12829,6 +14820,8 @@ export namespace Prisma {
     date?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    company_id?: SortOrder
+    company?: CompanyOrderByWithRelationInput
   }
 
   export type ExpenseWhereUniqueInput = Prisma.AtLeast<{
@@ -12841,6 +14834,8 @@ export namespace Prisma {
     date?: DateTimeFilter<"Expense"> | Date | string
     created_at?: DateTimeFilter<"Expense"> | Date | string
     updated_at?: DateTimeFilter<"Expense"> | Date | string
+    company_id?: IntFilter<"Expense"> | number
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
   }, "id">
 
   export type ExpenseOrderByWithAggregationInput = {
@@ -12850,6 +14845,7 @@ export namespace Prisma {
     date?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    company_id?: SortOrder
     _count?: ExpenseCountOrderByAggregateInput
     _avg?: ExpenseAvgOrderByAggregateInput
     _max?: ExpenseMaxOrderByAggregateInput
@@ -12867,6 +14863,98 @@ export namespace Prisma {
     date?: DateTimeWithAggregatesFilter<"Expense"> | Date | string
     created_at?: DateTimeWithAggregatesFilter<"Expense"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"Expense"> | Date | string
+    company_id?: IntWithAggregatesFilter<"Expense"> | number
+  }
+
+  export type CompanyWhereInput = {
+    AND?: CompanyWhereInput | CompanyWhereInput[]
+    OR?: CompanyWhereInput[]
+    NOT?: CompanyWhereInput | CompanyWhereInput[]
+    company_id?: IntFilter<"Company"> | number
+    company_name?: StringFilter<"Company"> | string
+    company_email?: StringFilter<"Company"> | string
+    company_contact_number?: StringFilter<"Company"> | string
+    company_address?: StringFilter<"Company"> | string
+    created_at?: DateTimeFilter<"Company"> | Date | string
+    updated_at?: DateTimeFilter<"Company"> | Date | string
+    products?: ProductListRelationFilter
+    users?: UserListRelationFilter
+    paymentTypes?: PaymentTypeListRelationFilter
+    transactions?: TransactionListRelationFilter
+    transactionItems?: TransactionItemListRelationFilter
+    transactionPayments?: TransactionPaymentListRelationFilter
+    transactionDetails?: TransactionDetailListRelationFilter
+    orders?: OrderListRelationFilter
+    expenses?: ExpenseListRelationFilter
+  }
+
+  export type CompanyOrderByWithRelationInput = {
+    company_id?: SortOrder
+    company_name?: SortOrder
+    company_email?: SortOrder
+    company_contact_number?: SortOrder
+    company_address?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    products?: ProductOrderByRelationAggregateInput
+    users?: UserOrderByRelationAggregateInput
+    paymentTypes?: PaymentTypeOrderByRelationAggregateInput
+    transactions?: TransactionOrderByRelationAggregateInput
+    transactionItems?: TransactionItemOrderByRelationAggregateInput
+    transactionPayments?: TransactionPaymentOrderByRelationAggregateInput
+    transactionDetails?: TransactionDetailOrderByRelationAggregateInput
+    orders?: OrderOrderByRelationAggregateInput
+    expenses?: ExpenseOrderByRelationAggregateInput
+  }
+
+  export type CompanyWhereUniqueInput = Prisma.AtLeast<{
+    company_id?: number
+    AND?: CompanyWhereInput | CompanyWhereInput[]
+    OR?: CompanyWhereInput[]
+    NOT?: CompanyWhereInput | CompanyWhereInput[]
+    company_name?: StringFilter<"Company"> | string
+    company_email?: StringFilter<"Company"> | string
+    company_contact_number?: StringFilter<"Company"> | string
+    company_address?: StringFilter<"Company"> | string
+    created_at?: DateTimeFilter<"Company"> | Date | string
+    updated_at?: DateTimeFilter<"Company"> | Date | string
+    products?: ProductListRelationFilter
+    users?: UserListRelationFilter
+    paymentTypes?: PaymentTypeListRelationFilter
+    transactions?: TransactionListRelationFilter
+    transactionItems?: TransactionItemListRelationFilter
+    transactionPayments?: TransactionPaymentListRelationFilter
+    transactionDetails?: TransactionDetailListRelationFilter
+    orders?: OrderListRelationFilter
+    expenses?: ExpenseListRelationFilter
+  }, "company_id">
+
+  export type CompanyOrderByWithAggregationInput = {
+    company_id?: SortOrder
+    company_name?: SortOrder
+    company_email?: SortOrder
+    company_contact_number?: SortOrder
+    company_address?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    _count?: CompanyCountOrderByAggregateInput
+    _avg?: CompanyAvgOrderByAggregateInput
+    _max?: CompanyMaxOrderByAggregateInput
+    _min?: CompanyMinOrderByAggregateInput
+    _sum?: CompanySumOrderByAggregateInput
+  }
+
+  export type CompanyScalarWhereWithAggregatesInput = {
+    AND?: CompanyScalarWhereWithAggregatesInput | CompanyScalarWhereWithAggregatesInput[]
+    OR?: CompanyScalarWhereWithAggregatesInput[]
+    NOT?: CompanyScalarWhereWithAggregatesInput | CompanyScalarWhereWithAggregatesInput[]
+    company_id?: IntWithAggregatesFilter<"Company"> | number
+    company_name?: StringWithAggregatesFilter<"Company"> | string
+    company_email?: StringWithAggregatesFilter<"Company"> | string
+    company_contact_number?: StringWithAggregatesFilter<"Company"> | string
+    company_address?: StringWithAggregatesFilter<"Company"> | string
+    created_at?: DateTimeWithAggregatesFilter<"Company"> | Date | string
+    updated_at?: DateTimeWithAggregatesFilter<"Company"> | Date | string
   }
 
   export type ProductCreateInput = {
@@ -12879,6 +14967,7 @@ export namespace Prisma {
     status?: string
     created_at?: Date | string
     updated_at?: Date | string
+    company: CompanyCreateNestedOneWithoutProductsInput
     transactionItems?: TransactionItemCreateNestedManyWithoutProductInput
     orders?: OrderCreateNestedManyWithoutProductRefInput
   }
@@ -12894,6 +14983,7 @@ export namespace Prisma {
     status?: string
     created_at?: Date | string
     updated_at?: Date | string
+    company_id: number
     transactionItems?: TransactionItemUncheckedCreateNestedManyWithoutProductInput
     orders?: OrderUncheckedCreateNestedManyWithoutProductRefInput
   }
@@ -12908,6 +14998,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutProductsNestedInput
     transactionItems?: TransactionItemUpdateManyWithoutProductNestedInput
     orders?: OrderUpdateManyWithoutProductRefNestedInput
   }
@@ -12923,6 +15014,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
     transactionItems?: TransactionItemUncheckedUpdateManyWithoutProductNestedInput
     orders?: OrderUncheckedUpdateManyWithoutProductRefNestedInput
   }
@@ -12938,6 +15030,7 @@ export namespace Prisma {
     status?: string
     created_at?: Date | string
     updated_at?: Date | string
+    company_id: number
   }
 
   export type ProductUpdateManyMutationInput = {
@@ -12963,6 +15056,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type UserCreateInput = {
@@ -12973,6 +15067,7 @@ export namespace Prisma {
     status: string
     created_at?: Date | string
     updated_at?: Date | string
+    company: CompanyCreateNestedOneWithoutUsersInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
   }
 
@@ -12985,6 +15080,7 @@ export namespace Prisma {
     status: string
     created_at?: Date | string
     updated_at?: Date | string
+    company_id: number
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -12996,6 +15092,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutUsersNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
   }
 
@@ -13008,6 +15105,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -13020,6 +15118,7 @@ export namespace Prisma {
     status: string
     created_at?: Date | string
     updated_at?: Date | string
+    company_id: number
   }
 
   export type UserUpdateManyMutationInput = {
@@ -13041,6 +15140,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type PaymentTypeCreateInput = {
@@ -13049,6 +15149,7 @@ export namespace Prisma {
     status?: string
     created_at?: Date | string
     updated_at?: Date | string
+    company: CompanyCreateNestedOneWithoutPaymentTypesInput
   }
 
   export type PaymentTypeUncheckedCreateInput = {
@@ -13058,6 +15159,7 @@ export namespace Prisma {
     status?: string
     created_at?: Date | string
     updated_at?: Date | string
+    company_id: number
   }
 
   export type PaymentTypeUpdateInput = {
@@ -13066,6 +15168,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutPaymentTypesNestedInput
   }
 
   export type PaymentTypeUncheckedUpdateInput = {
@@ -13075,6 +15178,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type PaymentTypeCreateManyInput = {
@@ -13084,6 +15188,7 @@ export namespace Prisma {
     status?: string
     created_at?: Date | string
     updated_at?: Date | string
+    company_id: number
   }
 
   export type PaymentTypeUpdateManyMutationInput = {
@@ -13101,6 +15206,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type TransactionCreateInput = {
@@ -13111,6 +15217,7 @@ export namespace Prisma {
     change?: Decimal | DecimalJsLike | number | string
     status?: string
     created_at?: Date | string
+    company: CompanyCreateNestedOneWithoutTransactionsInput
     user?: UserCreateNestedOneWithoutTransactionsInput
     items?: TransactionItemCreateNestedManyWithoutTransactionInput
     payments?: TransactionPaymentCreateNestedManyWithoutTransactionInput
@@ -13127,6 +15234,7 @@ export namespace Prisma {
     change?: Decimal | DecimalJsLike | number | string
     status?: string
     created_at?: Date | string
+    company_id: number
     items?: TransactionItemUncheckedCreateNestedManyWithoutTransactionInput
     payments?: TransactionPaymentUncheckedCreateNestedManyWithoutTransactionInput
     details?: TransactionDetailUncheckedCreateNestedManyWithoutTransactionInput
@@ -13140,6 +15248,7 @@ export namespace Prisma {
     change?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutTransactionsNestedInput
     user?: UserUpdateOneWithoutTransactionsNestedInput
     items?: TransactionItemUpdateManyWithoutTransactionNestedInput
     payments?: TransactionPaymentUpdateManyWithoutTransactionNestedInput
@@ -13156,6 +15265,7 @@ export namespace Prisma {
     change?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
     items?: TransactionItemUncheckedUpdateManyWithoutTransactionNestedInput
     payments?: TransactionPaymentUncheckedUpdateManyWithoutTransactionNestedInput
     details?: TransactionDetailUncheckedUpdateManyWithoutTransactionNestedInput
@@ -13171,6 +15281,7 @@ export namespace Prisma {
     change?: Decimal | DecimalJsLike | number | string
     status?: string
     created_at?: Date | string
+    company_id: number
   }
 
   export type TransactionUpdateManyMutationInput = {
@@ -13193,11 +15304,13 @@ export namespace Prisma {
     change?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type TransactionItemCreateInput = {
     quantity: number
     price: Decimal | DecimalJsLike | number | string
+    company: CompanyCreateNestedOneWithoutTransactionItemsInput
     transaction: TransactionCreateNestedOneWithoutItemsInput
     product: ProductCreateNestedOneWithoutTransactionItemsInput
   }
@@ -13208,11 +15321,13 @@ export namespace Prisma {
     product_id: number
     quantity: number
     price: Decimal | DecimalJsLike | number | string
+    company_id: number
   }
 
   export type TransactionItemUpdateInput = {
     quantity?: IntFieldUpdateOperationsInput | number
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    company?: CompanyUpdateOneRequiredWithoutTransactionItemsNestedInput
     transaction?: TransactionUpdateOneRequiredWithoutItemsNestedInput
     product?: ProductUpdateOneRequiredWithoutTransactionItemsNestedInput
   }
@@ -13223,6 +15338,7 @@ export namespace Prisma {
     product_id?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type TransactionItemCreateManyInput = {
@@ -13231,6 +15347,7 @@ export namespace Prisma {
     product_id: number
     quantity: number
     price: Decimal | DecimalJsLike | number | string
+    company_id: number
   }
 
   export type TransactionItemUpdateManyMutationInput = {
@@ -13244,11 +15361,13 @@ export namespace Prisma {
     product_id?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type TransactionPaymentCreateInput = {
     payment_method: string
     amount: Decimal | DecimalJsLike | number | string
+    company: CompanyCreateNestedOneWithoutTransactionPaymentsInput
     transaction: TransactionCreateNestedOneWithoutPaymentsInput
   }
 
@@ -13257,11 +15376,13 @@ export namespace Prisma {
     transaction_id: number
     payment_method: string
     amount: Decimal | DecimalJsLike | number | string
+    company_id: number
   }
 
   export type TransactionPaymentUpdateInput = {
     payment_method?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    company?: CompanyUpdateOneRequiredWithoutTransactionPaymentsNestedInput
     transaction?: TransactionUpdateOneRequiredWithoutPaymentsNestedInput
   }
 
@@ -13270,6 +15391,7 @@ export namespace Prisma {
     transaction_id?: IntFieldUpdateOperationsInput | number
     payment_method?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type TransactionPaymentCreateManyInput = {
@@ -13277,6 +15399,7 @@ export namespace Prisma {
     transaction_id: number
     payment_method: string
     amount: Decimal | DecimalJsLike | number | string
+    company_id: number
   }
 
   export type TransactionPaymentUpdateManyMutationInput = {
@@ -13289,6 +15412,7 @@ export namespace Prisma {
     transaction_id?: IntFieldUpdateOperationsInput | number
     payment_method?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type TransactionDetailCreateInput = {
@@ -13298,6 +15422,7 @@ export namespace Prisma {
     payment_method?: string | null
     payment_amount?: Decimal | DecimalJsLike | number | string | null
     created_at?: Date | string
+    company: CompanyCreateNestedOneWithoutTransactionDetailsInput
     transaction: TransactionCreateNestedOneWithoutDetailsInput
   }
 
@@ -13310,6 +15435,7 @@ export namespace Prisma {
     payment_method?: string | null
     payment_amount?: Decimal | DecimalJsLike | number | string | null
     created_at?: Date | string
+    company_id: number
   }
 
   export type TransactionDetailUpdateInput = {
@@ -13319,6 +15445,7 @@ export namespace Prisma {
     payment_method?: NullableStringFieldUpdateOperationsInput | string | null
     payment_amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutTransactionDetailsNestedInput
     transaction?: TransactionUpdateOneRequiredWithoutDetailsNestedInput
   }
 
@@ -13331,6 +15458,7 @@ export namespace Prisma {
     payment_method?: NullableStringFieldUpdateOperationsInput | string | null
     payment_amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type TransactionDetailCreateManyInput = {
@@ -13342,6 +15470,7 @@ export namespace Prisma {
     payment_method?: string | null
     payment_amount?: Decimal | DecimalJsLike | number | string | null
     created_at?: Date | string
+    company_id: number
   }
 
   export type TransactionDetailUpdateManyMutationInput = {
@@ -13362,6 +15491,7 @@ export namespace Prisma {
     payment_method?: NullableStringFieldUpdateOperationsInput | string | null
     payment_amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type OrderCreateInput = {
@@ -13374,6 +15504,7 @@ export namespace Prisma {
     order_date: Date | string
     remaining_quantity?: number
     status?: string
+    company: CompanyCreateNestedOneWithoutOrdersInput
     productRef: ProductCreateNestedOneWithoutOrdersInput
   }
 
@@ -13389,6 +15520,7 @@ export namespace Prisma {
     order_date: Date | string
     remaining_quantity?: number
     status?: string
+    company_id: number
   }
 
   export type OrderUpdateInput = {
@@ -13401,6 +15533,7 @@ export namespace Prisma {
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     remaining_quantity?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    company?: CompanyUpdateOneRequiredWithoutOrdersNestedInput
     productRef?: ProductUpdateOneRequiredWithoutOrdersNestedInput
   }
 
@@ -13416,6 +15549,7 @@ export namespace Prisma {
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     remaining_quantity?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type OrderCreateManyInput = {
@@ -13430,6 +15564,7 @@ export namespace Prisma {
     order_date: Date | string
     remaining_quantity?: number
     status?: string
+    company_id: number
   }
 
   export type OrderUpdateManyMutationInput = {
@@ -13456,6 +15591,7 @@ export namespace Prisma {
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     remaining_quantity?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type ExpenseCreateInput = {
@@ -13464,6 +15600,7 @@ export namespace Prisma {
     date?: Date | string
     created_at?: Date | string
     updated_at?: Date | string
+    company: CompanyCreateNestedOneWithoutExpensesInput
   }
 
   export type ExpenseUncheckedCreateInput = {
@@ -13473,6 +15610,7 @@ export namespace Prisma {
     date?: Date | string
     created_at?: Date | string
     updated_at?: Date | string
+    company_id: number
   }
 
   export type ExpenseUpdateInput = {
@@ -13481,6 +15619,7 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutExpensesNestedInput
   }
 
   export type ExpenseUncheckedUpdateInput = {
@@ -13490,6 +15629,7 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type ExpenseCreateManyInput = {
@@ -13499,6 +15639,7 @@ export namespace Prisma {
     date?: Date | string
     created_at?: Date | string
     updated_at?: Date | string
+    company_id: number
   }
 
   export type ExpenseUpdateManyMutationInput = {
@@ -13514,6 +15655,110 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type CompanyCreateInput = {
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    products?: ProductCreateNestedManyWithoutCompanyInput
+    users?: UserCreateNestedManyWithoutCompanyInput
+    paymentTypes?: PaymentTypeCreateNestedManyWithoutCompanyInput
+    transactions?: TransactionCreateNestedManyWithoutCompanyInput
+    transactionItems?: TransactionItemCreateNestedManyWithoutCompanyInput
+    transactionPayments?: TransactionPaymentCreateNestedManyWithoutCompanyInput
+    transactionDetails?: TransactionDetailCreateNestedManyWithoutCompanyInput
+    orders?: OrderCreateNestedManyWithoutCompanyInput
+    expenses?: ExpenseCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyUncheckedCreateInput = {
+    company_id?: number
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    products?: ProductUncheckedCreateNestedManyWithoutCompanyInput
+    users?: UserUncheckedCreateNestedManyWithoutCompanyInput
+    paymentTypes?: PaymentTypeUncheckedCreateNestedManyWithoutCompanyInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutCompanyInput
+    transactionItems?: TransactionItemUncheckedCreateNestedManyWithoutCompanyInput
+    transactionPayments?: TransactionPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    transactionDetails?: TransactionDetailUncheckedCreateNestedManyWithoutCompanyInput
+    orders?: OrderUncheckedCreateNestedManyWithoutCompanyInput
+    expenses?: ExpenseUncheckedCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyUpdateInput = {
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUpdateManyWithoutCompanyNestedInput
+    users?: UserUpdateManyWithoutCompanyNestedInput
+    paymentTypes?: PaymentTypeUpdateManyWithoutCompanyNestedInput
+    transactions?: TransactionUpdateManyWithoutCompanyNestedInput
+    transactionItems?: TransactionItemUpdateManyWithoutCompanyNestedInput
+    transactionPayments?: TransactionPaymentUpdateManyWithoutCompanyNestedInput
+    transactionDetails?: TransactionDetailUpdateManyWithoutCompanyNestedInput
+    orders?: OrderUpdateManyWithoutCompanyNestedInput
+    expenses?: ExpenseUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyUncheckedUpdateInput = {
+    company_id?: IntFieldUpdateOperationsInput | number
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUncheckedUpdateManyWithoutCompanyNestedInput
+    users?: UserUncheckedUpdateManyWithoutCompanyNestedInput
+    paymentTypes?: PaymentTypeUncheckedUpdateManyWithoutCompanyNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionItems?: TransactionItemUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionPayments?: TransactionPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionDetails?: TransactionDetailUncheckedUpdateManyWithoutCompanyNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutCompanyNestedInput
+    expenses?: ExpenseUncheckedUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyCreateManyInput = {
+    company_id?: number
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type CompanyUpdateManyMutationInput = {
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompanyUncheckedUpdateManyInput = {
+    company_id?: IntFieldUpdateOperationsInput | number
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -13581,6 +15826,11 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type CompanyScalarRelationFilter = {
+    is?: CompanyWhereInput
+    isNot?: CompanyWhereInput
+  }
+
   export type TransactionItemListRelationFilter = {
     every?: TransactionItemWhereInput
     some?: TransactionItemWhereInput
@@ -13617,12 +15867,14 @@ export namespace Prisma {
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    company_id?: SortOrder
   }
 
   export type ProductAvgOrderByAggregateInput = {
     id?: SortOrder
     price?: SortOrder
     stock?: SortOrder
+    company_id?: SortOrder
   }
 
   export type ProductMaxOrderByAggregateInput = {
@@ -13636,6 +15888,7 @@ export namespace Prisma {
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    company_id?: SortOrder
   }
 
   export type ProductMinOrderByAggregateInput = {
@@ -13649,12 +15902,14 @@ export namespace Prisma {
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    company_id?: SortOrder
   }
 
   export type ProductSumOrderByAggregateInput = {
     id?: SortOrder
     price?: SortOrder
     stock?: SortOrder
+    company_id?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -13758,10 +16013,12 @@ export namespace Prisma {
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    company_id?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
     id?: SortOrder
+    company_id?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -13773,6 +16030,7 @@ export namespace Prisma {
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    company_id?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -13784,10 +16042,12 @@ export namespace Prisma {
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    company_id?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
     id?: SortOrder
+    company_id?: SortOrder
   }
 
   export type PaymentTypeCountOrderByAggregateInput = {
@@ -13797,10 +16057,12 @@ export namespace Prisma {
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    company_id?: SortOrder
   }
 
   export type PaymentTypeAvgOrderByAggregateInput = {
     id?: SortOrder
+    company_id?: SortOrder
   }
 
   export type PaymentTypeMaxOrderByAggregateInput = {
@@ -13810,6 +16072,7 @@ export namespace Prisma {
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    company_id?: SortOrder
   }
 
   export type PaymentTypeMinOrderByAggregateInput = {
@@ -13819,10 +16082,12 @@ export namespace Prisma {
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    company_id?: SortOrder
   }
 
   export type PaymentTypeSumOrderByAggregateInput = {
     id?: SortOrder
+    company_id?: SortOrder
   }
 
   export type IntNullableFilter<$PrismaModel = never> = {
@@ -13878,6 +16143,7 @@ export namespace Prisma {
     change?: SortOrder
     status?: SortOrder
     created_at?: SortOrder
+    company_id?: SortOrder
   }
 
   export type TransactionAvgOrderByAggregateInput = {
@@ -13887,6 +16153,7 @@ export namespace Prisma {
     total_paid?: SortOrder
     discount_value?: SortOrder
     change?: SortOrder
+    company_id?: SortOrder
   }
 
   export type TransactionMaxOrderByAggregateInput = {
@@ -13899,6 +16166,7 @@ export namespace Prisma {
     change?: SortOrder
     status?: SortOrder
     created_at?: SortOrder
+    company_id?: SortOrder
   }
 
   export type TransactionMinOrderByAggregateInput = {
@@ -13911,6 +16179,7 @@ export namespace Prisma {
     change?: SortOrder
     status?: SortOrder
     created_at?: SortOrder
+    company_id?: SortOrder
   }
 
   export type TransactionSumOrderByAggregateInput = {
@@ -13920,6 +16189,7 @@ export namespace Prisma {
     total_paid?: SortOrder
     discount_value?: SortOrder
     change?: SortOrder
+    company_id?: SortOrder
   }
 
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -13964,6 +16234,7 @@ export namespace Prisma {
     product_id?: SortOrder
     quantity?: SortOrder
     price?: SortOrder
+    company_id?: SortOrder
   }
 
   export type TransactionItemAvgOrderByAggregateInput = {
@@ -13972,6 +16243,7 @@ export namespace Prisma {
     product_id?: SortOrder
     quantity?: SortOrder
     price?: SortOrder
+    company_id?: SortOrder
   }
 
   export type TransactionItemMaxOrderByAggregateInput = {
@@ -13980,6 +16252,7 @@ export namespace Prisma {
     product_id?: SortOrder
     quantity?: SortOrder
     price?: SortOrder
+    company_id?: SortOrder
   }
 
   export type TransactionItemMinOrderByAggregateInput = {
@@ -13988,6 +16261,7 @@ export namespace Prisma {
     product_id?: SortOrder
     quantity?: SortOrder
     price?: SortOrder
+    company_id?: SortOrder
   }
 
   export type TransactionItemSumOrderByAggregateInput = {
@@ -13996,6 +16270,7 @@ export namespace Prisma {
     product_id?: SortOrder
     quantity?: SortOrder
     price?: SortOrder
+    company_id?: SortOrder
   }
 
   export type TransactionPaymentCountOrderByAggregateInput = {
@@ -14003,12 +16278,14 @@ export namespace Prisma {
     transaction_id?: SortOrder
     payment_method?: SortOrder
     amount?: SortOrder
+    company_id?: SortOrder
   }
 
   export type TransactionPaymentAvgOrderByAggregateInput = {
     id?: SortOrder
     transaction_id?: SortOrder
     amount?: SortOrder
+    company_id?: SortOrder
   }
 
   export type TransactionPaymentMaxOrderByAggregateInput = {
@@ -14016,6 +16293,7 @@ export namespace Prisma {
     transaction_id?: SortOrder
     payment_method?: SortOrder
     amount?: SortOrder
+    company_id?: SortOrder
   }
 
   export type TransactionPaymentMinOrderByAggregateInput = {
@@ -14023,12 +16301,14 @@ export namespace Prisma {
     transaction_id?: SortOrder
     payment_method?: SortOrder
     amount?: SortOrder
+    company_id?: SortOrder
   }
 
   export type TransactionPaymentSumOrderByAggregateInput = {
     id?: SortOrder
     transaction_id?: SortOrder
     amount?: SortOrder
+    company_id?: SortOrder
   }
 
   export type DecimalNullableFilter<$PrismaModel = never> = {
@@ -14051,6 +16331,7 @@ export namespace Prisma {
     payment_method?: SortOrder
     payment_amount?: SortOrder
     created_at?: SortOrder
+    company_id?: SortOrder
   }
 
   export type TransactionDetailAvgOrderByAggregateInput = {
@@ -14059,6 +16340,7 @@ export namespace Prisma {
     quantity?: SortOrder
     price?: SortOrder
     payment_amount?: SortOrder
+    company_id?: SortOrder
   }
 
   export type TransactionDetailMaxOrderByAggregateInput = {
@@ -14070,6 +16352,7 @@ export namespace Prisma {
     payment_method?: SortOrder
     payment_amount?: SortOrder
     created_at?: SortOrder
+    company_id?: SortOrder
   }
 
   export type TransactionDetailMinOrderByAggregateInput = {
@@ -14081,6 +16364,7 @@ export namespace Prisma {
     payment_method?: SortOrder
     payment_amount?: SortOrder
     created_at?: SortOrder
+    company_id?: SortOrder
   }
 
   export type TransactionDetailSumOrderByAggregateInput = {
@@ -14089,6 +16373,7 @@ export namespace Prisma {
     quantity?: SortOrder
     price?: SortOrder
     payment_amount?: SortOrder
+    company_id?: SortOrder
   }
 
   export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -14119,6 +16404,7 @@ export namespace Prisma {
     order_date?: SortOrder
     remaining_quantity?: SortOrder
     status?: SortOrder
+    company_id?: SortOrder
   }
 
   export type OrderAvgOrderByAggregateInput = {
@@ -14130,6 +16416,7 @@ export namespace Prisma {
     profit_per_unit?: SortOrder
     net_profit?: SortOrder
     remaining_quantity?: SortOrder
+    company_id?: SortOrder
   }
 
   export type OrderMaxOrderByAggregateInput = {
@@ -14144,6 +16431,7 @@ export namespace Prisma {
     order_date?: SortOrder
     remaining_quantity?: SortOrder
     status?: SortOrder
+    company_id?: SortOrder
   }
 
   export type OrderMinOrderByAggregateInput = {
@@ -14158,6 +16446,7 @@ export namespace Prisma {
     order_date?: SortOrder
     remaining_quantity?: SortOrder
     status?: SortOrder
+    company_id?: SortOrder
   }
 
   export type OrderSumOrderByAggregateInput = {
@@ -14169,6 +16458,7 @@ export namespace Prisma {
     profit_per_unit?: SortOrder
     net_profit?: SortOrder
     remaining_quantity?: SortOrder
+    company_id?: SortOrder
   }
 
   export type FloatFilter<$PrismaModel = never> = {
@@ -14189,11 +16479,13 @@ export namespace Prisma {
     date?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    company_id?: SortOrder
   }
 
   export type ExpenseAvgOrderByAggregateInput = {
     id?: SortOrder
     amount?: SortOrder
+    company_id?: SortOrder
   }
 
   export type ExpenseMaxOrderByAggregateInput = {
@@ -14203,6 +16495,7 @@ export namespace Prisma {
     date?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    company_id?: SortOrder
   }
 
   export type ExpenseMinOrderByAggregateInput = {
@@ -14212,11 +16505,13 @@ export namespace Prisma {
     date?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    company_id?: SortOrder
   }
 
   export type ExpenseSumOrderByAggregateInput = {
     id?: SortOrder
     amount?: SortOrder
+    company_id?: SortOrder
   }
 
   export type FloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -14233,6 +16528,90 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type ProductListRelationFilter = {
+    every?: ProductWhereInput
+    some?: ProductWhereInput
+    none?: ProductWhereInput
+  }
+
+  export type UserListRelationFilter = {
+    every?: UserWhereInput
+    some?: UserWhereInput
+    none?: UserWhereInput
+  }
+
+  export type PaymentTypeListRelationFilter = {
+    every?: PaymentTypeWhereInput
+    some?: PaymentTypeWhereInput
+    none?: PaymentTypeWhereInput
+  }
+
+  export type ExpenseListRelationFilter = {
+    every?: ExpenseWhereInput
+    some?: ExpenseWhereInput
+    none?: ExpenseWhereInput
+  }
+
+  export type ProductOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PaymentTypeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ExpenseOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CompanyCountOrderByAggregateInput = {
+    company_id?: SortOrder
+    company_name?: SortOrder
+    company_email?: SortOrder
+    company_contact_number?: SortOrder
+    company_address?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type CompanyAvgOrderByAggregateInput = {
+    company_id?: SortOrder
+  }
+
+  export type CompanyMaxOrderByAggregateInput = {
+    company_id?: SortOrder
+    company_name?: SortOrder
+    company_email?: SortOrder
+    company_contact_number?: SortOrder
+    company_address?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type CompanyMinOrderByAggregateInput = {
+    company_id?: SortOrder
+    company_name?: SortOrder
+    company_email?: SortOrder
+    company_contact_number?: SortOrder
+    company_address?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type CompanySumOrderByAggregateInput = {
+    company_id?: SortOrder
+  }
+
+  export type CompanyCreateNestedOneWithoutProductsInput = {
+    create?: XOR<CompanyCreateWithoutProductsInput, CompanyUncheckedCreateWithoutProductsInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutProductsInput
+    connect?: CompanyWhereUniqueInput
   }
 
   export type TransactionItemCreateNestedManyWithoutProductInput = {
@@ -14291,6 +16670,14 @@ export namespace Prisma {
     set?: Date | string
   }
 
+  export type CompanyUpdateOneRequiredWithoutProductsNestedInput = {
+    create?: XOR<CompanyCreateWithoutProductsInput, CompanyUncheckedCreateWithoutProductsInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutProductsInput
+    upsert?: CompanyUpsertWithoutProductsInput
+    connect?: CompanyWhereUniqueInput
+    update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutProductsInput, CompanyUpdateWithoutProductsInput>, CompanyUncheckedUpdateWithoutProductsInput>
+  }
+
   export type TransactionItemUpdateManyWithoutProductNestedInput = {
     create?: XOR<TransactionItemCreateWithoutProductInput, TransactionItemUncheckedCreateWithoutProductInput> | TransactionItemCreateWithoutProductInput[] | TransactionItemUncheckedCreateWithoutProductInput[]
     connectOrCreate?: TransactionItemCreateOrConnectWithoutProductInput | TransactionItemCreateOrConnectWithoutProductInput[]
@@ -14347,6 +16734,12 @@ export namespace Prisma {
     deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
   }
 
+  export type CompanyCreateNestedOneWithoutUsersInput = {
+    create?: XOR<CompanyCreateWithoutUsersInput, CompanyUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutUsersInput
+    connect?: CompanyWhereUniqueInput
+  }
+
   export type TransactionCreateNestedManyWithoutUserInput = {
     create?: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput> | TransactionCreateWithoutUserInput[] | TransactionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: TransactionCreateOrConnectWithoutUserInput | TransactionCreateOrConnectWithoutUserInput[]
@@ -14359,6 +16752,14 @@ export namespace Prisma {
     connectOrCreate?: TransactionCreateOrConnectWithoutUserInput | TransactionCreateOrConnectWithoutUserInput[]
     createMany?: TransactionCreateManyUserInputEnvelope
     connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+  }
+
+  export type CompanyUpdateOneRequiredWithoutUsersNestedInput = {
+    create?: XOR<CompanyCreateWithoutUsersInput, CompanyUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutUsersInput
+    upsert?: CompanyUpsertWithoutUsersInput
+    connect?: CompanyWhereUniqueInput
+    update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutUsersInput, CompanyUpdateWithoutUsersInput>, CompanyUncheckedUpdateWithoutUsersInput>
   }
 
   export type TransactionUpdateManyWithoutUserNestedInput = {
@@ -14387,6 +16788,26 @@ export namespace Prisma {
     update?: TransactionUpdateWithWhereUniqueWithoutUserInput | TransactionUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: TransactionUpdateManyWithWhereWithoutUserInput | TransactionUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+  }
+
+  export type CompanyCreateNestedOneWithoutPaymentTypesInput = {
+    create?: XOR<CompanyCreateWithoutPaymentTypesInput, CompanyUncheckedCreateWithoutPaymentTypesInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutPaymentTypesInput
+    connect?: CompanyWhereUniqueInput
+  }
+
+  export type CompanyUpdateOneRequiredWithoutPaymentTypesNestedInput = {
+    create?: XOR<CompanyCreateWithoutPaymentTypesInput, CompanyUncheckedCreateWithoutPaymentTypesInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutPaymentTypesInput
+    upsert?: CompanyUpsertWithoutPaymentTypesInput
+    connect?: CompanyWhereUniqueInput
+    update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutPaymentTypesInput, CompanyUpdateWithoutPaymentTypesInput>, CompanyUncheckedUpdateWithoutPaymentTypesInput>
+  }
+
+  export type CompanyCreateNestedOneWithoutTransactionsInput = {
+    create?: XOR<CompanyCreateWithoutTransactionsInput, CompanyUncheckedCreateWithoutTransactionsInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutTransactionsInput
+    connect?: CompanyWhereUniqueInput
   }
 
   export type UserCreateNestedOneWithoutTransactionsInput = {
@@ -14439,6 +16860,14 @@ export namespace Prisma {
 
   export type EnumDiscountTypeFieldUpdateOperationsInput = {
     set?: $Enums.DiscountType
+  }
+
+  export type CompanyUpdateOneRequiredWithoutTransactionsNestedInput = {
+    create?: XOR<CompanyCreateWithoutTransactionsInput, CompanyUncheckedCreateWithoutTransactionsInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutTransactionsInput
+    upsert?: CompanyUpsertWithoutTransactionsInput
+    connect?: CompanyWhereUniqueInput
+    update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutTransactionsInput, CompanyUpdateWithoutTransactionsInput>, CompanyUncheckedUpdateWithoutTransactionsInput>
   }
 
   export type UserUpdateOneWithoutTransactionsNestedInput = {
@@ -14543,6 +16972,12 @@ export namespace Prisma {
     deleteMany?: TransactionDetailScalarWhereInput | TransactionDetailScalarWhereInput[]
   }
 
+  export type CompanyCreateNestedOneWithoutTransactionItemsInput = {
+    create?: XOR<CompanyCreateWithoutTransactionItemsInput, CompanyUncheckedCreateWithoutTransactionItemsInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutTransactionItemsInput
+    connect?: CompanyWhereUniqueInput
+  }
+
   export type TransactionCreateNestedOneWithoutItemsInput = {
     create?: XOR<TransactionCreateWithoutItemsInput, TransactionUncheckedCreateWithoutItemsInput>
     connectOrCreate?: TransactionCreateOrConnectWithoutItemsInput
@@ -14553,6 +16988,14 @@ export namespace Prisma {
     create?: XOR<ProductCreateWithoutTransactionItemsInput, ProductUncheckedCreateWithoutTransactionItemsInput>
     connectOrCreate?: ProductCreateOrConnectWithoutTransactionItemsInput
     connect?: ProductWhereUniqueInput
+  }
+
+  export type CompanyUpdateOneRequiredWithoutTransactionItemsNestedInput = {
+    create?: XOR<CompanyCreateWithoutTransactionItemsInput, CompanyUncheckedCreateWithoutTransactionItemsInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutTransactionItemsInput
+    upsert?: CompanyUpsertWithoutTransactionItemsInput
+    connect?: CompanyWhereUniqueInput
+    update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutTransactionItemsInput, CompanyUpdateWithoutTransactionItemsInput>, CompanyUncheckedUpdateWithoutTransactionItemsInput>
   }
 
   export type TransactionUpdateOneRequiredWithoutItemsNestedInput = {
@@ -14571,10 +17014,24 @@ export namespace Prisma {
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutTransactionItemsInput, ProductUpdateWithoutTransactionItemsInput>, ProductUncheckedUpdateWithoutTransactionItemsInput>
   }
 
+  export type CompanyCreateNestedOneWithoutTransactionPaymentsInput = {
+    create?: XOR<CompanyCreateWithoutTransactionPaymentsInput, CompanyUncheckedCreateWithoutTransactionPaymentsInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutTransactionPaymentsInput
+    connect?: CompanyWhereUniqueInput
+  }
+
   export type TransactionCreateNestedOneWithoutPaymentsInput = {
     create?: XOR<TransactionCreateWithoutPaymentsInput, TransactionUncheckedCreateWithoutPaymentsInput>
     connectOrCreate?: TransactionCreateOrConnectWithoutPaymentsInput
     connect?: TransactionWhereUniqueInput
+  }
+
+  export type CompanyUpdateOneRequiredWithoutTransactionPaymentsNestedInput = {
+    create?: XOR<CompanyCreateWithoutTransactionPaymentsInput, CompanyUncheckedCreateWithoutTransactionPaymentsInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutTransactionPaymentsInput
+    upsert?: CompanyUpsertWithoutTransactionPaymentsInput
+    connect?: CompanyWhereUniqueInput
+    update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutTransactionPaymentsInput, CompanyUpdateWithoutTransactionPaymentsInput>, CompanyUncheckedUpdateWithoutTransactionPaymentsInput>
   }
 
   export type TransactionUpdateOneRequiredWithoutPaymentsNestedInput = {
@@ -14583,6 +17040,12 @@ export namespace Prisma {
     upsert?: TransactionUpsertWithoutPaymentsInput
     connect?: TransactionWhereUniqueInput
     update?: XOR<XOR<TransactionUpdateToOneWithWhereWithoutPaymentsInput, TransactionUpdateWithoutPaymentsInput>, TransactionUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type CompanyCreateNestedOneWithoutTransactionDetailsInput = {
+    create?: XOR<CompanyCreateWithoutTransactionDetailsInput, CompanyUncheckedCreateWithoutTransactionDetailsInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutTransactionDetailsInput
+    connect?: CompanyWhereUniqueInput
   }
 
   export type TransactionCreateNestedOneWithoutDetailsInput = {
@@ -14599,6 +17062,14 @@ export namespace Prisma {
     divide?: Decimal | DecimalJsLike | number | string
   }
 
+  export type CompanyUpdateOneRequiredWithoutTransactionDetailsNestedInput = {
+    create?: XOR<CompanyCreateWithoutTransactionDetailsInput, CompanyUncheckedCreateWithoutTransactionDetailsInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutTransactionDetailsInput
+    upsert?: CompanyUpsertWithoutTransactionDetailsInput
+    connect?: CompanyWhereUniqueInput
+    update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutTransactionDetailsInput, CompanyUpdateWithoutTransactionDetailsInput>, CompanyUncheckedUpdateWithoutTransactionDetailsInput>
+  }
+
   export type TransactionUpdateOneRequiredWithoutDetailsNestedInput = {
     create?: XOR<TransactionCreateWithoutDetailsInput, TransactionUncheckedCreateWithoutDetailsInput>
     connectOrCreate?: TransactionCreateOrConnectWithoutDetailsInput
@@ -14607,10 +17078,24 @@ export namespace Prisma {
     update?: XOR<XOR<TransactionUpdateToOneWithWhereWithoutDetailsInput, TransactionUpdateWithoutDetailsInput>, TransactionUncheckedUpdateWithoutDetailsInput>
   }
 
+  export type CompanyCreateNestedOneWithoutOrdersInput = {
+    create?: XOR<CompanyCreateWithoutOrdersInput, CompanyUncheckedCreateWithoutOrdersInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutOrdersInput
+    connect?: CompanyWhereUniqueInput
+  }
+
   export type ProductCreateNestedOneWithoutOrdersInput = {
     create?: XOR<ProductCreateWithoutOrdersInput, ProductUncheckedCreateWithoutOrdersInput>
     connectOrCreate?: ProductCreateOrConnectWithoutOrdersInput
     connect?: ProductWhereUniqueInput
+  }
+
+  export type CompanyUpdateOneRequiredWithoutOrdersNestedInput = {
+    create?: XOR<CompanyCreateWithoutOrdersInput, CompanyUncheckedCreateWithoutOrdersInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutOrdersInput
+    upsert?: CompanyUpsertWithoutOrdersInput
+    connect?: CompanyWhereUniqueInput
+    update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutOrdersInput, CompanyUpdateWithoutOrdersInput>, CompanyUncheckedUpdateWithoutOrdersInput>
   }
 
   export type ProductUpdateOneRequiredWithoutOrdersNestedInput = {
@@ -14621,12 +17106,404 @@ export namespace Prisma {
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutOrdersInput, ProductUpdateWithoutOrdersInput>, ProductUncheckedUpdateWithoutOrdersInput>
   }
 
+  export type CompanyCreateNestedOneWithoutExpensesInput = {
+    create?: XOR<CompanyCreateWithoutExpensesInput, CompanyUncheckedCreateWithoutExpensesInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutExpensesInput
+    connect?: CompanyWhereUniqueInput
+  }
+
   export type FloatFieldUpdateOperationsInput = {
     set?: number
     increment?: number
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type CompanyUpdateOneRequiredWithoutExpensesNestedInput = {
+    create?: XOR<CompanyCreateWithoutExpensesInput, CompanyUncheckedCreateWithoutExpensesInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutExpensesInput
+    upsert?: CompanyUpsertWithoutExpensesInput
+    connect?: CompanyWhereUniqueInput
+    update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutExpensesInput, CompanyUpdateWithoutExpensesInput>, CompanyUncheckedUpdateWithoutExpensesInput>
+  }
+
+  export type ProductCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<ProductCreateWithoutCompanyInput, ProductUncheckedCreateWithoutCompanyInput> | ProductCreateWithoutCompanyInput[] | ProductUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: ProductCreateOrConnectWithoutCompanyInput | ProductCreateOrConnectWithoutCompanyInput[]
+    createMany?: ProductCreateManyCompanyInputEnvelope
+    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<UserCreateWithoutCompanyInput, UserUncheckedCreateWithoutCompanyInput> | UserCreateWithoutCompanyInput[] | UserUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutCompanyInput | UserCreateOrConnectWithoutCompanyInput[]
+    createMany?: UserCreateManyCompanyInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type PaymentTypeCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<PaymentTypeCreateWithoutCompanyInput, PaymentTypeUncheckedCreateWithoutCompanyInput> | PaymentTypeCreateWithoutCompanyInput[] | PaymentTypeUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: PaymentTypeCreateOrConnectWithoutCompanyInput | PaymentTypeCreateOrConnectWithoutCompanyInput[]
+    createMany?: PaymentTypeCreateManyCompanyInputEnvelope
+    connect?: PaymentTypeWhereUniqueInput | PaymentTypeWhereUniqueInput[]
+  }
+
+  export type TransactionCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<TransactionCreateWithoutCompanyInput, TransactionUncheckedCreateWithoutCompanyInput> | TransactionCreateWithoutCompanyInput[] | TransactionUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutCompanyInput | TransactionCreateOrConnectWithoutCompanyInput[]
+    createMany?: TransactionCreateManyCompanyInputEnvelope
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+  }
+
+  export type TransactionItemCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<TransactionItemCreateWithoutCompanyInput, TransactionItemUncheckedCreateWithoutCompanyInput> | TransactionItemCreateWithoutCompanyInput[] | TransactionItemUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: TransactionItemCreateOrConnectWithoutCompanyInput | TransactionItemCreateOrConnectWithoutCompanyInput[]
+    createMany?: TransactionItemCreateManyCompanyInputEnvelope
+    connect?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+  }
+
+  export type TransactionPaymentCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<TransactionPaymentCreateWithoutCompanyInput, TransactionPaymentUncheckedCreateWithoutCompanyInput> | TransactionPaymentCreateWithoutCompanyInput[] | TransactionPaymentUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: TransactionPaymentCreateOrConnectWithoutCompanyInput | TransactionPaymentCreateOrConnectWithoutCompanyInput[]
+    createMany?: TransactionPaymentCreateManyCompanyInputEnvelope
+    connect?: TransactionPaymentWhereUniqueInput | TransactionPaymentWhereUniqueInput[]
+  }
+
+  export type TransactionDetailCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<TransactionDetailCreateWithoutCompanyInput, TransactionDetailUncheckedCreateWithoutCompanyInput> | TransactionDetailCreateWithoutCompanyInput[] | TransactionDetailUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: TransactionDetailCreateOrConnectWithoutCompanyInput | TransactionDetailCreateOrConnectWithoutCompanyInput[]
+    createMany?: TransactionDetailCreateManyCompanyInputEnvelope
+    connect?: TransactionDetailWhereUniqueInput | TransactionDetailWhereUniqueInput[]
+  }
+
+  export type OrderCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<OrderCreateWithoutCompanyInput, OrderUncheckedCreateWithoutCompanyInput> | OrderCreateWithoutCompanyInput[] | OrderUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutCompanyInput | OrderCreateOrConnectWithoutCompanyInput[]
+    createMany?: OrderCreateManyCompanyInputEnvelope
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  }
+
+  export type ExpenseCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<ExpenseCreateWithoutCompanyInput, ExpenseUncheckedCreateWithoutCompanyInput> | ExpenseCreateWithoutCompanyInput[] | ExpenseUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: ExpenseCreateOrConnectWithoutCompanyInput | ExpenseCreateOrConnectWithoutCompanyInput[]
+    createMany?: ExpenseCreateManyCompanyInputEnvelope
+    connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+  }
+
+  export type ProductUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<ProductCreateWithoutCompanyInput, ProductUncheckedCreateWithoutCompanyInput> | ProductCreateWithoutCompanyInput[] | ProductUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: ProductCreateOrConnectWithoutCompanyInput | ProductCreateOrConnectWithoutCompanyInput[]
+    createMany?: ProductCreateManyCompanyInputEnvelope
+    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+  }
+
+  export type UserUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<UserCreateWithoutCompanyInput, UserUncheckedCreateWithoutCompanyInput> | UserCreateWithoutCompanyInput[] | UserUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutCompanyInput | UserCreateOrConnectWithoutCompanyInput[]
+    createMany?: UserCreateManyCompanyInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type PaymentTypeUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<PaymentTypeCreateWithoutCompanyInput, PaymentTypeUncheckedCreateWithoutCompanyInput> | PaymentTypeCreateWithoutCompanyInput[] | PaymentTypeUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: PaymentTypeCreateOrConnectWithoutCompanyInput | PaymentTypeCreateOrConnectWithoutCompanyInput[]
+    createMany?: PaymentTypeCreateManyCompanyInputEnvelope
+    connect?: PaymentTypeWhereUniqueInput | PaymentTypeWhereUniqueInput[]
+  }
+
+  export type TransactionUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<TransactionCreateWithoutCompanyInput, TransactionUncheckedCreateWithoutCompanyInput> | TransactionCreateWithoutCompanyInput[] | TransactionUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutCompanyInput | TransactionCreateOrConnectWithoutCompanyInput[]
+    createMany?: TransactionCreateManyCompanyInputEnvelope
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+  }
+
+  export type TransactionItemUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<TransactionItemCreateWithoutCompanyInput, TransactionItemUncheckedCreateWithoutCompanyInput> | TransactionItemCreateWithoutCompanyInput[] | TransactionItemUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: TransactionItemCreateOrConnectWithoutCompanyInput | TransactionItemCreateOrConnectWithoutCompanyInput[]
+    createMany?: TransactionItemCreateManyCompanyInputEnvelope
+    connect?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+  }
+
+  export type TransactionPaymentUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<TransactionPaymentCreateWithoutCompanyInput, TransactionPaymentUncheckedCreateWithoutCompanyInput> | TransactionPaymentCreateWithoutCompanyInput[] | TransactionPaymentUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: TransactionPaymentCreateOrConnectWithoutCompanyInput | TransactionPaymentCreateOrConnectWithoutCompanyInput[]
+    createMany?: TransactionPaymentCreateManyCompanyInputEnvelope
+    connect?: TransactionPaymentWhereUniqueInput | TransactionPaymentWhereUniqueInput[]
+  }
+
+  export type TransactionDetailUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<TransactionDetailCreateWithoutCompanyInput, TransactionDetailUncheckedCreateWithoutCompanyInput> | TransactionDetailCreateWithoutCompanyInput[] | TransactionDetailUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: TransactionDetailCreateOrConnectWithoutCompanyInput | TransactionDetailCreateOrConnectWithoutCompanyInput[]
+    createMany?: TransactionDetailCreateManyCompanyInputEnvelope
+    connect?: TransactionDetailWhereUniqueInput | TransactionDetailWhereUniqueInput[]
+  }
+
+  export type OrderUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<OrderCreateWithoutCompanyInput, OrderUncheckedCreateWithoutCompanyInput> | OrderCreateWithoutCompanyInput[] | OrderUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutCompanyInput | OrderCreateOrConnectWithoutCompanyInput[]
+    createMany?: OrderCreateManyCompanyInputEnvelope
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  }
+
+  export type ExpenseUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<ExpenseCreateWithoutCompanyInput, ExpenseUncheckedCreateWithoutCompanyInput> | ExpenseCreateWithoutCompanyInput[] | ExpenseUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: ExpenseCreateOrConnectWithoutCompanyInput | ExpenseCreateOrConnectWithoutCompanyInput[]
+    createMany?: ExpenseCreateManyCompanyInputEnvelope
+    connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+  }
+
+  export type ProductUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<ProductCreateWithoutCompanyInput, ProductUncheckedCreateWithoutCompanyInput> | ProductCreateWithoutCompanyInput[] | ProductUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: ProductCreateOrConnectWithoutCompanyInput | ProductCreateOrConnectWithoutCompanyInput[]
+    upsert?: ProductUpsertWithWhereUniqueWithoutCompanyInput | ProductUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: ProductCreateManyCompanyInputEnvelope
+    set?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    disconnect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    delete?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    update?: ProductUpdateWithWhereUniqueWithoutCompanyInput | ProductUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: ProductUpdateManyWithWhereWithoutCompanyInput | ProductUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
+  }
+
+  export type UserUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<UserCreateWithoutCompanyInput, UserUncheckedCreateWithoutCompanyInput> | UserCreateWithoutCompanyInput[] | UserUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutCompanyInput | UserCreateOrConnectWithoutCompanyInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutCompanyInput | UserUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: UserCreateManyCompanyInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutCompanyInput | UserUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutCompanyInput | UserUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type PaymentTypeUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<PaymentTypeCreateWithoutCompanyInput, PaymentTypeUncheckedCreateWithoutCompanyInput> | PaymentTypeCreateWithoutCompanyInput[] | PaymentTypeUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: PaymentTypeCreateOrConnectWithoutCompanyInput | PaymentTypeCreateOrConnectWithoutCompanyInput[]
+    upsert?: PaymentTypeUpsertWithWhereUniqueWithoutCompanyInput | PaymentTypeUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: PaymentTypeCreateManyCompanyInputEnvelope
+    set?: PaymentTypeWhereUniqueInput | PaymentTypeWhereUniqueInput[]
+    disconnect?: PaymentTypeWhereUniqueInput | PaymentTypeWhereUniqueInput[]
+    delete?: PaymentTypeWhereUniqueInput | PaymentTypeWhereUniqueInput[]
+    connect?: PaymentTypeWhereUniqueInput | PaymentTypeWhereUniqueInput[]
+    update?: PaymentTypeUpdateWithWhereUniqueWithoutCompanyInput | PaymentTypeUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: PaymentTypeUpdateManyWithWhereWithoutCompanyInput | PaymentTypeUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: PaymentTypeScalarWhereInput | PaymentTypeScalarWhereInput[]
+  }
+
+  export type TransactionUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<TransactionCreateWithoutCompanyInput, TransactionUncheckedCreateWithoutCompanyInput> | TransactionCreateWithoutCompanyInput[] | TransactionUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutCompanyInput | TransactionCreateOrConnectWithoutCompanyInput[]
+    upsert?: TransactionUpsertWithWhereUniqueWithoutCompanyInput | TransactionUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: TransactionCreateManyCompanyInputEnvelope
+    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    update?: TransactionUpdateWithWhereUniqueWithoutCompanyInput | TransactionUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: TransactionUpdateManyWithWhereWithoutCompanyInput | TransactionUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+  }
+
+  export type TransactionItemUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<TransactionItemCreateWithoutCompanyInput, TransactionItemUncheckedCreateWithoutCompanyInput> | TransactionItemCreateWithoutCompanyInput[] | TransactionItemUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: TransactionItemCreateOrConnectWithoutCompanyInput | TransactionItemCreateOrConnectWithoutCompanyInput[]
+    upsert?: TransactionItemUpsertWithWhereUniqueWithoutCompanyInput | TransactionItemUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: TransactionItemCreateManyCompanyInputEnvelope
+    set?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    disconnect?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    delete?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    connect?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    update?: TransactionItemUpdateWithWhereUniqueWithoutCompanyInput | TransactionItemUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: TransactionItemUpdateManyWithWhereWithoutCompanyInput | TransactionItemUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: TransactionItemScalarWhereInput | TransactionItemScalarWhereInput[]
+  }
+
+  export type TransactionPaymentUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<TransactionPaymentCreateWithoutCompanyInput, TransactionPaymentUncheckedCreateWithoutCompanyInput> | TransactionPaymentCreateWithoutCompanyInput[] | TransactionPaymentUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: TransactionPaymentCreateOrConnectWithoutCompanyInput | TransactionPaymentCreateOrConnectWithoutCompanyInput[]
+    upsert?: TransactionPaymentUpsertWithWhereUniqueWithoutCompanyInput | TransactionPaymentUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: TransactionPaymentCreateManyCompanyInputEnvelope
+    set?: TransactionPaymentWhereUniqueInput | TransactionPaymentWhereUniqueInput[]
+    disconnect?: TransactionPaymentWhereUniqueInput | TransactionPaymentWhereUniqueInput[]
+    delete?: TransactionPaymentWhereUniqueInput | TransactionPaymentWhereUniqueInput[]
+    connect?: TransactionPaymentWhereUniqueInput | TransactionPaymentWhereUniqueInput[]
+    update?: TransactionPaymentUpdateWithWhereUniqueWithoutCompanyInput | TransactionPaymentUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: TransactionPaymentUpdateManyWithWhereWithoutCompanyInput | TransactionPaymentUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: TransactionPaymentScalarWhereInput | TransactionPaymentScalarWhereInput[]
+  }
+
+  export type TransactionDetailUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<TransactionDetailCreateWithoutCompanyInput, TransactionDetailUncheckedCreateWithoutCompanyInput> | TransactionDetailCreateWithoutCompanyInput[] | TransactionDetailUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: TransactionDetailCreateOrConnectWithoutCompanyInput | TransactionDetailCreateOrConnectWithoutCompanyInput[]
+    upsert?: TransactionDetailUpsertWithWhereUniqueWithoutCompanyInput | TransactionDetailUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: TransactionDetailCreateManyCompanyInputEnvelope
+    set?: TransactionDetailWhereUniqueInput | TransactionDetailWhereUniqueInput[]
+    disconnect?: TransactionDetailWhereUniqueInput | TransactionDetailWhereUniqueInput[]
+    delete?: TransactionDetailWhereUniqueInput | TransactionDetailWhereUniqueInput[]
+    connect?: TransactionDetailWhereUniqueInput | TransactionDetailWhereUniqueInput[]
+    update?: TransactionDetailUpdateWithWhereUniqueWithoutCompanyInput | TransactionDetailUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: TransactionDetailUpdateManyWithWhereWithoutCompanyInput | TransactionDetailUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: TransactionDetailScalarWhereInput | TransactionDetailScalarWhereInput[]
+  }
+
+  export type OrderUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<OrderCreateWithoutCompanyInput, OrderUncheckedCreateWithoutCompanyInput> | OrderCreateWithoutCompanyInput[] | OrderUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutCompanyInput | OrderCreateOrConnectWithoutCompanyInput[]
+    upsert?: OrderUpsertWithWhereUniqueWithoutCompanyInput | OrderUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: OrderCreateManyCompanyInputEnvelope
+    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    update?: OrderUpdateWithWhereUniqueWithoutCompanyInput | OrderUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: OrderUpdateManyWithWhereWithoutCompanyInput | OrderUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
+  }
+
+  export type ExpenseUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<ExpenseCreateWithoutCompanyInput, ExpenseUncheckedCreateWithoutCompanyInput> | ExpenseCreateWithoutCompanyInput[] | ExpenseUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: ExpenseCreateOrConnectWithoutCompanyInput | ExpenseCreateOrConnectWithoutCompanyInput[]
+    upsert?: ExpenseUpsertWithWhereUniqueWithoutCompanyInput | ExpenseUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: ExpenseCreateManyCompanyInputEnvelope
+    set?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    disconnect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    delete?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    update?: ExpenseUpdateWithWhereUniqueWithoutCompanyInput | ExpenseUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: ExpenseUpdateManyWithWhereWithoutCompanyInput | ExpenseUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: ExpenseScalarWhereInput | ExpenseScalarWhereInput[]
+  }
+
+  export type ProductUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<ProductCreateWithoutCompanyInput, ProductUncheckedCreateWithoutCompanyInput> | ProductCreateWithoutCompanyInput[] | ProductUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: ProductCreateOrConnectWithoutCompanyInput | ProductCreateOrConnectWithoutCompanyInput[]
+    upsert?: ProductUpsertWithWhereUniqueWithoutCompanyInput | ProductUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: ProductCreateManyCompanyInputEnvelope
+    set?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    disconnect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    delete?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    update?: ProductUpdateWithWhereUniqueWithoutCompanyInput | ProductUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: ProductUpdateManyWithWhereWithoutCompanyInput | ProductUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
+  }
+
+  export type UserUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<UserCreateWithoutCompanyInput, UserUncheckedCreateWithoutCompanyInput> | UserCreateWithoutCompanyInput[] | UserUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutCompanyInput | UserCreateOrConnectWithoutCompanyInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutCompanyInput | UserUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: UserCreateManyCompanyInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutCompanyInput | UserUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutCompanyInput | UserUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type PaymentTypeUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<PaymentTypeCreateWithoutCompanyInput, PaymentTypeUncheckedCreateWithoutCompanyInput> | PaymentTypeCreateWithoutCompanyInput[] | PaymentTypeUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: PaymentTypeCreateOrConnectWithoutCompanyInput | PaymentTypeCreateOrConnectWithoutCompanyInput[]
+    upsert?: PaymentTypeUpsertWithWhereUniqueWithoutCompanyInput | PaymentTypeUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: PaymentTypeCreateManyCompanyInputEnvelope
+    set?: PaymentTypeWhereUniqueInput | PaymentTypeWhereUniqueInput[]
+    disconnect?: PaymentTypeWhereUniqueInput | PaymentTypeWhereUniqueInput[]
+    delete?: PaymentTypeWhereUniqueInput | PaymentTypeWhereUniqueInput[]
+    connect?: PaymentTypeWhereUniqueInput | PaymentTypeWhereUniqueInput[]
+    update?: PaymentTypeUpdateWithWhereUniqueWithoutCompanyInput | PaymentTypeUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: PaymentTypeUpdateManyWithWhereWithoutCompanyInput | PaymentTypeUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: PaymentTypeScalarWhereInput | PaymentTypeScalarWhereInput[]
+  }
+
+  export type TransactionUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<TransactionCreateWithoutCompanyInput, TransactionUncheckedCreateWithoutCompanyInput> | TransactionCreateWithoutCompanyInput[] | TransactionUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutCompanyInput | TransactionCreateOrConnectWithoutCompanyInput[]
+    upsert?: TransactionUpsertWithWhereUniqueWithoutCompanyInput | TransactionUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: TransactionCreateManyCompanyInputEnvelope
+    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    update?: TransactionUpdateWithWhereUniqueWithoutCompanyInput | TransactionUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: TransactionUpdateManyWithWhereWithoutCompanyInput | TransactionUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+  }
+
+  export type TransactionItemUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<TransactionItemCreateWithoutCompanyInput, TransactionItemUncheckedCreateWithoutCompanyInput> | TransactionItemCreateWithoutCompanyInput[] | TransactionItemUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: TransactionItemCreateOrConnectWithoutCompanyInput | TransactionItemCreateOrConnectWithoutCompanyInput[]
+    upsert?: TransactionItemUpsertWithWhereUniqueWithoutCompanyInput | TransactionItemUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: TransactionItemCreateManyCompanyInputEnvelope
+    set?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    disconnect?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    delete?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    connect?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    update?: TransactionItemUpdateWithWhereUniqueWithoutCompanyInput | TransactionItemUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: TransactionItemUpdateManyWithWhereWithoutCompanyInput | TransactionItemUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: TransactionItemScalarWhereInput | TransactionItemScalarWhereInput[]
+  }
+
+  export type TransactionPaymentUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<TransactionPaymentCreateWithoutCompanyInput, TransactionPaymentUncheckedCreateWithoutCompanyInput> | TransactionPaymentCreateWithoutCompanyInput[] | TransactionPaymentUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: TransactionPaymentCreateOrConnectWithoutCompanyInput | TransactionPaymentCreateOrConnectWithoutCompanyInput[]
+    upsert?: TransactionPaymentUpsertWithWhereUniqueWithoutCompanyInput | TransactionPaymentUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: TransactionPaymentCreateManyCompanyInputEnvelope
+    set?: TransactionPaymentWhereUniqueInput | TransactionPaymentWhereUniqueInput[]
+    disconnect?: TransactionPaymentWhereUniqueInput | TransactionPaymentWhereUniqueInput[]
+    delete?: TransactionPaymentWhereUniqueInput | TransactionPaymentWhereUniqueInput[]
+    connect?: TransactionPaymentWhereUniqueInput | TransactionPaymentWhereUniqueInput[]
+    update?: TransactionPaymentUpdateWithWhereUniqueWithoutCompanyInput | TransactionPaymentUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: TransactionPaymentUpdateManyWithWhereWithoutCompanyInput | TransactionPaymentUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: TransactionPaymentScalarWhereInput | TransactionPaymentScalarWhereInput[]
+  }
+
+  export type TransactionDetailUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<TransactionDetailCreateWithoutCompanyInput, TransactionDetailUncheckedCreateWithoutCompanyInput> | TransactionDetailCreateWithoutCompanyInput[] | TransactionDetailUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: TransactionDetailCreateOrConnectWithoutCompanyInput | TransactionDetailCreateOrConnectWithoutCompanyInput[]
+    upsert?: TransactionDetailUpsertWithWhereUniqueWithoutCompanyInput | TransactionDetailUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: TransactionDetailCreateManyCompanyInputEnvelope
+    set?: TransactionDetailWhereUniqueInput | TransactionDetailWhereUniqueInput[]
+    disconnect?: TransactionDetailWhereUniqueInput | TransactionDetailWhereUniqueInput[]
+    delete?: TransactionDetailWhereUniqueInput | TransactionDetailWhereUniqueInput[]
+    connect?: TransactionDetailWhereUniqueInput | TransactionDetailWhereUniqueInput[]
+    update?: TransactionDetailUpdateWithWhereUniqueWithoutCompanyInput | TransactionDetailUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: TransactionDetailUpdateManyWithWhereWithoutCompanyInput | TransactionDetailUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: TransactionDetailScalarWhereInput | TransactionDetailScalarWhereInput[]
+  }
+
+  export type OrderUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<OrderCreateWithoutCompanyInput, OrderUncheckedCreateWithoutCompanyInput> | OrderCreateWithoutCompanyInput[] | OrderUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutCompanyInput | OrderCreateOrConnectWithoutCompanyInput[]
+    upsert?: OrderUpsertWithWhereUniqueWithoutCompanyInput | OrderUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: OrderCreateManyCompanyInputEnvelope
+    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    update?: OrderUpdateWithWhereUniqueWithoutCompanyInput | OrderUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: OrderUpdateManyWithWhereWithoutCompanyInput | OrderUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
+  }
+
+  export type ExpenseUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<ExpenseCreateWithoutCompanyInput, ExpenseUncheckedCreateWithoutCompanyInput> | ExpenseCreateWithoutCompanyInput[] | ExpenseUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: ExpenseCreateOrConnectWithoutCompanyInput | ExpenseCreateOrConnectWithoutCompanyInput[]
+    upsert?: ExpenseUpsertWithWhereUniqueWithoutCompanyInput | ExpenseUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: ExpenseCreateManyCompanyInputEnvelope
+    set?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    disconnect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    delete?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    update?: ExpenseUpdateWithWhereUniqueWithoutCompanyInput | ExpenseUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: ExpenseUpdateManyWithWhereWithoutCompanyInput | ExpenseUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: ExpenseScalarWhereInput | ExpenseScalarWhereInput[]
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -14879,9 +17756,50 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
+  export type CompanyCreateWithoutProductsInput = {
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    users?: UserCreateNestedManyWithoutCompanyInput
+    paymentTypes?: PaymentTypeCreateNestedManyWithoutCompanyInput
+    transactions?: TransactionCreateNestedManyWithoutCompanyInput
+    transactionItems?: TransactionItemCreateNestedManyWithoutCompanyInput
+    transactionPayments?: TransactionPaymentCreateNestedManyWithoutCompanyInput
+    transactionDetails?: TransactionDetailCreateNestedManyWithoutCompanyInput
+    orders?: OrderCreateNestedManyWithoutCompanyInput
+    expenses?: ExpenseCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyUncheckedCreateWithoutProductsInput = {
+    company_id?: number
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutCompanyInput
+    paymentTypes?: PaymentTypeUncheckedCreateNestedManyWithoutCompanyInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutCompanyInput
+    transactionItems?: TransactionItemUncheckedCreateNestedManyWithoutCompanyInput
+    transactionPayments?: TransactionPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    transactionDetails?: TransactionDetailUncheckedCreateNestedManyWithoutCompanyInput
+    orders?: OrderUncheckedCreateNestedManyWithoutCompanyInput
+    expenses?: ExpenseUncheckedCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyCreateOrConnectWithoutProductsInput = {
+    where: CompanyWhereUniqueInput
+    create: XOR<CompanyCreateWithoutProductsInput, CompanyUncheckedCreateWithoutProductsInput>
+  }
+
   export type TransactionItemCreateWithoutProductInput = {
     quantity: number
     price: Decimal | DecimalJsLike | number | string
+    company: CompanyCreateNestedOneWithoutTransactionItemsInput
     transaction: TransactionCreateNestedOneWithoutItemsInput
   }
 
@@ -14890,6 +17808,7 @@ export namespace Prisma {
     transaction_id: number
     quantity: number
     price: Decimal | DecimalJsLike | number | string
+    company_id: number
   }
 
   export type TransactionItemCreateOrConnectWithoutProductInput = {
@@ -14912,6 +17831,7 @@ export namespace Prisma {
     order_date: Date | string
     remaining_quantity?: number
     status?: string
+    company: CompanyCreateNestedOneWithoutOrdersInput
   }
 
   export type OrderUncheckedCreateWithoutProductRefInput = {
@@ -14925,6 +17845,7 @@ export namespace Prisma {
     order_date: Date | string
     remaining_quantity?: number
     status?: string
+    company_id: number
   }
 
   export type OrderCreateOrConnectWithoutProductRefInput = {
@@ -14935,6 +17856,52 @@ export namespace Prisma {
   export type OrderCreateManyProductRefInputEnvelope = {
     data: OrderCreateManyProductRefInput | OrderCreateManyProductRefInput[]
     skipDuplicates?: boolean
+  }
+
+  export type CompanyUpsertWithoutProductsInput = {
+    update: XOR<CompanyUpdateWithoutProductsInput, CompanyUncheckedUpdateWithoutProductsInput>
+    create: XOR<CompanyCreateWithoutProductsInput, CompanyUncheckedCreateWithoutProductsInput>
+    where?: CompanyWhereInput
+  }
+
+  export type CompanyUpdateToOneWithWhereWithoutProductsInput = {
+    where?: CompanyWhereInput
+    data: XOR<CompanyUpdateWithoutProductsInput, CompanyUncheckedUpdateWithoutProductsInput>
+  }
+
+  export type CompanyUpdateWithoutProductsInput = {
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutCompanyNestedInput
+    paymentTypes?: PaymentTypeUpdateManyWithoutCompanyNestedInput
+    transactions?: TransactionUpdateManyWithoutCompanyNestedInput
+    transactionItems?: TransactionItemUpdateManyWithoutCompanyNestedInput
+    transactionPayments?: TransactionPaymentUpdateManyWithoutCompanyNestedInput
+    transactionDetails?: TransactionDetailUpdateManyWithoutCompanyNestedInput
+    orders?: OrderUpdateManyWithoutCompanyNestedInput
+    expenses?: ExpenseUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyUncheckedUpdateWithoutProductsInput = {
+    company_id?: IntFieldUpdateOperationsInput | number
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutCompanyNestedInput
+    paymentTypes?: PaymentTypeUncheckedUpdateManyWithoutCompanyNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionItems?: TransactionItemUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionPayments?: TransactionPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionDetails?: TransactionDetailUncheckedUpdateManyWithoutCompanyNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutCompanyNestedInput
+    expenses?: ExpenseUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type TransactionItemUpsertWithWhereUniqueWithoutProductInput = {
@@ -14962,6 +17929,7 @@ export namespace Prisma {
     product_id?: IntFilter<"TransactionItem"> | number
     quantity?: IntFilter<"TransactionItem"> | number
     price?: DecimalFilter<"TransactionItem"> | Decimal | DecimalJsLike | number | string
+    company_id?: IntFilter<"TransactionItem"> | number
   }
 
   export type OrderUpsertWithWhereUniqueWithoutProductRefInput = {
@@ -14995,6 +17963,47 @@ export namespace Prisma {
     order_date?: DateTimeFilter<"Order"> | Date | string
     remaining_quantity?: IntFilter<"Order"> | number
     status?: StringFilter<"Order"> | string
+    company_id?: IntFilter<"Order"> | number
+  }
+
+  export type CompanyCreateWithoutUsersInput = {
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    products?: ProductCreateNestedManyWithoutCompanyInput
+    paymentTypes?: PaymentTypeCreateNestedManyWithoutCompanyInput
+    transactions?: TransactionCreateNestedManyWithoutCompanyInput
+    transactionItems?: TransactionItemCreateNestedManyWithoutCompanyInput
+    transactionPayments?: TransactionPaymentCreateNestedManyWithoutCompanyInput
+    transactionDetails?: TransactionDetailCreateNestedManyWithoutCompanyInput
+    orders?: OrderCreateNestedManyWithoutCompanyInput
+    expenses?: ExpenseCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyUncheckedCreateWithoutUsersInput = {
+    company_id?: number
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    products?: ProductUncheckedCreateNestedManyWithoutCompanyInput
+    paymentTypes?: PaymentTypeUncheckedCreateNestedManyWithoutCompanyInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutCompanyInput
+    transactionItems?: TransactionItemUncheckedCreateNestedManyWithoutCompanyInput
+    transactionPayments?: TransactionPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    transactionDetails?: TransactionDetailUncheckedCreateNestedManyWithoutCompanyInput
+    orders?: OrderUncheckedCreateNestedManyWithoutCompanyInput
+    expenses?: ExpenseUncheckedCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyCreateOrConnectWithoutUsersInput = {
+    where: CompanyWhereUniqueInput
+    create: XOR<CompanyCreateWithoutUsersInput, CompanyUncheckedCreateWithoutUsersInput>
   }
 
   export type TransactionCreateWithoutUserInput = {
@@ -15005,6 +18014,7 @@ export namespace Prisma {
     change?: Decimal | DecimalJsLike | number | string
     status?: string
     created_at?: Date | string
+    company: CompanyCreateNestedOneWithoutTransactionsInput
     items?: TransactionItemCreateNestedManyWithoutTransactionInput
     payments?: TransactionPaymentCreateNestedManyWithoutTransactionInput
     details?: TransactionDetailCreateNestedManyWithoutTransactionInput
@@ -15019,6 +18029,7 @@ export namespace Prisma {
     change?: Decimal | DecimalJsLike | number | string
     status?: string
     created_at?: Date | string
+    company_id: number
     items?: TransactionItemUncheckedCreateNestedManyWithoutTransactionInput
     payments?: TransactionPaymentUncheckedCreateNestedManyWithoutTransactionInput
     details?: TransactionDetailUncheckedCreateNestedManyWithoutTransactionInput
@@ -15032,6 +18043,52 @@ export namespace Prisma {
   export type TransactionCreateManyUserInputEnvelope = {
     data: TransactionCreateManyUserInput | TransactionCreateManyUserInput[]
     skipDuplicates?: boolean
+  }
+
+  export type CompanyUpsertWithoutUsersInput = {
+    update: XOR<CompanyUpdateWithoutUsersInput, CompanyUncheckedUpdateWithoutUsersInput>
+    create: XOR<CompanyCreateWithoutUsersInput, CompanyUncheckedCreateWithoutUsersInput>
+    where?: CompanyWhereInput
+  }
+
+  export type CompanyUpdateToOneWithWhereWithoutUsersInput = {
+    where?: CompanyWhereInput
+    data: XOR<CompanyUpdateWithoutUsersInput, CompanyUncheckedUpdateWithoutUsersInput>
+  }
+
+  export type CompanyUpdateWithoutUsersInput = {
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUpdateManyWithoutCompanyNestedInput
+    paymentTypes?: PaymentTypeUpdateManyWithoutCompanyNestedInput
+    transactions?: TransactionUpdateManyWithoutCompanyNestedInput
+    transactionItems?: TransactionItemUpdateManyWithoutCompanyNestedInput
+    transactionPayments?: TransactionPaymentUpdateManyWithoutCompanyNestedInput
+    transactionDetails?: TransactionDetailUpdateManyWithoutCompanyNestedInput
+    orders?: OrderUpdateManyWithoutCompanyNestedInput
+    expenses?: ExpenseUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyUncheckedUpdateWithoutUsersInput = {
+    company_id?: IntFieldUpdateOperationsInput | number
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUncheckedUpdateManyWithoutCompanyNestedInput
+    paymentTypes?: PaymentTypeUncheckedUpdateManyWithoutCompanyNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionItems?: TransactionItemUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionPayments?: TransactionPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionDetails?: TransactionDetailUncheckedUpdateManyWithoutCompanyNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutCompanyNestedInput
+    expenses?: ExpenseUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type TransactionUpsertWithWhereUniqueWithoutUserInput = {
@@ -15063,6 +18120,133 @@ export namespace Prisma {
     change?: DecimalFilter<"Transaction"> | Decimal | DecimalJsLike | number | string
     status?: StringFilter<"Transaction"> | string
     created_at?: DateTimeFilter<"Transaction"> | Date | string
+    company_id?: IntFilter<"Transaction"> | number
+  }
+
+  export type CompanyCreateWithoutPaymentTypesInput = {
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    products?: ProductCreateNestedManyWithoutCompanyInput
+    users?: UserCreateNestedManyWithoutCompanyInput
+    transactions?: TransactionCreateNestedManyWithoutCompanyInput
+    transactionItems?: TransactionItemCreateNestedManyWithoutCompanyInput
+    transactionPayments?: TransactionPaymentCreateNestedManyWithoutCompanyInput
+    transactionDetails?: TransactionDetailCreateNestedManyWithoutCompanyInput
+    orders?: OrderCreateNestedManyWithoutCompanyInput
+    expenses?: ExpenseCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyUncheckedCreateWithoutPaymentTypesInput = {
+    company_id?: number
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    products?: ProductUncheckedCreateNestedManyWithoutCompanyInput
+    users?: UserUncheckedCreateNestedManyWithoutCompanyInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutCompanyInput
+    transactionItems?: TransactionItemUncheckedCreateNestedManyWithoutCompanyInput
+    transactionPayments?: TransactionPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    transactionDetails?: TransactionDetailUncheckedCreateNestedManyWithoutCompanyInput
+    orders?: OrderUncheckedCreateNestedManyWithoutCompanyInput
+    expenses?: ExpenseUncheckedCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyCreateOrConnectWithoutPaymentTypesInput = {
+    where: CompanyWhereUniqueInput
+    create: XOR<CompanyCreateWithoutPaymentTypesInput, CompanyUncheckedCreateWithoutPaymentTypesInput>
+  }
+
+  export type CompanyUpsertWithoutPaymentTypesInput = {
+    update: XOR<CompanyUpdateWithoutPaymentTypesInput, CompanyUncheckedUpdateWithoutPaymentTypesInput>
+    create: XOR<CompanyCreateWithoutPaymentTypesInput, CompanyUncheckedCreateWithoutPaymentTypesInput>
+    where?: CompanyWhereInput
+  }
+
+  export type CompanyUpdateToOneWithWhereWithoutPaymentTypesInput = {
+    where?: CompanyWhereInput
+    data: XOR<CompanyUpdateWithoutPaymentTypesInput, CompanyUncheckedUpdateWithoutPaymentTypesInput>
+  }
+
+  export type CompanyUpdateWithoutPaymentTypesInput = {
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUpdateManyWithoutCompanyNestedInput
+    users?: UserUpdateManyWithoutCompanyNestedInput
+    transactions?: TransactionUpdateManyWithoutCompanyNestedInput
+    transactionItems?: TransactionItemUpdateManyWithoutCompanyNestedInput
+    transactionPayments?: TransactionPaymentUpdateManyWithoutCompanyNestedInput
+    transactionDetails?: TransactionDetailUpdateManyWithoutCompanyNestedInput
+    orders?: OrderUpdateManyWithoutCompanyNestedInput
+    expenses?: ExpenseUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyUncheckedUpdateWithoutPaymentTypesInput = {
+    company_id?: IntFieldUpdateOperationsInput | number
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUncheckedUpdateManyWithoutCompanyNestedInput
+    users?: UserUncheckedUpdateManyWithoutCompanyNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionItems?: TransactionItemUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionPayments?: TransactionPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionDetails?: TransactionDetailUncheckedUpdateManyWithoutCompanyNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutCompanyNestedInput
+    expenses?: ExpenseUncheckedUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyCreateWithoutTransactionsInput = {
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    products?: ProductCreateNestedManyWithoutCompanyInput
+    users?: UserCreateNestedManyWithoutCompanyInput
+    paymentTypes?: PaymentTypeCreateNestedManyWithoutCompanyInput
+    transactionItems?: TransactionItemCreateNestedManyWithoutCompanyInput
+    transactionPayments?: TransactionPaymentCreateNestedManyWithoutCompanyInput
+    transactionDetails?: TransactionDetailCreateNestedManyWithoutCompanyInput
+    orders?: OrderCreateNestedManyWithoutCompanyInput
+    expenses?: ExpenseCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyUncheckedCreateWithoutTransactionsInput = {
+    company_id?: number
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    products?: ProductUncheckedCreateNestedManyWithoutCompanyInput
+    users?: UserUncheckedCreateNestedManyWithoutCompanyInput
+    paymentTypes?: PaymentTypeUncheckedCreateNestedManyWithoutCompanyInput
+    transactionItems?: TransactionItemUncheckedCreateNestedManyWithoutCompanyInput
+    transactionPayments?: TransactionPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    transactionDetails?: TransactionDetailUncheckedCreateNestedManyWithoutCompanyInput
+    orders?: OrderUncheckedCreateNestedManyWithoutCompanyInput
+    expenses?: ExpenseUncheckedCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyCreateOrConnectWithoutTransactionsInput = {
+    where: CompanyWhereUniqueInput
+    create: XOR<CompanyCreateWithoutTransactionsInput, CompanyUncheckedCreateWithoutTransactionsInput>
   }
 
   export type UserCreateWithoutTransactionsInput = {
@@ -15073,6 +18257,7 @@ export namespace Prisma {
     status: string
     created_at?: Date | string
     updated_at?: Date | string
+    company: CompanyCreateNestedOneWithoutUsersInput
   }
 
   export type UserUncheckedCreateWithoutTransactionsInput = {
@@ -15084,6 +18269,7 @@ export namespace Prisma {
     status: string
     created_at?: Date | string
     updated_at?: Date | string
+    company_id: number
   }
 
   export type UserCreateOrConnectWithoutTransactionsInput = {
@@ -15094,6 +18280,7 @@ export namespace Prisma {
   export type TransactionItemCreateWithoutTransactionInput = {
     quantity: number
     price: Decimal | DecimalJsLike | number | string
+    company: CompanyCreateNestedOneWithoutTransactionItemsInput
     product: ProductCreateNestedOneWithoutTransactionItemsInput
   }
 
@@ -15102,6 +18289,7 @@ export namespace Prisma {
     product_id: number
     quantity: number
     price: Decimal | DecimalJsLike | number | string
+    company_id: number
   }
 
   export type TransactionItemCreateOrConnectWithoutTransactionInput = {
@@ -15117,12 +18305,14 @@ export namespace Prisma {
   export type TransactionPaymentCreateWithoutTransactionInput = {
     payment_method: string
     amount: Decimal | DecimalJsLike | number | string
+    company: CompanyCreateNestedOneWithoutTransactionPaymentsInput
   }
 
   export type TransactionPaymentUncheckedCreateWithoutTransactionInput = {
     id?: number
     payment_method: string
     amount: Decimal | DecimalJsLike | number | string
+    company_id: number
   }
 
   export type TransactionPaymentCreateOrConnectWithoutTransactionInput = {
@@ -15142,6 +18332,7 @@ export namespace Prisma {
     payment_method?: string | null
     payment_amount?: Decimal | DecimalJsLike | number | string | null
     created_at?: Date | string
+    company: CompanyCreateNestedOneWithoutTransactionDetailsInput
   }
 
   export type TransactionDetailUncheckedCreateWithoutTransactionInput = {
@@ -15152,6 +18343,7 @@ export namespace Prisma {
     payment_method?: string | null
     payment_amount?: Decimal | DecimalJsLike | number | string | null
     created_at?: Date | string
+    company_id: number
   }
 
   export type TransactionDetailCreateOrConnectWithoutTransactionInput = {
@@ -15162,6 +18354,52 @@ export namespace Prisma {
   export type TransactionDetailCreateManyTransactionInputEnvelope = {
     data: TransactionDetailCreateManyTransactionInput | TransactionDetailCreateManyTransactionInput[]
     skipDuplicates?: boolean
+  }
+
+  export type CompanyUpsertWithoutTransactionsInput = {
+    update: XOR<CompanyUpdateWithoutTransactionsInput, CompanyUncheckedUpdateWithoutTransactionsInput>
+    create: XOR<CompanyCreateWithoutTransactionsInput, CompanyUncheckedCreateWithoutTransactionsInput>
+    where?: CompanyWhereInput
+  }
+
+  export type CompanyUpdateToOneWithWhereWithoutTransactionsInput = {
+    where?: CompanyWhereInput
+    data: XOR<CompanyUpdateWithoutTransactionsInput, CompanyUncheckedUpdateWithoutTransactionsInput>
+  }
+
+  export type CompanyUpdateWithoutTransactionsInput = {
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUpdateManyWithoutCompanyNestedInput
+    users?: UserUpdateManyWithoutCompanyNestedInput
+    paymentTypes?: PaymentTypeUpdateManyWithoutCompanyNestedInput
+    transactionItems?: TransactionItemUpdateManyWithoutCompanyNestedInput
+    transactionPayments?: TransactionPaymentUpdateManyWithoutCompanyNestedInput
+    transactionDetails?: TransactionDetailUpdateManyWithoutCompanyNestedInput
+    orders?: OrderUpdateManyWithoutCompanyNestedInput
+    expenses?: ExpenseUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyUncheckedUpdateWithoutTransactionsInput = {
+    company_id?: IntFieldUpdateOperationsInput | number
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUncheckedUpdateManyWithoutCompanyNestedInput
+    users?: UserUncheckedUpdateManyWithoutCompanyNestedInput
+    paymentTypes?: PaymentTypeUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionItems?: TransactionItemUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionPayments?: TransactionPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionDetails?: TransactionDetailUncheckedUpdateManyWithoutCompanyNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutCompanyNestedInput
+    expenses?: ExpenseUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type UserUpsertWithoutTransactionsInput = {
@@ -15183,6 +18421,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutUsersNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTransactionsInput = {
@@ -15194,6 +18433,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type TransactionItemUpsertWithWhereUniqueWithoutTransactionInput = {
@@ -15236,6 +18476,7 @@ export namespace Prisma {
     transaction_id?: IntFilter<"TransactionPayment"> | number
     payment_method?: StringFilter<"TransactionPayment"> | string
     amount?: DecimalFilter<"TransactionPayment"> | Decimal | DecimalJsLike | number | string
+    company_id?: IntFilter<"TransactionPayment"> | number
   }
 
   export type TransactionDetailUpsertWithWhereUniqueWithoutTransactionInput = {
@@ -15266,6 +18507,47 @@ export namespace Prisma {
     payment_method?: StringNullableFilter<"TransactionDetail"> | string | null
     payment_amount?: DecimalNullableFilter<"TransactionDetail"> | Decimal | DecimalJsLike | number | string | null
     created_at?: DateTimeFilter<"TransactionDetail"> | Date | string
+    company_id?: IntFilter<"TransactionDetail"> | number
+  }
+
+  export type CompanyCreateWithoutTransactionItemsInput = {
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    products?: ProductCreateNestedManyWithoutCompanyInput
+    users?: UserCreateNestedManyWithoutCompanyInput
+    paymentTypes?: PaymentTypeCreateNestedManyWithoutCompanyInput
+    transactions?: TransactionCreateNestedManyWithoutCompanyInput
+    transactionPayments?: TransactionPaymentCreateNestedManyWithoutCompanyInput
+    transactionDetails?: TransactionDetailCreateNestedManyWithoutCompanyInput
+    orders?: OrderCreateNestedManyWithoutCompanyInput
+    expenses?: ExpenseCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyUncheckedCreateWithoutTransactionItemsInput = {
+    company_id?: number
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    products?: ProductUncheckedCreateNestedManyWithoutCompanyInput
+    users?: UserUncheckedCreateNestedManyWithoutCompanyInput
+    paymentTypes?: PaymentTypeUncheckedCreateNestedManyWithoutCompanyInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutCompanyInput
+    transactionPayments?: TransactionPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    transactionDetails?: TransactionDetailUncheckedCreateNestedManyWithoutCompanyInput
+    orders?: OrderUncheckedCreateNestedManyWithoutCompanyInput
+    expenses?: ExpenseUncheckedCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyCreateOrConnectWithoutTransactionItemsInput = {
+    where: CompanyWhereUniqueInput
+    create: XOR<CompanyCreateWithoutTransactionItemsInput, CompanyUncheckedCreateWithoutTransactionItemsInput>
   }
 
   export type TransactionCreateWithoutItemsInput = {
@@ -15276,6 +18558,7 @@ export namespace Prisma {
     change?: Decimal | DecimalJsLike | number | string
     status?: string
     created_at?: Date | string
+    company: CompanyCreateNestedOneWithoutTransactionsInput
     user?: UserCreateNestedOneWithoutTransactionsInput
     payments?: TransactionPaymentCreateNestedManyWithoutTransactionInput
     details?: TransactionDetailCreateNestedManyWithoutTransactionInput
@@ -15291,6 +18574,7 @@ export namespace Prisma {
     change?: Decimal | DecimalJsLike | number | string
     status?: string
     created_at?: Date | string
+    company_id: number
     payments?: TransactionPaymentUncheckedCreateNestedManyWithoutTransactionInput
     details?: TransactionDetailUncheckedCreateNestedManyWithoutTransactionInput
   }
@@ -15310,6 +18594,7 @@ export namespace Prisma {
     status?: string
     created_at?: Date | string
     updated_at?: Date | string
+    company: CompanyCreateNestedOneWithoutProductsInput
     orders?: OrderCreateNestedManyWithoutProductRefInput
   }
 
@@ -15324,12 +18609,59 @@ export namespace Prisma {
     status?: string
     created_at?: Date | string
     updated_at?: Date | string
+    company_id: number
     orders?: OrderUncheckedCreateNestedManyWithoutProductRefInput
   }
 
   export type ProductCreateOrConnectWithoutTransactionItemsInput = {
     where: ProductWhereUniqueInput
     create: XOR<ProductCreateWithoutTransactionItemsInput, ProductUncheckedCreateWithoutTransactionItemsInput>
+  }
+
+  export type CompanyUpsertWithoutTransactionItemsInput = {
+    update: XOR<CompanyUpdateWithoutTransactionItemsInput, CompanyUncheckedUpdateWithoutTransactionItemsInput>
+    create: XOR<CompanyCreateWithoutTransactionItemsInput, CompanyUncheckedCreateWithoutTransactionItemsInput>
+    where?: CompanyWhereInput
+  }
+
+  export type CompanyUpdateToOneWithWhereWithoutTransactionItemsInput = {
+    where?: CompanyWhereInput
+    data: XOR<CompanyUpdateWithoutTransactionItemsInput, CompanyUncheckedUpdateWithoutTransactionItemsInput>
+  }
+
+  export type CompanyUpdateWithoutTransactionItemsInput = {
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUpdateManyWithoutCompanyNestedInput
+    users?: UserUpdateManyWithoutCompanyNestedInput
+    paymentTypes?: PaymentTypeUpdateManyWithoutCompanyNestedInput
+    transactions?: TransactionUpdateManyWithoutCompanyNestedInput
+    transactionPayments?: TransactionPaymentUpdateManyWithoutCompanyNestedInput
+    transactionDetails?: TransactionDetailUpdateManyWithoutCompanyNestedInput
+    orders?: OrderUpdateManyWithoutCompanyNestedInput
+    expenses?: ExpenseUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyUncheckedUpdateWithoutTransactionItemsInput = {
+    company_id?: IntFieldUpdateOperationsInput | number
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUncheckedUpdateManyWithoutCompanyNestedInput
+    users?: UserUncheckedUpdateManyWithoutCompanyNestedInput
+    paymentTypes?: PaymentTypeUncheckedUpdateManyWithoutCompanyNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionPayments?: TransactionPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionDetails?: TransactionDetailUncheckedUpdateManyWithoutCompanyNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutCompanyNestedInput
+    expenses?: ExpenseUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type TransactionUpsertWithoutItemsInput = {
@@ -15351,6 +18683,7 @@ export namespace Prisma {
     change?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutTransactionsNestedInput
     user?: UserUpdateOneWithoutTransactionsNestedInput
     payments?: TransactionPaymentUpdateManyWithoutTransactionNestedInput
     details?: TransactionDetailUpdateManyWithoutTransactionNestedInput
@@ -15366,6 +18699,7 @@ export namespace Prisma {
     change?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
     payments?: TransactionPaymentUncheckedUpdateManyWithoutTransactionNestedInput
     details?: TransactionDetailUncheckedUpdateManyWithoutTransactionNestedInput
   }
@@ -15391,6 +18725,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutProductsNestedInput
     orders?: OrderUpdateManyWithoutProductRefNestedInput
   }
 
@@ -15405,7 +18740,48 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
     orders?: OrderUncheckedUpdateManyWithoutProductRefNestedInput
+  }
+
+  export type CompanyCreateWithoutTransactionPaymentsInput = {
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    products?: ProductCreateNestedManyWithoutCompanyInput
+    users?: UserCreateNestedManyWithoutCompanyInput
+    paymentTypes?: PaymentTypeCreateNestedManyWithoutCompanyInput
+    transactions?: TransactionCreateNestedManyWithoutCompanyInput
+    transactionItems?: TransactionItemCreateNestedManyWithoutCompanyInput
+    transactionDetails?: TransactionDetailCreateNestedManyWithoutCompanyInput
+    orders?: OrderCreateNestedManyWithoutCompanyInput
+    expenses?: ExpenseCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyUncheckedCreateWithoutTransactionPaymentsInput = {
+    company_id?: number
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    products?: ProductUncheckedCreateNestedManyWithoutCompanyInput
+    users?: UserUncheckedCreateNestedManyWithoutCompanyInput
+    paymentTypes?: PaymentTypeUncheckedCreateNestedManyWithoutCompanyInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutCompanyInput
+    transactionItems?: TransactionItemUncheckedCreateNestedManyWithoutCompanyInput
+    transactionDetails?: TransactionDetailUncheckedCreateNestedManyWithoutCompanyInput
+    orders?: OrderUncheckedCreateNestedManyWithoutCompanyInput
+    expenses?: ExpenseUncheckedCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyCreateOrConnectWithoutTransactionPaymentsInput = {
+    where: CompanyWhereUniqueInput
+    create: XOR<CompanyCreateWithoutTransactionPaymentsInput, CompanyUncheckedCreateWithoutTransactionPaymentsInput>
   }
 
   export type TransactionCreateWithoutPaymentsInput = {
@@ -15416,6 +18792,7 @@ export namespace Prisma {
     change?: Decimal | DecimalJsLike | number | string
     status?: string
     created_at?: Date | string
+    company: CompanyCreateNestedOneWithoutTransactionsInput
     user?: UserCreateNestedOneWithoutTransactionsInput
     items?: TransactionItemCreateNestedManyWithoutTransactionInput
     details?: TransactionDetailCreateNestedManyWithoutTransactionInput
@@ -15431,6 +18808,7 @@ export namespace Prisma {
     change?: Decimal | DecimalJsLike | number | string
     status?: string
     created_at?: Date | string
+    company_id: number
     items?: TransactionItemUncheckedCreateNestedManyWithoutTransactionInput
     details?: TransactionDetailUncheckedCreateNestedManyWithoutTransactionInput
   }
@@ -15438,6 +18816,52 @@ export namespace Prisma {
   export type TransactionCreateOrConnectWithoutPaymentsInput = {
     where: TransactionWhereUniqueInput
     create: XOR<TransactionCreateWithoutPaymentsInput, TransactionUncheckedCreateWithoutPaymentsInput>
+  }
+
+  export type CompanyUpsertWithoutTransactionPaymentsInput = {
+    update: XOR<CompanyUpdateWithoutTransactionPaymentsInput, CompanyUncheckedUpdateWithoutTransactionPaymentsInput>
+    create: XOR<CompanyCreateWithoutTransactionPaymentsInput, CompanyUncheckedCreateWithoutTransactionPaymentsInput>
+    where?: CompanyWhereInput
+  }
+
+  export type CompanyUpdateToOneWithWhereWithoutTransactionPaymentsInput = {
+    where?: CompanyWhereInput
+    data: XOR<CompanyUpdateWithoutTransactionPaymentsInput, CompanyUncheckedUpdateWithoutTransactionPaymentsInput>
+  }
+
+  export type CompanyUpdateWithoutTransactionPaymentsInput = {
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUpdateManyWithoutCompanyNestedInput
+    users?: UserUpdateManyWithoutCompanyNestedInput
+    paymentTypes?: PaymentTypeUpdateManyWithoutCompanyNestedInput
+    transactions?: TransactionUpdateManyWithoutCompanyNestedInput
+    transactionItems?: TransactionItemUpdateManyWithoutCompanyNestedInput
+    transactionDetails?: TransactionDetailUpdateManyWithoutCompanyNestedInput
+    orders?: OrderUpdateManyWithoutCompanyNestedInput
+    expenses?: ExpenseUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyUncheckedUpdateWithoutTransactionPaymentsInput = {
+    company_id?: IntFieldUpdateOperationsInput | number
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUncheckedUpdateManyWithoutCompanyNestedInput
+    users?: UserUncheckedUpdateManyWithoutCompanyNestedInput
+    paymentTypes?: PaymentTypeUncheckedUpdateManyWithoutCompanyNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionItems?: TransactionItemUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionDetails?: TransactionDetailUncheckedUpdateManyWithoutCompanyNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutCompanyNestedInput
+    expenses?: ExpenseUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type TransactionUpsertWithoutPaymentsInput = {
@@ -15459,6 +18883,7 @@ export namespace Prisma {
     change?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutTransactionsNestedInput
     user?: UserUpdateOneWithoutTransactionsNestedInput
     items?: TransactionItemUpdateManyWithoutTransactionNestedInput
     details?: TransactionDetailUpdateManyWithoutTransactionNestedInput
@@ -15474,8 +18899,49 @@ export namespace Prisma {
     change?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
     items?: TransactionItemUncheckedUpdateManyWithoutTransactionNestedInput
     details?: TransactionDetailUncheckedUpdateManyWithoutTransactionNestedInput
+  }
+
+  export type CompanyCreateWithoutTransactionDetailsInput = {
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    products?: ProductCreateNestedManyWithoutCompanyInput
+    users?: UserCreateNestedManyWithoutCompanyInput
+    paymentTypes?: PaymentTypeCreateNestedManyWithoutCompanyInput
+    transactions?: TransactionCreateNestedManyWithoutCompanyInput
+    transactionItems?: TransactionItemCreateNestedManyWithoutCompanyInput
+    transactionPayments?: TransactionPaymentCreateNestedManyWithoutCompanyInput
+    orders?: OrderCreateNestedManyWithoutCompanyInput
+    expenses?: ExpenseCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyUncheckedCreateWithoutTransactionDetailsInput = {
+    company_id?: number
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    products?: ProductUncheckedCreateNestedManyWithoutCompanyInput
+    users?: UserUncheckedCreateNestedManyWithoutCompanyInput
+    paymentTypes?: PaymentTypeUncheckedCreateNestedManyWithoutCompanyInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutCompanyInput
+    transactionItems?: TransactionItemUncheckedCreateNestedManyWithoutCompanyInput
+    transactionPayments?: TransactionPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    orders?: OrderUncheckedCreateNestedManyWithoutCompanyInput
+    expenses?: ExpenseUncheckedCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyCreateOrConnectWithoutTransactionDetailsInput = {
+    where: CompanyWhereUniqueInput
+    create: XOR<CompanyCreateWithoutTransactionDetailsInput, CompanyUncheckedCreateWithoutTransactionDetailsInput>
   }
 
   export type TransactionCreateWithoutDetailsInput = {
@@ -15486,6 +18952,7 @@ export namespace Prisma {
     change?: Decimal | DecimalJsLike | number | string
     status?: string
     created_at?: Date | string
+    company: CompanyCreateNestedOneWithoutTransactionsInput
     user?: UserCreateNestedOneWithoutTransactionsInput
     items?: TransactionItemCreateNestedManyWithoutTransactionInput
     payments?: TransactionPaymentCreateNestedManyWithoutTransactionInput
@@ -15501,6 +18968,7 @@ export namespace Prisma {
     change?: Decimal | DecimalJsLike | number | string
     status?: string
     created_at?: Date | string
+    company_id: number
     items?: TransactionItemUncheckedCreateNestedManyWithoutTransactionInput
     payments?: TransactionPaymentUncheckedCreateNestedManyWithoutTransactionInput
   }
@@ -15508,6 +18976,52 @@ export namespace Prisma {
   export type TransactionCreateOrConnectWithoutDetailsInput = {
     where: TransactionWhereUniqueInput
     create: XOR<TransactionCreateWithoutDetailsInput, TransactionUncheckedCreateWithoutDetailsInput>
+  }
+
+  export type CompanyUpsertWithoutTransactionDetailsInput = {
+    update: XOR<CompanyUpdateWithoutTransactionDetailsInput, CompanyUncheckedUpdateWithoutTransactionDetailsInput>
+    create: XOR<CompanyCreateWithoutTransactionDetailsInput, CompanyUncheckedCreateWithoutTransactionDetailsInput>
+    where?: CompanyWhereInput
+  }
+
+  export type CompanyUpdateToOneWithWhereWithoutTransactionDetailsInput = {
+    where?: CompanyWhereInput
+    data: XOR<CompanyUpdateWithoutTransactionDetailsInput, CompanyUncheckedUpdateWithoutTransactionDetailsInput>
+  }
+
+  export type CompanyUpdateWithoutTransactionDetailsInput = {
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUpdateManyWithoutCompanyNestedInput
+    users?: UserUpdateManyWithoutCompanyNestedInput
+    paymentTypes?: PaymentTypeUpdateManyWithoutCompanyNestedInput
+    transactions?: TransactionUpdateManyWithoutCompanyNestedInput
+    transactionItems?: TransactionItemUpdateManyWithoutCompanyNestedInput
+    transactionPayments?: TransactionPaymentUpdateManyWithoutCompanyNestedInput
+    orders?: OrderUpdateManyWithoutCompanyNestedInput
+    expenses?: ExpenseUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyUncheckedUpdateWithoutTransactionDetailsInput = {
+    company_id?: IntFieldUpdateOperationsInput | number
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUncheckedUpdateManyWithoutCompanyNestedInput
+    users?: UserUncheckedUpdateManyWithoutCompanyNestedInput
+    paymentTypes?: PaymentTypeUncheckedUpdateManyWithoutCompanyNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionItems?: TransactionItemUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionPayments?: TransactionPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutCompanyNestedInput
+    expenses?: ExpenseUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type TransactionUpsertWithoutDetailsInput = {
@@ -15529,6 +19043,7 @@ export namespace Prisma {
     change?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutTransactionsNestedInput
     user?: UserUpdateOneWithoutTransactionsNestedInput
     items?: TransactionItemUpdateManyWithoutTransactionNestedInput
     payments?: TransactionPaymentUpdateManyWithoutTransactionNestedInput
@@ -15544,8 +19059,49 @@ export namespace Prisma {
     change?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
     items?: TransactionItemUncheckedUpdateManyWithoutTransactionNestedInput
     payments?: TransactionPaymentUncheckedUpdateManyWithoutTransactionNestedInput
+  }
+
+  export type CompanyCreateWithoutOrdersInput = {
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    products?: ProductCreateNestedManyWithoutCompanyInput
+    users?: UserCreateNestedManyWithoutCompanyInput
+    paymentTypes?: PaymentTypeCreateNestedManyWithoutCompanyInput
+    transactions?: TransactionCreateNestedManyWithoutCompanyInput
+    transactionItems?: TransactionItemCreateNestedManyWithoutCompanyInput
+    transactionPayments?: TransactionPaymentCreateNestedManyWithoutCompanyInput
+    transactionDetails?: TransactionDetailCreateNestedManyWithoutCompanyInput
+    expenses?: ExpenseCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyUncheckedCreateWithoutOrdersInput = {
+    company_id?: number
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    products?: ProductUncheckedCreateNestedManyWithoutCompanyInput
+    users?: UserUncheckedCreateNestedManyWithoutCompanyInput
+    paymentTypes?: PaymentTypeUncheckedCreateNestedManyWithoutCompanyInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutCompanyInput
+    transactionItems?: TransactionItemUncheckedCreateNestedManyWithoutCompanyInput
+    transactionPayments?: TransactionPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    transactionDetails?: TransactionDetailUncheckedCreateNestedManyWithoutCompanyInput
+    expenses?: ExpenseUncheckedCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyCreateOrConnectWithoutOrdersInput = {
+    where: CompanyWhereUniqueInput
+    create: XOR<CompanyCreateWithoutOrdersInput, CompanyUncheckedCreateWithoutOrdersInput>
   }
 
   export type ProductCreateWithoutOrdersInput = {
@@ -15558,6 +19114,7 @@ export namespace Prisma {
     status?: string
     created_at?: Date | string
     updated_at?: Date | string
+    company: CompanyCreateNestedOneWithoutProductsInput
     transactionItems?: TransactionItemCreateNestedManyWithoutProductInput
   }
 
@@ -15572,12 +19129,59 @@ export namespace Prisma {
     status?: string
     created_at?: Date | string
     updated_at?: Date | string
+    company_id: number
     transactionItems?: TransactionItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutOrdersInput = {
     where: ProductWhereUniqueInput
     create: XOR<ProductCreateWithoutOrdersInput, ProductUncheckedCreateWithoutOrdersInput>
+  }
+
+  export type CompanyUpsertWithoutOrdersInput = {
+    update: XOR<CompanyUpdateWithoutOrdersInput, CompanyUncheckedUpdateWithoutOrdersInput>
+    create: XOR<CompanyCreateWithoutOrdersInput, CompanyUncheckedCreateWithoutOrdersInput>
+    where?: CompanyWhereInput
+  }
+
+  export type CompanyUpdateToOneWithWhereWithoutOrdersInput = {
+    where?: CompanyWhereInput
+    data: XOR<CompanyUpdateWithoutOrdersInput, CompanyUncheckedUpdateWithoutOrdersInput>
+  }
+
+  export type CompanyUpdateWithoutOrdersInput = {
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUpdateManyWithoutCompanyNestedInput
+    users?: UserUpdateManyWithoutCompanyNestedInput
+    paymentTypes?: PaymentTypeUpdateManyWithoutCompanyNestedInput
+    transactions?: TransactionUpdateManyWithoutCompanyNestedInput
+    transactionItems?: TransactionItemUpdateManyWithoutCompanyNestedInput
+    transactionPayments?: TransactionPaymentUpdateManyWithoutCompanyNestedInput
+    transactionDetails?: TransactionDetailUpdateManyWithoutCompanyNestedInput
+    expenses?: ExpenseUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyUncheckedUpdateWithoutOrdersInput = {
+    company_id?: IntFieldUpdateOperationsInput | number
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUncheckedUpdateManyWithoutCompanyNestedInput
+    users?: UserUncheckedUpdateManyWithoutCompanyNestedInput
+    paymentTypes?: PaymentTypeUncheckedUpdateManyWithoutCompanyNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionItems?: TransactionItemUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionPayments?: TransactionPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionDetails?: TransactionDetailUncheckedUpdateManyWithoutCompanyNestedInput
+    expenses?: ExpenseUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type ProductUpsertWithoutOrdersInput = {
@@ -15601,6 +19205,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutProductsNestedInput
     transactionItems?: TransactionItemUpdateManyWithoutProductNestedInput
   }
 
@@ -15615,7 +19220,577 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
     transactionItems?: TransactionItemUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type CompanyCreateWithoutExpensesInput = {
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    products?: ProductCreateNestedManyWithoutCompanyInput
+    users?: UserCreateNestedManyWithoutCompanyInput
+    paymentTypes?: PaymentTypeCreateNestedManyWithoutCompanyInput
+    transactions?: TransactionCreateNestedManyWithoutCompanyInput
+    transactionItems?: TransactionItemCreateNestedManyWithoutCompanyInput
+    transactionPayments?: TransactionPaymentCreateNestedManyWithoutCompanyInput
+    transactionDetails?: TransactionDetailCreateNestedManyWithoutCompanyInput
+    orders?: OrderCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyUncheckedCreateWithoutExpensesInput = {
+    company_id?: number
+    company_name: string
+    company_email: string
+    company_contact_number: string
+    company_address: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    products?: ProductUncheckedCreateNestedManyWithoutCompanyInput
+    users?: UserUncheckedCreateNestedManyWithoutCompanyInput
+    paymentTypes?: PaymentTypeUncheckedCreateNestedManyWithoutCompanyInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutCompanyInput
+    transactionItems?: TransactionItemUncheckedCreateNestedManyWithoutCompanyInput
+    transactionPayments?: TransactionPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    transactionDetails?: TransactionDetailUncheckedCreateNestedManyWithoutCompanyInput
+    orders?: OrderUncheckedCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyCreateOrConnectWithoutExpensesInput = {
+    where: CompanyWhereUniqueInput
+    create: XOR<CompanyCreateWithoutExpensesInput, CompanyUncheckedCreateWithoutExpensesInput>
+  }
+
+  export type CompanyUpsertWithoutExpensesInput = {
+    update: XOR<CompanyUpdateWithoutExpensesInput, CompanyUncheckedUpdateWithoutExpensesInput>
+    create: XOR<CompanyCreateWithoutExpensesInput, CompanyUncheckedCreateWithoutExpensesInput>
+    where?: CompanyWhereInput
+  }
+
+  export type CompanyUpdateToOneWithWhereWithoutExpensesInput = {
+    where?: CompanyWhereInput
+    data: XOR<CompanyUpdateWithoutExpensesInput, CompanyUncheckedUpdateWithoutExpensesInput>
+  }
+
+  export type CompanyUpdateWithoutExpensesInput = {
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUpdateManyWithoutCompanyNestedInput
+    users?: UserUpdateManyWithoutCompanyNestedInput
+    paymentTypes?: PaymentTypeUpdateManyWithoutCompanyNestedInput
+    transactions?: TransactionUpdateManyWithoutCompanyNestedInput
+    transactionItems?: TransactionItemUpdateManyWithoutCompanyNestedInput
+    transactionPayments?: TransactionPaymentUpdateManyWithoutCompanyNestedInput
+    transactionDetails?: TransactionDetailUpdateManyWithoutCompanyNestedInput
+    orders?: OrderUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyUncheckedUpdateWithoutExpensesInput = {
+    company_id?: IntFieldUpdateOperationsInput | number
+    company_name?: StringFieldUpdateOperationsInput | string
+    company_email?: StringFieldUpdateOperationsInput | string
+    company_contact_number?: StringFieldUpdateOperationsInput | string
+    company_address?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUncheckedUpdateManyWithoutCompanyNestedInput
+    users?: UserUncheckedUpdateManyWithoutCompanyNestedInput
+    paymentTypes?: PaymentTypeUncheckedUpdateManyWithoutCompanyNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionItems?: TransactionItemUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionPayments?: TransactionPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    transactionDetails?: TransactionDetailUncheckedUpdateManyWithoutCompanyNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type ProductCreateWithoutCompanyInput = {
+    name: string
+    description?: string | null
+    product_type: string
+    price: Decimal | DecimalJsLike | number | string
+    image_url?: string | null
+    stock?: number
+    status?: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    transactionItems?: TransactionItemCreateNestedManyWithoutProductInput
+    orders?: OrderCreateNestedManyWithoutProductRefInput
+  }
+
+  export type ProductUncheckedCreateWithoutCompanyInput = {
+    id?: number
+    name: string
+    description?: string | null
+    product_type: string
+    price: Decimal | DecimalJsLike | number | string
+    image_url?: string | null
+    stock?: number
+    status?: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    transactionItems?: TransactionItemUncheckedCreateNestedManyWithoutProductInput
+    orders?: OrderUncheckedCreateNestedManyWithoutProductRefInput
+  }
+
+  export type ProductCreateOrConnectWithoutCompanyInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutCompanyInput, ProductUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type ProductCreateManyCompanyInputEnvelope = {
+    data: ProductCreateManyCompanyInput | ProductCreateManyCompanyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserCreateWithoutCompanyInput = {
+    full_name: string
+    username: string
+    password: string
+    user_type: string
+    status: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCompanyInput = {
+    id?: number
+    full_name: string
+    username: string
+    password: string
+    user_type: string
+    status: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCompanyInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCompanyInput, UserUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type UserCreateManyCompanyInputEnvelope = {
+    data: UserCreateManyCompanyInput | UserCreateManyCompanyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PaymentTypeCreateWithoutCompanyInput = {
+    name: string
+    description?: string | null
+    status?: string
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type PaymentTypeUncheckedCreateWithoutCompanyInput = {
+    id?: number
+    name: string
+    description?: string | null
+    status?: string
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type PaymentTypeCreateOrConnectWithoutCompanyInput = {
+    where: PaymentTypeWhereUniqueInput
+    create: XOR<PaymentTypeCreateWithoutCompanyInput, PaymentTypeUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type PaymentTypeCreateManyCompanyInputEnvelope = {
+    data: PaymentTypeCreateManyCompanyInput | PaymentTypeCreateManyCompanyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TransactionCreateWithoutCompanyInput = {
+    subtotal: Decimal | DecimalJsLike | number | string
+    total_paid: Decimal | DecimalJsLike | number | string
+    discount_type?: $Enums.DiscountType
+    discount_value?: Decimal | DecimalJsLike | number | string
+    change?: Decimal | DecimalJsLike | number | string
+    status?: string
+    created_at?: Date | string
+    user?: UserCreateNestedOneWithoutTransactionsInput
+    items?: TransactionItemCreateNestedManyWithoutTransactionInput
+    payments?: TransactionPaymentCreateNestedManyWithoutTransactionInput
+    details?: TransactionDetailCreateNestedManyWithoutTransactionInput
+  }
+
+  export type TransactionUncheckedCreateWithoutCompanyInput = {
+    id?: number
+    user_id?: number | null
+    subtotal: Decimal | DecimalJsLike | number | string
+    total_paid: Decimal | DecimalJsLike | number | string
+    discount_type?: $Enums.DiscountType
+    discount_value?: Decimal | DecimalJsLike | number | string
+    change?: Decimal | DecimalJsLike | number | string
+    status?: string
+    created_at?: Date | string
+    items?: TransactionItemUncheckedCreateNestedManyWithoutTransactionInput
+    payments?: TransactionPaymentUncheckedCreateNestedManyWithoutTransactionInput
+    details?: TransactionDetailUncheckedCreateNestedManyWithoutTransactionInput
+  }
+
+  export type TransactionCreateOrConnectWithoutCompanyInput = {
+    where: TransactionWhereUniqueInput
+    create: XOR<TransactionCreateWithoutCompanyInput, TransactionUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type TransactionCreateManyCompanyInputEnvelope = {
+    data: TransactionCreateManyCompanyInput | TransactionCreateManyCompanyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TransactionItemCreateWithoutCompanyInput = {
+    quantity: number
+    price: Decimal | DecimalJsLike | number | string
+    transaction: TransactionCreateNestedOneWithoutItemsInput
+    product: ProductCreateNestedOneWithoutTransactionItemsInput
+  }
+
+  export type TransactionItemUncheckedCreateWithoutCompanyInput = {
+    id?: number
+    transaction_id: number
+    product_id: number
+    quantity: number
+    price: Decimal | DecimalJsLike | number | string
+  }
+
+  export type TransactionItemCreateOrConnectWithoutCompanyInput = {
+    where: TransactionItemWhereUniqueInput
+    create: XOR<TransactionItemCreateWithoutCompanyInput, TransactionItemUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type TransactionItemCreateManyCompanyInputEnvelope = {
+    data: TransactionItemCreateManyCompanyInput | TransactionItemCreateManyCompanyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TransactionPaymentCreateWithoutCompanyInput = {
+    payment_method: string
+    amount: Decimal | DecimalJsLike | number | string
+    transaction: TransactionCreateNestedOneWithoutPaymentsInput
+  }
+
+  export type TransactionPaymentUncheckedCreateWithoutCompanyInput = {
+    id?: number
+    transaction_id: number
+    payment_method: string
+    amount: Decimal | DecimalJsLike | number | string
+  }
+
+  export type TransactionPaymentCreateOrConnectWithoutCompanyInput = {
+    where: TransactionPaymentWhereUniqueInput
+    create: XOR<TransactionPaymentCreateWithoutCompanyInput, TransactionPaymentUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type TransactionPaymentCreateManyCompanyInputEnvelope = {
+    data: TransactionPaymentCreateManyCompanyInput | TransactionPaymentCreateManyCompanyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TransactionDetailCreateWithoutCompanyInput = {
+    product_name: string
+    quantity: number
+    price: Decimal | DecimalJsLike | number | string
+    payment_method?: string | null
+    payment_amount?: Decimal | DecimalJsLike | number | string | null
+    created_at?: Date | string
+    transaction: TransactionCreateNestedOneWithoutDetailsInput
+  }
+
+  export type TransactionDetailUncheckedCreateWithoutCompanyInput = {
+    id?: number
+    transaction_id: number
+    product_name: string
+    quantity: number
+    price: Decimal | DecimalJsLike | number | string
+    payment_method?: string | null
+    payment_amount?: Decimal | DecimalJsLike | number | string | null
+    created_at?: Date | string
+  }
+
+  export type TransactionDetailCreateOrConnectWithoutCompanyInput = {
+    where: TransactionDetailWhereUniqueInput
+    create: XOR<TransactionDetailCreateWithoutCompanyInput, TransactionDetailUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type TransactionDetailCreateManyCompanyInputEnvelope = {
+    data: TransactionDetailCreateManyCompanyInput | TransactionDetailCreateManyCompanyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type OrderCreateWithoutCompanyInput = {
+    product: string
+    quantity: number
+    order_price: Decimal | DecimalJsLike | number | string
+    selling_price: Decimal | DecimalJsLike | number | string
+    profit_per_unit: Decimal | DecimalJsLike | number | string
+    net_profit: Decimal | DecimalJsLike | number | string
+    order_date: Date | string
+    remaining_quantity?: number
+    status?: string
+    productRef: ProductCreateNestedOneWithoutOrdersInput
+  }
+
+  export type OrderUncheckedCreateWithoutCompanyInput = {
+    id?: number
+    product_id: number
+    product: string
+    quantity: number
+    order_price: Decimal | DecimalJsLike | number | string
+    selling_price: Decimal | DecimalJsLike | number | string
+    profit_per_unit: Decimal | DecimalJsLike | number | string
+    net_profit: Decimal | DecimalJsLike | number | string
+    order_date: Date | string
+    remaining_quantity?: number
+    status?: string
+  }
+
+  export type OrderCreateOrConnectWithoutCompanyInput = {
+    where: OrderWhereUniqueInput
+    create: XOR<OrderCreateWithoutCompanyInput, OrderUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type OrderCreateManyCompanyInputEnvelope = {
+    data: OrderCreateManyCompanyInput | OrderCreateManyCompanyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ExpenseCreateWithoutCompanyInput = {
+    description: string
+    amount: number
+    date?: Date | string
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type ExpenseUncheckedCreateWithoutCompanyInput = {
+    id?: number
+    description: string
+    amount: number
+    date?: Date | string
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type ExpenseCreateOrConnectWithoutCompanyInput = {
+    where: ExpenseWhereUniqueInput
+    create: XOR<ExpenseCreateWithoutCompanyInput, ExpenseUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type ExpenseCreateManyCompanyInputEnvelope = {
+    data: ExpenseCreateManyCompanyInput | ExpenseCreateManyCompanyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProductUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: ProductWhereUniqueInput
+    update: XOR<ProductUpdateWithoutCompanyInput, ProductUncheckedUpdateWithoutCompanyInput>
+    create: XOR<ProductCreateWithoutCompanyInput, ProductUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type ProductUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: ProductWhereUniqueInput
+    data: XOR<ProductUpdateWithoutCompanyInput, ProductUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type ProductUpdateManyWithWhereWithoutCompanyInput = {
+    where: ProductScalarWhereInput
+    data: XOR<ProductUpdateManyMutationInput, ProductUncheckedUpdateManyWithoutCompanyInput>
+  }
+
+  export type ProductScalarWhereInput = {
+    AND?: ProductScalarWhereInput | ProductScalarWhereInput[]
+    OR?: ProductScalarWhereInput[]
+    NOT?: ProductScalarWhereInput | ProductScalarWhereInput[]
+    id?: IntFilter<"Product"> | number
+    name?: StringFilter<"Product"> | string
+    description?: StringNullableFilter<"Product"> | string | null
+    product_type?: StringFilter<"Product"> | string
+    price?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
+    image_url?: StringNullableFilter<"Product"> | string | null
+    stock?: IntFilter<"Product"> | number
+    status?: StringFilter<"Product"> | string
+    created_at?: DateTimeFilter<"Product"> | Date | string
+    updated_at?: DateTimeFilter<"Product"> | Date | string
+    company_id?: IntFilter<"Product"> | number
+  }
+
+  export type UserUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutCompanyInput, UserUncheckedUpdateWithoutCompanyInput>
+    create: XOR<UserCreateWithoutCompanyInput, UserUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type UserUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutCompanyInput, UserUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type UserUpdateManyWithWhereWithoutCompanyInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutCompanyInput>
+  }
+
+  export type UserScalarWhereInput = {
+    AND?: UserScalarWhereInput | UserScalarWhereInput[]
+    OR?: UserScalarWhereInput[]
+    NOT?: UserScalarWhereInput | UserScalarWhereInput[]
+    id?: IntFilter<"User"> | number
+    full_name?: StringFilter<"User"> | string
+    username?: StringFilter<"User"> | string
+    password?: StringFilter<"User"> | string
+    user_type?: StringFilter<"User"> | string
+    status?: StringFilter<"User"> | string
+    created_at?: DateTimeFilter<"User"> | Date | string
+    updated_at?: DateTimeFilter<"User"> | Date | string
+    company_id?: IntFilter<"User"> | number
+  }
+
+  export type PaymentTypeUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: PaymentTypeWhereUniqueInput
+    update: XOR<PaymentTypeUpdateWithoutCompanyInput, PaymentTypeUncheckedUpdateWithoutCompanyInput>
+    create: XOR<PaymentTypeCreateWithoutCompanyInput, PaymentTypeUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type PaymentTypeUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: PaymentTypeWhereUniqueInput
+    data: XOR<PaymentTypeUpdateWithoutCompanyInput, PaymentTypeUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type PaymentTypeUpdateManyWithWhereWithoutCompanyInput = {
+    where: PaymentTypeScalarWhereInput
+    data: XOR<PaymentTypeUpdateManyMutationInput, PaymentTypeUncheckedUpdateManyWithoutCompanyInput>
+  }
+
+  export type PaymentTypeScalarWhereInput = {
+    AND?: PaymentTypeScalarWhereInput | PaymentTypeScalarWhereInput[]
+    OR?: PaymentTypeScalarWhereInput[]
+    NOT?: PaymentTypeScalarWhereInput | PaymentTypeScalarWhereInput[]
+    id?: IntFilter<"PaymentType"> | number
+    name?: StringFilter<"PaymentType"> | string
+    description?: StringNullableFilter<"PaymentType"> | string | null
+    status?: StringFilter<"PaymentType"> | string
+    created_at?: DateTimeFilter<"PaymentType"> | Date | string
+    updated_at?: DateTimeFilter<"PaymentType"> | Date | string
+    company_id?: IntFilter<"PaymentType"> | number
+  }
+
+  export type TransactionUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: TransactionWhereUniqueInput
+    update: XOR<TransactionUpdateWithoutCompanyInput, TransactionUncheckedUpdateWithoutCompanyInput>
+    create: XOR<TransactionCreateWithoutCompanyInput, TransactionUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type TransactionUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: TransactionWhereUniqueInput
+    data: XOR<TransactionUpdateWithoutCompanyInput, TransactionUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type TransactionUpdateManyWithWhereWithoutCompanyInput = {
+    where: TransactionScalarWhereInput
+    data: XOR<TransactionUpdateManyMutationInput, TransactionUncheckedUpdateManyWithoutCompanyInput>
+  }
+
+  export type TransactionItemUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: TransactionItemWhereUniqueInput
+    update: XOR<TransactionItemUpdateWithoutCompanyInput, TransactionItemUncheckedUpdateWithoutCompanyInput>
+    create: XOR<TransactionItemCreateWithoutCompanyInput, TransactionItemUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type TransactionItemUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: TransactionItemWhereUniqueInput
+    data: XOR<TransactionItemUpdateWithoutCompanyInput, TransactionItemUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type TransactionItemUpdateManyWithWhereWithoutCompanyInput = {
+    where: TransactionItemScalarWhereInput
+    data: XOR<TransactionItemUpdateManyMutationInput, TransactionItemUncheckedUpdateManyWithoutCompanyInput>
+  }
+
+  export type TransactionPaymentUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: TransactionPaymentWhereUniqueInput
+    update: XOR<TransactionPaymentUpdateWithoutCompanyInput, TransactionPaymentUncheckedUpdateWithoutCompanyInput>
+    create: XOR<TransactionPaymentCreateWithoutCompanyInput, TransactionPaymentUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type TransactionPaymentUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: TransactionPaymentWhereUniqueInput
+    data: XOR<TransactionPaymentUpdateWithoutCompanyInput, TransactionPaymentUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type TransactionPaymentUpdateManyWithWhereWithoutCompanyInput = {
+    where: TransactionPaymentScalarWhereInput
+    data: XOR<TransactionPaymentUpdateManyMutationInput, TransactionPaymentUncheckedUpdateManyWithoutCompanyInput>
+  }
+
+  export type TransactionDetailUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: TransactionDetailWhereUniqueInput
+    update: XOR<TransactionDetailUpdateWithoutCompanyInput, TransactionDetailUncheckedUpdateWithoutCompanyInput>
+    create: XOR<TransactionDetailCreateWithoutCompanyInput, TransactionDetailUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type TransactionDetailUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: TransactionDetailWhereUniqueInput
+    data: XOR<TransactionDetailUpdateWithoutCompanyInput, TransactionDetailUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type TransactionDetailUpdateManyWithWhereWithoutCompanyInput = {
+    where: TransactionDetailScalarWhereInput
+    data: XOR<TransactionDetailUpdateManyMutationInput, TransactionDetailUncheckedUpdateManyWithoutCompanyInput>
+  }
+
+  export type OrderUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: OrderWhereUniqueInput
+    update: XOR<OrderUpdateWithoutCompanyInput, OrderUncheckedUpdateWithoutCompanyInput>
+    create: XOR<OrderCreateWithoutCompanyInput, OrderUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type OrderUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: OrderWhereUniqueInput
+    data: XOR<OrderUpdateWithoutCompanyInput, OrderUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type OrderUpdateManyWithWhereWithoutCompanyInput = {
+    where: OrderScalarWhereInput
+    data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyWithoutCompanyInput>
+  }
+
+  export type ExpenseUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: ExpenseWhereUniqueInput
+    update: XOR<ExpenseUpdateWithoutCompanyInput, ExpenseUncheckedUpdateWithoutCompanyInput>
+    create: XOR<ExpenseCreateWithoutCompanyInput, ExpenseUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type ExpenseUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: ExpenseWhereUniqueInput
+    data: XOR<ExpenseUpdateWithoutCompanyInput, ExpenseUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type ExpenseUpdateManyWithWhereWithoutCompanyInput = {
+    where: ExpenseScalarWhereInput
+    data: XOR<ExpenseUpdateManyMutationInput, ExpenseUncheckedUpdateManyWithoutCompanyInput>
+  }
+
+  export type ExpenseScalarWhereInput = {
+    AND?: ExpenseScalarWhereInput | ExpenseScalarWhereInput[]
+    OR?: ExpenseScalarWhereInput[]
+    NOT?: ExpenseScalarWhereInput | ExpenseScalarWhereInput[]
+    id?: IntFilter<"Expense"> | number
+    description?: StringFilter<"Expense"> | string
+    amount?: FloatFilter<"Expense"> | number
+    date?: DateTimeFilter<"Expense"> | Date | string
+    created_at?: DateTimeFilter<"Expense"> | Date | string
+    updated_at?: DateTimeFilter<"Expense"> | Date | string
+    company_id?: IntFilter<"Expense"> | number
   }
 
   export type TransactionItemCreateManyProductInput = {
@@ -15623,6 +19798,7 @@ export namespace Prisma {
     transaction_id: number
     quantity: number
     price: Decimal | DecimalJsLike | number | string
+    company_id: number
   }
 
   export type OrderCreateManyProductRefInput = {
@@ -15636,11 +19812,13 @@ export namespace Prisma {
     order_date: Date | string
     remaining_quantity?: number
     status?: string
+    company_id: number
   }
 
   export type TransactionItemUpdateWithoutProductInput = {
     quantity?: IntFieldUpdateOperationsInput | number
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    company?: CompanyUpdateOneRequiredWithoutTransactionItemsNestedInput
     transaction?: TransactionUpdateOneRequiredWithoutItemsNestedInput
   }
 
@@ -15649,6 +19827,7 @@ export namespace Prisma {
     transaction_id?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type TransactionItemUncheckedUpdateManyWithoutProductInput = {
@@ -15656,6 +19835,7 @@ export namespace Prisma {
     transaction_id?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type OrderUpdateWithoutProductRefInput = {
@@ -15668,6 +19848,7 @@ export namespace Prisma {
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     remaining_quantity?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    company?: CompanyUpdateOneRequiredWithoutOrdersNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutProductRefInput = {
@@ -15681,6 +19862,7 @@ export namespace Prisma {
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     remaining_quantity?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type OrderUncheckedUpdateManyWithoutProductRefInput = {
@@ -15694,6 +19876,7 @@ export namespace Prisma {
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     remaining_quantity?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type TransactionCreateManyUserInput = {
@@ -15705,6 +19888,7 @@ export namespace Prisma {
     change?: Decimal | DecimalJsLike | number | string
     status?: string
     created_at?: Date | string
+    company_id: number
   }
 
   export type TransactionUpdateWithoutUserInput = {
@@ -15715,6 +19899,7 @@ export namespace Prisma {
     change?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutTransactionsNestedInput
     items?: TransactionItemUpdateManyWithoutTransactionNestedInput
     payments?: TransactionPaymentUpdateManyWithoutTransactionNestedInput
     details?: TransactionDetailUpdateManyWithoutTransactionNestedInput
@@ -15729,6 +19914,7 @@ export namespace Prisma {
     change?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
     items?: TransactionItemUncheckedUpdateManyWithoutTransactionNestedInput
     payments?: TransactionPaymentUncheckedUpdateManyWithoutTransactionNestedInput
     details?: TransactionDetailUncheckedUpdateManyWithoutTransactionNestedInput
@@ -15743,6 +19929,7 @@ export namespace Prisma {
     change?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type TransactionItemCreateManyTransactionInput = {
@@ -15750,12 +19937,14 @@ export namespace Prisma {
     product_id: number
     quantity: number
     price: Decimal | DecimalJsLike | number | string
+    company_id: number
   }
 
   export type TransactionPaymentCreateManyTransactionInput = {
     id?: number
     payment_method: string
     amount: Decimal | DecimalJsLike | number | string
+    company_id: number
   }
 
   export type TransactionDetailCreateManyTransactionInput = {
@@ -15766,11 +19955,13 @@ export namespace Prisma {
     payment_method?: string | null
     payment_amount?: Decimal | DecimalJsLike | number | string | null
     created_at?: Date | string
+    company_id: number
   }
 
   export type TransactionItemUpdateWithoutTransactionInput = {
     quantity?: IntFieldUpdateOperationsInput | number
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    company?: CompanyUpdateOneRequiredWithoutTransactionItemsNestedInput
     product?: ProductUpdateOneRequiredWithoutTransactionItemsNestedInput
   }
 
@@ -15779,6 +19970,7 @@ export namespace Prisma {
     product_id?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type TransactionItemUncheckedUpdateManyWithoutTransactionInput = {
@@ -15786,23 +19978,27 @@ export namespace Prisma {
     product_id?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type TransactionPaymentUpdateWithoutTransactionInput = {
     payment_method?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    company?: CompanyUpdateOneRequiredWithoutTransactionPaymentsNestedInput
   }
 
   export type TransactionPaymentUncheckedUpdateWithoutTransactionInput = {
     id?: IntFieldUpdateOperationsInput | number
     payment_method?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type TransactionPaymentUncheckedUpdateManyWithoutTransactionInput = {
     id?: IntFieldUpdateOperationsInput | number
     payment_method?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type TransactionDetailUpdateWithoutTransactionInput = {
@@ -15812,6 +20008,7 @@ export namespace Prisma {
     payment_method?: NullableStringFieldUpdateOperationsInput | string | null
     payment_amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutTransactionDetailsNestedInput
   }
 
   export type TransactionDetailUncheckedUpdateWithoutTransactionInput = {
@@ -15822,6 +20019,7 @@ export namespace Prisma {
     payment_method?: NullableStringFieldUpdateOperationsInput | string | null
     payment_amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type TransactionDetailUncheckedUpdateManyWithoutTransactionInput = {
@@ -15832,6 +20030,386 @@ export namespace Prisma {
     payment_method?: NullableStringFieldUpdateOperationsInput | string | null
     payment_amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company_id?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ProductCreateManyCompanyInput = {
+    id?: number
+    name: string
+    description?: string | null
+    product_type: string
+    price: Decimal | DecimalJsLike | number | string
+    image_url?: string | null
+    stock?: number
+    status?: string
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type UserCreateManyCompanyInput = {
+    id?: number
+    full_name: string
+    username: string
+    password: string
+    user_type: string
+    status: string
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type PaymentTypeCreateManyCompanyInput = {
+    id?: number
+    name: string
+    description?: string | null
+    status?: string
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type TransactionCreateManyCompanyInput = {
+    id?: number
+    user_id?: number | null
+    subtotal: Decimal | DecimalJsLike | number | string
+    total_paid: Decimal | DecimalJsLike | number | string
+    discount_type?: $Enums.DiscountType
+    discount_value?: Decimal | DecimalJsLike | number | string
+    change?: Decimal | DecimalJsLike | number | string
+    status?: string
+    created_at?: Date | string
+  }
+
+  export type TransactionItemCreateManyCompanyInput = {
+    id?: number
+    transaction_id: number
+    product_id: number
+    quantity: number
+    price: Decimal | DecimalJsLike | number | string
+  }
+
+  export type TransactionPaymentCreateManyCompanyInput = {
+    id?: number
+    transaction_id: number
+    payment_method: string
+    amount: Decimal | DecimalJsLike | number | string
+  }
+
+  export type TransactionDetailCreateManyCompanyInput = {
+    id?: number
+    transaction_id: number
+    product_name: string
+    quantity: number
+    price: Decimal | DecimalJsLike | number | string
+    payment_method?: string | null
+    payment_amount?: Decimal | DecimalJsLike | number | string | null
+    created_at?: Date | string
+  }
+
+  export type OrderCreateManyCompanyInput = {
+    id?: number
+    product_id: number
+    product: string
+    quantity: number
+    order_price: Decimal | DecimalJsLike | number | string
+    selling_price: Decimal | DecimalJsLike | number | string
+    profit_per_unit: Decimal | DecimalJsLike | number | string
+    net_profit: Decimal | DecimalJsLike | number | string
+    order_date: Date | string
+    remaining_quantity?: number
+    status?: string
+  }
+
+  export type ExpenseCreateManyCompanyInput = {
+    id?: number
+    description: string
+    amount: number
+    date?: Date | string
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type ProductUpdateWithoutCompanyInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    product_type?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    image_url?: NullableStringFieldUpdateOperationsInput | string | null
+    stock?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactionItems?: TransactionItemUpdateManyWithoutProductNestedInput
+    orders?: OrderUpdateManyWithoutProductRefNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    product_type?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    image_url?: NullableStringFieldUpdateOperationsInput | string | null
+    stock?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactionItems?: TransactionItemUncheckedUpdateManyWithoutProductNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutProductRefNestedInput
+  }
+
+  export type ProductUncheckedUpdateManyWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    product_type?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    image_url?: NullableStringFieldUpdateOperationsInput | string | null
+    stock?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUpdateWithoutCompanyInput = {
+    full_name?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    user_type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    full_name?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    user_type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateManyWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    full_name?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    user_type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentTypeUpdateWithoutCompanyInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentTypeUncheckedUpdateWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentTypeUncheckedUpdateManyWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransactionUpdateWithoutCompanyInput = {
+    subtotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    discount_type?: EnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType
+    discount_value?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    change?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutTransactionsNestedInput
+    items?: TransactionItemUpdateManyWithoutTransactionNestedInput
+    payments?: TransactionPaymentUpdateManyWithoutTransactionNestedInput
+    details?: TransactionDetailUpdateManyWithoutTransactionNestedInput
+  }
+
+  export type TransactionUncheckedUpdateWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    user_id?: NullableIntFieldUpdateOperationsInput | number | null
+    subtotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    discount_type?: EnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType
+    discount_value?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    change?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: TransactionItemUncheckedUpdateManyWithoutTransactionNestedInput
+    payments?: TransactionPaymentUncheckedUpdateManyWithoutTransactionNestedInput
+    details?: TransactionDetailUncheckedUpdateManyWithoutTransactionNestedInput
+  }
+
+  export type TransactionUncheckedUpdateManyWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    user_id?: NullableIntFieldUpdateOperationsInput | number | null
+    subtotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    discount_type?: EnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType
+    discount_value?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    change?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransactionItemUpdateWithoutCompanyInput = {
+    quantity?: IntFieldUpdateOperationsInput | number
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    transaction?: TransactionUpdateOneRequiredWithoutItemsNestedInput
+    product?: ProductUpdateOneRequiredWithoutTransactionItemsNestedInput
+  }
+
+  export type TransactionItemUncheckedUpdateWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    transaction_id?: IntFieldUpdateOperationsInput | number
+    product_id?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+  }
+
+  export type TransactionItemUncheckedUpdateManyWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    transaction_id?: IntFieldUpdateOperationsInput | number
+    product_id?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+  }
+
+  export type TransactionPaymentUpdateWithoutCompanyInput = {
+    payment_method?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    transaction?: TransactionUpdateOneRequiredWithoutPaymentsNestedInput
+  }
+
+  export type TransactionPaymentUncheckedUpdateWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    transaction_id?: IntFieldUpdateOperationsInput | number
+    payment_method?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+  }
+
+  export type TransactionPaymentUncheckedUpdateManyWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    transaction_id?: IntFieldUpdateOperationsInput | number
+    payment_method?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+  }
+
+  export type TransactionDetailUpdateWithoutCompanyInput = {
+    product_name?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    payment_method?: NullableStringFieldUpdateOperationsInput | string | null
+    payment_amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    transaction?: TransactionUpdateOneRequiredWithoutDetailsNestedInput
+  }
+
+  export type TransactionDetailUncheckedUpdateWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    transaction_id?: IntFieldUpdateOperationsInput | number
+    product_name?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    payment_method?: NullableStringFieldUpdateOperationsInput | string | null
+    payment_amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransactionDetailUncheckedUpdateManyWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    transaction_id?: IntFieldUpdateOperationsInput | number
+    product_name?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    payment_method?: NullableStringFieldUpdateOperationsInput | string | null
+    payment_amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrderUpdateWithoutCompanyInput = {
+    product?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    order_price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    selling_price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    profit_per_unit?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    net_profit?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    order_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    remaining_quantity?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    productRef?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+  }
+
+  export type OrderUncheckedUpdateWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    product_id?: IntFieldUpdateOperationsInput | number
+    product?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    order_price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    selling_price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    profit_per_unit?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    net_profit?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    order_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    remaining_quantity?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type OrderUncheckedUpdateManyWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    product_id?: IntFieldUpdateOperationsInput | number
+    product?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    order_price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    selling_price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    profit_per_unit?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    net_profit?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    order_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    remaining_quantity?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ExpenseUpdateWithoutCompanyInput = {
+    description?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExpenseUncheckedUpdateWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExpenseUncheckedUpdateManyWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

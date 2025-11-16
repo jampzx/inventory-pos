@@ -130,7 +130,8 @@ exports.Prisma.ProductScalarFieldEnum = {
   stock: 'stock',
   status: 'status',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  company_id: 'company_id'
 };
 
 exports.Prisma.UserScalarFieldEnum = {
@@ -141,7 +142,8 @@ exports.Prisma.UserScalarFieldEnum = {
   user_type: 'user_type',
   status: 'status',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  company_id: 'company_id'
 };
 
 exports.Prisma.PaymentTypeScalarFieldEnum = {
@@ -150,7 +152,8 @@ exports.Prisma.PaymentTypeScalarFieldEnum = {
   description: 'description',
   status: 'status',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  company_id: 'company_id'
 };
 
 exports.Prisma.TransactionScalarFieldEnum = {
@@ -162,7 +165,8 @@ exports.Prisma.TransactionScalarFieldEnum = {
   discount_value: 'discount_value',
   change: 'change',
   status: 'status',
-  created_at: 'created_at'
+  created_at: 'created_at',
+  company_id: 'company_id'
 };
 
 exports.Prisma.TransactionItemScalarFieldEnum = {
@@ -170,14 +174,16 @@ exports.Prisma.TransactionItemScalarFieldEnum = {
   transaction_id: 'transaction_id',
   product_id: 'product_id',
   quantity: 'quantity',
-  price: 'price'
+  price: 'price',
+  company_id: 'company_id'
 };
 
 exports.Prisma.TransactionPaymentScalarFieldEnum = {
   id: 'id',
   transaction_id: 'transaction_id',
   payment_method: 'payment_method',
-  amount: 'amount'
+  amount: 'amount',
+  company_id: 'company_id'
 };
 
 exports.Prisma.TransactionDetailScalarFieldEnum = {
@@ -188,7 +194,8 @@ exports.Prisma.TransactionDetailScalarFieldEnum = {
   price: 'price',
   payment_method: 'payment_method',
   payment_amount: 'payment_amount',
-  created_at: 'created_at'
+  created_at: 'created_at',
+  company_id: 'company_id'
 };
 
 exports.Prisma.OrderScalarFieldEnum = {
@@ -202,7 +209,8 @@ exports.Prisma.OrderScalarFieldEnum = {
   net_profit: 'net_profit',
   order_date: 'order_date',
   remaining_quantity: 'remaining_quantity',
-  status: 'status'
+  status: 'status',
+  company_id: 'company_id'
 };
 
 exports.Prisma.ExpenseScalarFieldEnum = {
@@ -210,6 +218,17 @@ exports.Prisma.ExpenseScalarFieldEnum = {
   description: 'description',
   amount: 'amount',
   date: 'date',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  company_id: 'company_id'
+};
+
+exports.Prisma.CompanyScalarFieldEnum = {
+  company_id: 'company_id',
+  company_name: 'company_name',
+  company_email: 'company_email',
+  company_contact_number: 'company_contact_number',
+  company_address: 'company_address',
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
@@ -242,7 +261,8 @@ exports.Prisma.ModelName = {
   TransactionPayment: 'TransactionPayment',
   TransactionDetail: 'TransactionDetail',
   Order: 'Order',
-  Expense: 'Expense'
+  Expense: 'Expense',
+  Company: 'Company'
 };
 
 /**
