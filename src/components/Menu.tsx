@@ -14,6 +14,7 @@ import {
   FiCreditCard,
   FiLogOut,
   FiFileText,
+  FiUsers,
 } from "react-icons/fi";
 import { BsCashCoin } from "react-icons/bs";
 
@@ -25,6 +26,16 @@ type MenuItem = {
 
 const menuItems: { title: string; items: MenuItem[] }[] = [
   {
+    title: "Dashboard",
+    items: [
+      {
+        icon: <FiFileText />,
+        label: "Analytics",
+        href: "/analytics",
+      },
+    ],
+  },
+  {
     title: "Menu",
     items: [
       {
@@ -33,24 +44,24 @@ const menuItems: { title: string; items: MenuItem[] }[] = [
         href: "/pos",
       },
       {
-        icon: <FiShoppingCart />,
-        label: "Transactions",
-        href: "/transactions",
-      },
-      {
-        icon: <FiTruck />,
-        label: "Purchase Order",
-        href: "/orders",
-      },
-      {
         icon: <FiPackage />,
         label: "Products",
         href: "/products",
       },
       {
-        icon: <FiFileText />,
-        label: "Daily Sales Summary",
-        href: "/report/daily-summary",
+        icon: <FiTruck />,
+        label: "Orders",
+        href: "/orders",
+      },
+      {
+        icon: <BsCashCoin />,
+        label: "Expenses",
+        href: "/expenses",
+      },
+      {
+        icon: <FiCreditCard />,
+        label: "Transactions",
+        href: "/transactions",
       },
     ],
   },
@@ -58,7 +69,7 @@ const menuItems: { title: string; items: MenuItem[] }[] = [
     title: "Account",
     items: [
       {
-        icon: <FiPackage />,
+        icon: <FiUsers />,
         label: "Users",
         href: "/users",
       },
