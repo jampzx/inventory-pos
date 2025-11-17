@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { withAuth } from "@/lib/authMiddleware";
 
 const updateExpenseSchema = z.object({
   description: z.string().min(1, "Description is required"),
@@ -9,51 +10,56 @@ const updateExpenseSchema = z.object({
 });
 
 export async function PATCH(
-  req: Request,
+  _req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const id = parseInt(params.id);
-  if (isNaN(id)) {
-    return NextResponse.json(
-      { success: false, message: "Invalid ID" },
-      { status: 400 }
-    );
-  }
-
-  try {
-    const body = await req.json();
-    const result = updateExpenseSchema.safeParse(body);
-
-    if (!result.success) {
-      const errors = result.error.flatten().fieldErrors;
+  return withAuth(async (req, user) => {
+    const id = parseInt(params.id);
+    if (isNaN(id)) {
       return NextResponse.json(
-        { success: false, message: "Validation failed", errors },
+        { success: false, message: "Invalid ID" },
         { status: 400 }
       );
     }
 
-    const { description, amount, date } = result.data;
+    try {
+      const body = await req.json();
+      const result = updateExpenseSchema.safeParse(body);
 
-    const updated = await prisma.expense.update({
-      where: { id },
-      data: {
-        description,
-        amount,
-        date: date ? new Date(date) : undefined,
-      },
-    });
+      if (!result.success) {
+        const errors = result.error.flatten().fieldErrors;
+        return NextResponse.json(
+          { success: false, message: "Validation failed", errors },
+          { status: 400 }
+        );
+      }
 
-    return NextResponse.json({ success: true, data: updated });
-  } catch (error: any) {
-    if (error.code === "P2025") {
+      const { description, amount, date } = result.data;
+
+      const updated = await prisma.expense.update({
+        where: {
+          id,
+          company_id: user.company_id,
+        },
+        data: {
+          description,
+          amount,
+          date: date ? new Date(date) : undefined,
+        },
+      });
+
+      return NextResponse.json({ success: true, data: updated });
+    } catch (error: any) {
+      if (error.code === "P2025") {
+        return NextResponse.json(
+          { success: false, message: "Expense not found" },
+          { status: 404 }
+        );
+      }
       return NextResponse.json(
-        { success: false, message: "Expense not found" },
-        { status: 404 }
+        { success: false, message: "Failed to update expense" },
+        { status: 500 }
       );
     }
-    return NextResponse.json(
-      { success: false, message: "Failed to update expense" },
-      { status: 500 }
-    );
-  }
+  })(_req);
 }

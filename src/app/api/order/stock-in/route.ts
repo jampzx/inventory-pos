@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "lib/prisma";
+import { withAuth } from "@/lib/authMiddleware";
 
-export async function POST(req: Request) {
+export const POST = withAuth(async (req: NextRequest, user) => {
   try {
     const { orderId, quantity } = await req.json();
 
@@ -14,7 +15,10 @@ export async function POST(req: Request) {
 
     // Fetch the order
     const order = await prisma.order.findUnique({
-      where: { id: orderId },
+      where: {
+        id: orderId,
+        company_id: user.company_id,
+      },
       include: { productRef: true },
     });
 
@@ -37,7 +41,10 @@ export async function POST(req: Request) {
 
     // Update the product stock
     await prisma.product.update({
-      where: { id: order.product_id },
+      where: {
+        id: order.product_id,
+        company_id: user.company_id,
+      },
       data: {
         stock: {
           increment: quantity, // Add the quantity to the product's stock
@@ -47,7 +54,10 @@ export async function POST(req: Request) {
 
     // Update the order's remaining quantity
     await prisma.order.update({
-      where: { id: orderId },
+      where: {
+        id: orderId,
+        company_id: user.company_id,
+      },
       data: {
         remaining_quantity: {
           decrement: quantity, // Subtract the quantity from the order's remaining quantity
@@ -66,4 +76,4 @@ export async function POST(req: Request) {
       { status: 500 }
     );
   }
-}
+});

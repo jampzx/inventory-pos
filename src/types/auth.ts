@@ -3,12 +3,8 @@ export interface JwtUserPayload {
   name: string;
   username: string;
   user_type: string;
-  status: string;
-  created_at: string;
-  updated_at: string;
-  branches: {
-    id: number;
-    name: string;
-  }[];
-  permissions: { group: string; action: string }[];
+  status?: string;
+  created_at?: string;
+  updated_at?: string;
+  company_id: number;
 }

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import {
   startOfMonth,
   endOfMonth,
@@ -8,11 +8,14 @@ import {
   startOfDay,
   endOfDay,
 } from "date-fns";
+import { withAuth } from "@/lib/authMiddleware";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export const GET = withAuth(async (req: NextRequest, user) => {
   try {
+    const company_id = user.company_id;
+
     // Get daily sales for the last 30 days
     const last30Days = subDays(new Date(), 30);
     const dailySales = await prisma.$queryRaw<
@@ -24,6 +27,7 @@ export async function GET() {
       FROM transactions
       WHERE created_at >= ${last30Days}
         AND status = 'completed'
+        AND company_id = ${company_id}
       GROUP BY DATE(created_at)
       ORDER BY date ASC
     `;
@@ -38,6 +42,7 @@ export async function GET() {
         SUM(amount)::numeric as expenses
       FROM expenses
       WHERE date >= ${last12Months}
+        AND company_id = ${company_id}
       GROUP BY TO_CHAR(date, 'YYYY-MM')
       ORDER BY month ASC
     `;
@@ -52,8 +57,9 @@ export async function GET() {
         COUNT(*)::integer as count
       FROM transaction_payments
       WHERE transaction_id IN (
-        SELECT id FROM transactions WHERE status = 'completed'
+        SELECT id FROM transactions WHERE status = 'completed' AND company_id = ${company_id}
       )
+        AND company_id = ${company_id}
       GROUP BY payment_method
       ORDER BY total DESC
     `;
@@ -70,6 +76,7 @@ export async function GET() {
       INNER JOIN products p ON ti.product_id = p.id
       INNER JOIN transactions t ON ti.transaction_id = t.id
       WHERE t.status = 'completed'
+        AND ti.company_id = ${company_id}
       GROUP BY p.id, p.name
       ORDER BY quantity_sold DESC
       LIMIT 10
@@ -87,6 +94,7 @@ export async function GET() {
       LEFT JOIN transaction_items ti ON p.id = ti.product_id
       LEFT JOIN transactions t ON ti.transaction_id = t.id AND t.status = 'completed'
       WHERE p.status = 'active'
+        AND p.company_id = ${company_id}
       GROUP BY p.id, p.name, p.stock
       ORDER BY quantity_sold ASC, p.stock DESC
       LIMIT 10
@@ -127,4 +135,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-}
+});

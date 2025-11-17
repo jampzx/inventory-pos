@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { withAuth } from "@/lib/authMiddleware";
 
 const expenseSchema = z.object({
   description: z.string().min(1, "Description is required"),
@@ -13,7 +14,7 @@ const expenseSchema = z.object({
   date: z.string().optional(),
 });
 
-export async function POST(req: Request) {
+export const POST = withAuth(async (req: NextRequest, user) => {
   try {
     const body = await req.json();
 
@@ -34,6 +35,7 @@ export async function POST(req: Request) {
         description,
         amount,
         date: date ? new Date(date) : undefined,
+        company_id: user.company_id,
       },
     });
 
@@ -44,4 +46,4 @@ export async function POST(req: Request) {
       { status: 500 }
     );
   }
-}
+});

@@ -21,6 +21,10 @@ const ExpenseForm = dynamic(() => import("./forms/ExpenseForm"), {
   loading: () => <h1>Loading...</h1>,
 });
 
+const CompanyForm = dynamic(() => import("./forms/CompanyForm"), {
+  loading: () => <h1>Loading...</h1>,
+});
+
 const forms: Record<string, any> = {
   product: (type: string, data: any, props: any) => (
     <ProductForm type={type} data={data} {...props} />
@@ -33,6 +37,9 @@ const forms: Record<string, any> = {
   ),
   expense: (type: string, data: any, props: any) => (
     <ExpenseForm type={type} data={data} {...props} />
+  ),
+  company: (type: string, data: any, props: any) => (
+    <CompanyForm type={type} data={data} {...props} />
   ),
 };
 

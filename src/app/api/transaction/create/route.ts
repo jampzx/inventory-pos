@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { withAuth } from "@/lib/authMiddleware";
 
 const transactionSchema = z.object({
   cartItems: z.array(
@@ -20,7 +21,7 @@ const transactionSchema = z.object({
   discountValue: z.number().min(0),
 });
 
-export async function POST(req: Request) {
+export const POST = withAuth(async (req: NextRequest, user) => {
   try {
     const body = await req.json();
     const parsed = transactionSchema.parse(body);
@@ -50,6 +51,8 @@ export async function POST(req: Request) {
         change,
         discount_type: discountType,
         discount_value: discountValue,
+        company_id: user.company_id,
+        user_id: user.id,
       },
     });
 
@@ -61,6 +64,7 @@ export async function POST(req: Request) {
             product_id: item.productId,
             quantity: item.quantity,
             price: item.price,
+            company_id: user.company_id,
           },
         })
       )
@@ -73,6 +77,7 @@ export async function POST(req: Request) {
             transaction_id: transaction.id,
             payment_method: p.method,
             amount: p.amount,
+            company_id: user.company_id,
           },
         })
       )
@@ -104,4 +109,4 @@ export async function POST(req: Request) {
       { status: 500 }
     );
   }
-}
+});

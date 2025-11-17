@@ -1,11 +1,13 @@
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { withAuth } from "@/lib/authMiddleware";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export const GET = withAuth(async (req: NextRequest, user) => {
   try {
     const transactions = await prisma.transaction.findMany({
+      where: { company_id: user.company_id },
       orderBy: { created_at: "desc" },
       include: {
         items: {
@@ -32,4 +34,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-}
+});

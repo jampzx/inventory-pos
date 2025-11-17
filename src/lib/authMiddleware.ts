@@ -1,13 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyJwt } from "./jwt";
 import { JwtUserPayload } from "types/auth";
+import { cookies } from "next/headers";
 
 export function withAuth(
   handler: (req: NextRequest, user: JwtUserPayload) => Promise<NextResponse>
 ) {
   return async (req: NextRequest) => {
+    // Try to get token from Authorization header first
     const authHeader = req.headers.get("authorization");
-    const token = authHeader?.split(" ")[1];
+    let token = authHeader?.split(" ")[1];
+
+    // If no token in header, try to get from cookies
+    if (!token) {
+      token = cookies().get("token")?.value;
+    }
 
     if (!token) {
       return NextResponse.json(

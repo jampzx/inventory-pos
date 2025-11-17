@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { withAuth } from "@/lib/authMiddleware";
 
-export async function POST(req: NextRequest) {
+export const POST = withAuth(async (req: NextRequest, user) => {
   try {
     const { startDate, endDate } = await req.json();
 
@@ -19,6 +20,7 @@ export async function POST(req: NextRequest) {
 
     const expenses = await prisma.expense.findMany({
       where: {
+        company_id: user.company_id,
         date: {
           gte: start,
           lte: end,
@@ -38,4 +40,4 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
-}
+});

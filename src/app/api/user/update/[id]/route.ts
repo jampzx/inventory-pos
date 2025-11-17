@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "lib/prisma";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
+import { withAuth } from "@/lib/authMiddleware";
 
 // Same schema, but password is optional for update
 const userUpdateSchema = z.object({
@@ -13,63 +14,71 @@ const userUpdateSchema = z.object({
 });
 
 export async function PUT(
-  req: Request,
+  _req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  try {
-    const id = parseInt(params.id);
-    if (isNaN(id)) {
+  return withAuth(async (req, user) => {
+    try {
+      const id = parseInt(params.id);
+      if (isNaN(id)) {
+        return NextResponse.json(
+          { success: false, message: "Invalid user ID" },
+          { status: 400 }
+        );
+      }
+
+      const body = await req.json();
+      const parsed = userUpdateSchema.safeParse(body);
+
+      if (!parsed.success) {
+        return NextResponse.json(
+          { success: false, errors: parsed.error.flatten().fieldErrors },
+          { status: 400 }
+        );
+      }
+
+      const { username, password, ...rest } = parsed.data;
+
+      const existingUser = await prisma.user.findUnique({
+        where: {
+          id,
+          company_id: user.company_id,
+        },
+      });
+
+      if (!existingUser) {
+        return NextResponse.json(
+          { success: false, message: "User not found" },
+          { status: 404 }
+        );
+      }
+
+      // Hash new password if provided
+      const updatedData: any = {
+        username,
+        ...rest,
+      };
+
+      if (password) {
+        updatedData.password = await bcrypt.hash(password, 12);
+      }
+
+      // ✅ Step 1: Update the user record
+      const updatedUser = await prisma.user.update({
+        where: {
+          id,
+          company_id: user.company_id,
+        },
+        data: updatedData,
+      });
+
+      return NextResponse.json({ success: true, data: updatedUser });
+    } catch (error) {
+      console.error("Failed to update user:", error);
       return NextResponse.json(
-        { success: false, message: "Invalid user ID" },
-        { status: 400 }
+        { success: false, message: "Server error" },
+        { status: 500 }
       );
     }
-
-    const body = await req.json();
-    const parsed = userUpdateSchema.safeParse(body);
-
-    if (!parsed.success) {
-      return NextResponse.json(
-        { success: false, errors: parsed.error.flatten().fieldErrors },
-        { status: 400 }
-      );
-    }
-
-    const { username, password, ...rest } = parsed.data;
-
-    const existingUser = await prisma.user.findUnique({
-      where: { id },
-    });
-
-    if (!existingUser) {
-      return NextResponse.json(
-        { success: false, message: "User not found" },
-        { status: 404 }
-      );
-    }
-
-    // Hash new password if provided
-    const updatedData: any = {
-      username,
-      ...rest,
-    };
-
-    if (password) {
-      updatedData.password = await bcrypt.hash(password, 12);
-    }
-
-    // ✅ Step 1: Update the user record
-    const updatedUser = await prisma.user.update({
-      where: { id },
-      data: updatedData,
-    });
-
-    return NextResponse.json({ success: true, data: updatedUser });
-  } catch (error) {
-    console.error("Failed to update user:", error);
-    return NextResponse.json(
-      { success: false, message: "Server error" },
-      { status: 500 }
-    );
-  }
+  })(_req);
 }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { withAuth } from "@/lib/authMiddleware";
 
 const orderSchema = z.object({
   product_id: z.number(),
@@ -10,7 +11,7 @@ const orderSchema = z.object({
   order_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
 });
 
-export async function POST(req: NextRequest) {
+export const POST = withAuth(async (req: NextRequest, user) => {
   const body = await req.json();
   const parse = orderSchema.safeParse(body);
 
@@ -23,7 +24,10 @@ export async function POST(req: NextRequest) {
 
   try {
     const product = await prisma.product.findUnique({
-      where: { id: product_id },
+      where: {
+        id: product_id,
+        company_id: user.company_id,
+      },
       select: { name: true },
     });
 
@@ -45,6 +49,7 @@ export async function POST(req: NextRequest) {
         profit_per_unit,
         net_profit,
         order_date: new Date(order_date),
+        company_id: user.company_id,
       },
     });
 
@@ -56,4 +61,4 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
-}
+});

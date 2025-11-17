@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "lib/prisma";
+import { withAuth } from "@/lib/authMiddleware";
 
-export async function POST(req: Request) {
+export const POST = withAuth(async (req: NextRequest, user) => {
   try {
     const body = await req.json();
 
@@ -23,7 +24,8 @@ export async function POST(req: Request) {
         price,
         image_url,
         status: status || "active",
-        stock, // Add stock field
+        stock,
+        company_id: user.company_id,
       },
     });
 
@@ -35,4 +37,4 @@ export async function POST(req: Request) {
       { status: 500 }
     );
   }
-}
+});

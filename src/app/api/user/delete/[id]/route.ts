@@ -1,29 +1,35 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "lib/prisma";
+import { withAuth } from "@/lib/authMiddleware";
 
 export async function DELETE(
-  req: Request,
+  _req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  try {
-    const id = parseInt(params.id);
-    if (isNaN(id)) {
+  return withAuth(async (req, user) => {
+    try {
+      const id = parseInt(params.id);
+      if (isNaN(id)) {
+        return NextResponse.json(
+          { success: false, message: "Invalid ID" },
+          { status: 400 }
+        );
+      }
+
+      await prisma.user.delete({
+        where: {
+          id,
+          company_id: user.company_id,
+        },
+      });
+
+      return NextResponse.json({ success: true, message: "User deleted" });
+    } catch (error) {
+      console.error("❌ Failed to delete user:", error);
       return NextResponse.json(
-        { success: false, message: "Invalid ID" },
-        { status: 400 }
+        { success: false, message: "Server error" },
+        { status: 500 }
       );
     }
-
-    await prisma.user.delete({
-      where: { id },
-    });
-
-    return NextResponse.json({ success: true, message: "User deleted" });
-  } catch (error) {
-    console.error("❌ Failed to delete user:", error);
-    return NextResponse.json(
-      { success: false, message: "Server error" },
-      { status: 500 }
-    );
-  }
+  })(_req);
 }

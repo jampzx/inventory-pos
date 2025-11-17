@@ -1,11 +1,13 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "lib/prisma";
+import { withAuth } from "@/lib/authMiddleware";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export const GET = withAuth(async (req: NextRequest, user) => {
   try {
     const users = await prisma.user.findMany({
+      where: { company_id: user.company_id },
       orderBy: { created_at: "desc" },
     });
 
@@ -28,4 +30,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-}
+});

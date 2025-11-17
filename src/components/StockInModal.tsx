@@ -31,7 +31,7 @@ const StockInModal = ({ order, onClose, onSuccess }: StockInModalProps) => {
 
     try {
       setIsSubmitting(true);
-      const res = await fetch("/api/stock-in", {
+      const res = await fetch("/api/order/stock-in", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

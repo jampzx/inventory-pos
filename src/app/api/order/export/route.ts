@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { withAuth } from "@/lib/authMiddleware";
 
-export async function POST(req: NextRequest) {
+export const POST = withAuth(async (req: NextRequest, user) => {
   try {
     const { startDate, endDate, status } = await req.json();
 
@@ -18,6 +19,7 @@ export async function POST(req: NextRequest) {
     end.setHours(23, 59, 59, 999);
 
     const filters: any = {
+      company_id: user.company_id,
       order_date: {
         gte: start,
         lte: end,
@@ -43,4 +45,4 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
-}
+});

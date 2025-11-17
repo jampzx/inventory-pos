@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "lib/prisma";
 import { z } from "zod";
+import { withAuth } from "@/lib/authMiddleware";
 
 const productSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -9,55 +10,67 @@ const productSchema = z.object({
   price: z.number().positive(),
   image_url: z.string().optional(),
   status: z.enum(["active", "inactive"]),
-  stock: z.number().int().nonnegative(), // Add stock validation
+  stock: z.number().int().nonnegative(),
 });
 
 export async function PUT(
-  req: Request,
+  _req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  try {
-    const id = parseInt(params.id);
-    if (isNaN(id)) {
-      return NextResponse.json(
-        { success: false, message: "Invalid ID" },
-        { status: 400 }
-      );
-    }
+  return withAuth(async (req, user) => {
+    try {
+      const id = parseInt(params.id);
+      if (isNaN(id)) {
+        return NextResponse.json(
+          { success: false, message: "Invalid ID" },
+          { status: 400 }
+        );
+      }
 
-    const body = await req.json();
-    const parsed = productSchema.safeParse(body);
+      const body = await req.json();
+      const parsed = productSchema.safeParse(body);
 
-    if (!parsed.success) {
-      return NextResponse.json(
-        { success: false, errors: parsed.error.flatten().fieldErrors },
-        { status: 400 }
-      );
-    }
+      if (!parsed.success) {
+        return NextResponse.json(
+          { success: false, errors: parsed.error.flatten().fieldErrors },
+          { status: 400 }
+        );
+      }
 
-    const { name, description, product_type, price, image_url, status, stock } =
-      parsed.data;
-
-    // 1. Update the product
-    const updatedProduct = await prisma.product.update({
-      where: { id },
-      data: {
+      const {
         name,
         description,
         product_type,
         price,
         image_url,
         status,
-        stock, // Add stock field
-      },
-    });
+        stock,
+      } = parsed.data;
 
-    return NextResponse.json({ success: true, data: updatedProduct });
-  } catch (error) {
-    console.error("❌ Failed to update product:", error);
-    return NextResponse.json(
-      { success: false, message: "Server error" },
-      { status: 500 }
-    );
-  }
+      // 1. Update the product
+      const updatedProduct = await prisma.product.update({
+        where: {
+          id,
+          company_id: user.company_id,
+        },
+        data: {
+          name,
+          description,
+          product_type,
+          price,
+          image_url,
+          status,
+          stock,
+        },
+      });
+
+      return NextResponse.json({ success: true, data: updatedProduct });
+    } catch (error) {
+      console.error("❌ Failed to update product:", error);
+      return NextResponse.json(
+        { success: false, message: "Server error" },
+        { status: 500 }
+      );
+    }
+  })(_req);
 }

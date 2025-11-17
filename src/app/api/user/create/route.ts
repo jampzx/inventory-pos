@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "lib/prisma";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
+import { withAuth } from "@/lib/authMiddleware";
 
 // Validation schema with branch_ids array
 const userSchema = z.object({
@@ -12,7 +13,7 @@ const userSchema = z.object({
   status: z.enum(["active", "inactive"]),
 });
 
-export async function POST(req: Request) {
+export const POST = withAuth(async (req: NextRequest, user) => {
   try {
     const body = await req.json();
     const parsed = userSchema.safeParse(body);
@@ -43,6 +44,7 @@ export async function POST(req: Request) {
         username,
         ...rest,
         password: hashedPassword,
+        company_id: user.company_id,
       },
     });
 
@@ -54,4 +56,4 @@ export async function POST(req: Request) {
       { status: 500 }
     );
   }
-}
+});

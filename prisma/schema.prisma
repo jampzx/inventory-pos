@@ -183,6 +183,8 @@ model Company {
   company_email         String  @db.VarChar(255)
   company_contact_number String  @db.VarChar(50)
   company_address       String  @db.VarChar(255)
+  subscription_start    DateTime?
+  subscription_end      DateTime?
   created_at            DateTime @default(now())
   updated_at            DateTime @updatedAt
 

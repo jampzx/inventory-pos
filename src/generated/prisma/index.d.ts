@@ -12561,6 +12561,8 @@ export namespace Prisma {
     company_email: string | null
     company_contact_number: string | null
     company_address: string | null
+    subscription_start: Date | null
+    subscription_end: Date | null
     created_at: Date | null
     updated_at: Date | null
   }
@@ -12571,6 +12573,8 @@ export namespace Prisma {
     company_email: string | null
     company_contact_number: string | null
     company_address: string | null
+    subscription_start: Date | null
+    subscription_end: Date | null
     created_at: Date | null
     updated_at: Date | null
   }
@@ -12581,6 +12585,8 @@ export namespace Prisma {
     company_email: number
     company_contact_number: number
     company_address: number
+    subscription_start: number
+    subscription_end: number
     created_at: number
     updated_at: number
     _all: number
@@ -12601,6 +12607,8 @@ export namespace Prisma {
     company_email?: true
     company_contact_number?: true
     company_address?: true
+    subscription_start?: true
+    subscription_end?: true
     created_at?: true
     updated_at?: true
   }
@@ -12611,6 +12619,8 @@ export namespace Prisma {
     company_email?: true
     company_contact_number?: true
     company_address?: true
+    subscription_start?: true
+    subscription_end?: true
     created_at?: true
     updated_at?: true
   }
@@ -12621,6 +12631,8 @@ export namespace Prisma {
     company_email?: true
     company_contact_number?: true
     company_address?: true
+    subscription_start?: true
+    subscription_end?: true
     created_at?: true
     updated_at?: true
     _all?: true
@@ -12718,6 +12730,8 @@ export namespace Prisma {
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start: Date | null
+    subscription_end: Date | null
     created_at: Date
     updated_at: Date
     _count: CompanyCountAggregateOutputType | null
@@ -12747,6 +12761,8 @@ export namespace Prisma {
     company_email?: boolean
     company_contact_number?: boolean
     company_address?: boolean
+    subscription_start?: boolean
+    subscription_end?: boolean
     created_at?: boolean
     updated_at?: boolean
     products?: boolean | Company$productsArgs<ExtArgs>
@@ -12767,6 +12783,8 @@ export namespace Prisma {
     company_email?: boolean
     company_contact_number?: boolean
     company_address?: boolean
+    subscription_start?: boolean
+    subscription_end?: boolean
     created_at?: boolean
     updated_at?: boolean
   }, ExtArgs["result"]["company"]>
@@ -12777,6 +12795,8 @@ export namespace Prisma {
     company_email?: boolean
     company_contact_number?: boolean
     company_address?: boolean
+    subscription_start?: boolean
+    subscription_end?: boolean
     created_at?: boolean
     updated_at?: boolean
   }, ExtArgs["result"]["company"]>
@@ -12787,11 +12807,13 @@ export namespace Prisma {
     company_email?: boolean
     company_contact_number?: boolean
     company_address?: boolean
+    subscription_start?: boolean
+    subscription_end?: boolean
     created_at?: boolean
     updated_at?: boolean
   }
 
-  export type CompanyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"company_id" | "company_name" | "company_email" | "company_contact_number" | "company_address" | "created_at" | "updated_at", ExtArgs["result"]["company"]>
+  export type CompanyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"company_id" | "company_name" | "company_email" | "company_contact_number" | "company_address" | "subscription_start" | "subscription_end" | "created_at" | "updated_at", ExtArgs["result"]["company"]>
   export type CompanyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     products?: boolean | Company$productsArgs<ExtArgs>
     users?: boolean | Company$usersArgs<ExtArgs>
@@ -12826,6 +12848,8 @@ export namespace Prisma {
       company_email: string
       company_contact_number: string
       company_address: string
+      subscription_start: Date | null
+      subscription_end: Date | null
       created_at: Date
       updated_at: Date
     }, ExtArgs["result"]["company"]>
@@ -13265,6 +13289,8 @@ export namespace Prisma {
     readonly company_email: FieldRef<"Company", 'String'>
     readonly company_contact_number: FieldRef<"Company", 'String'>
     readonly company_address: FieldRef<"Company", 'String'>
+    readonly subscription_start: FieldRef<"Company", 'DateTime'>
+    readonly subscription_end: FieldRef<"Company", 'DateTime'>
     readonly created_at: FieldRef<"Company", 'DateTime'>
     readonly updated_at: FieldRef<"Company", 'DateTime'>
   }
@@ -14039,6 +14065,8 @@ export namespace Prisma {
     company_email: 'company_email',
     company_contact_number: 'company_contact_number',
     company_address: 'company_address',
+    subscription_start: 'subscription_start',
+    subscription_end: 'subscription_end',
     created_at: 'created_at',
     updated_at: 'updated_at'
   };
@@ -14875,6 +14903,8 @@ export namespace Prisma {
     company_email?: StringFilter<"Company"> | string
     company_contact_number?: StringFilter<"Company"> | string
     company_address?: StringFilter<"Company"> | string
+    subscription_start?: DateTimeNullableFilter<"Company"> | Date | string | null
+    subscription_end?: DateTimeNullableFilter<"Company"> | Date | string | null
     created_at?: DateTimeFilter<"Company"> | Date | string
     updated_at?: DateTimeFilter<"Company"> | Date | string
     products?: ProductListRelationFilter
@@ -14894,6 +14924,8 @@ export namespace Prisma {
     company_email?: SortOrder
     company_contact_number?: SortOrder
     company_address?: SortOrder
+    subscription_start?: SortOrderInput | SortOrder
+    subscription_end?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
     products?: ProductOrderByRelationAggregateInput
@@ -14916,6 +14948,8 @@ export namespace Prisma {
     company_email?: StringFilter<"Company"> | string
     company_contact_number?: StringFilter<"Company"> | string
     company_address?: StringFilter<"Company"> | string
+    subscription_start?: DateTimeNullableFilter<"Company"> | Date | string | null
+    subscription_end?: DateTimeNullableFilter<"Company"> | Date | string | null
     created_at?: DateTimeFilter<"Company"> | Date | string
     updated_at?: DateTimeFilter<"Company"> | Date | string
     products?: ProductListRelationFilter
@@ -14935,6 +14969,8 @@ export namespace Prisma {
     company_email?: SortOrder
     company_contact_number?: SortOrder
     company_address?: SortOrder
+    subscription_start?: SortOrderInput | SortOrder
+    subscription_end?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
     _count?: CompanyCountOrderByAggregateInput
@@ -14953,6 +14989,8 @@ export namespace Prisma {
     company_email?: StringWithAggregatesFilter<"Company"> | string
     company_contact_number?: StringWithAggregatesFilter<"Company"> | string
     company_address?: StringWithAggregatesFilter<"Company"> | string
+    subscription_start?: DateTimeNullableWithAggregatesFilter<"Company"> | Date | string | null
+    subscription_end?: DateTimeNullableWithAggregatesFilter<"Company"> | Date | string | null
     created_at?: DateTimeWithAggregatesFilter<"Company"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"Company"> | Date | string
   }
@@ -15665,6 +15703,8 @@ export namespace Prisma {
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start?: Date | string | null
+    subscription_end?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     products?: ProductCreateNestedManyWithoutCompanyInput
@@ -15684,6 +15724,8 @@ export namespace Prisma {
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start?: Date | string | null
+    subscription_end?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     products?: ProductUncheckedCreateNestedManyWithoutCompanyInput
@@ -15702,6 +15744,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUpdateManyWithoutCompanyNestedInput
@@ -15721,6 +15765,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUncheckedUpdateManyWithoutCompanyNestedInput
@@ -15740,6 +15786,8 @@ export namespace Prisma {
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start?: Date | string | null
+    subscription_end?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -15749,6 +15797,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15759,6 +15809,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -16530,6 +16582,17 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type ProductListRelationFilter = {
     every?: ProductWhereInput
     some?: ProductWhereInput
@@ -16576,6 +16639,8 @@ export namespace Prisma {
     company_email?: SortOrder
     company_contact_number?: SortOrder
     company_address?: SortOrder
+    subscription_start?: SortOrder
+    subscription_end?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
@@ -16590,6 +16655,8 @@ export namespace Prisma {
     company_email?: SortOrder
     company_contact_number?: SortOrder
     company_address?: SortOrder
+    subscription_start?: SortOrder
+    subscription_end?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
@@ -16600,12 +16667,28 @@ export namespace Prisma {
     company_email?: SortOrder
     company_contact_number?: SortOrder
     company_address?: SortOrder
+    subscription_start?: SortOrder
+    subscription_end?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
 
   export type CompanySumOrderByAggregateInput = {
     company_id?: SortOrder
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type CompanyCreateNestedOneWithoutProductsInput = {
@@ -17254,6 +17337,10 @@ export namespace Prisma {
     connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
   }
 
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
   export type ProductUpdateManyWithoutCompanyNestedInput = {
     create?: XOR<ProductCreateWithoutCompanyInput, ProductUncheckedCreateWithoutCompanyInput> | ProductCreateWithoutCompanyInput[] | ProductUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: ProductCreateOrConnectWithoutCompanyInput | ProductCreateOrConnectWithoutCompanyInput[]
@@ -17756,11 +17843,38 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type CompanyCreateWithoutProductsInput = {
     company_name: string
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start?: Date | string | null
+    subscription_end?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     users?: UserCreateNestedManyWithoutCompanyInput
@@ -17779,6 +17893,8 @@ export namespace Prisma {
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start?: Date | string | null
+    subscription_end?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutCompanyInput
@@ -17874,6 +17990,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutCompanyNestedInput
@@ -17892,6 +18010,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutCompanyNestedInput
@@ -17971,6 +18091,8 @@ export namespace Prisma {
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start?: Date | string | null
+    subscription_end?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     products?: ProductCreateNestedManyWithoutCompanyInput
@@ -17989,6 +18111,8 @@ export namespace Prisma {
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start?: Date | string | null
+    subscription_end?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     products?: ProductUncheckedCreateNestedManyWithoutCompanyInput
@@ -18061,6 +18185,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUpdateManyWithoutCompanyNestedInput
@@ -18079,6 +18205,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUncheckedUpdateManyWithoutCompanyNestedInput
@@ -18128,6 +18256,8 @@ export namespace Prisma {
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start?: Date | string | null
+    subscription_end?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     products?: ProductCreateNestedManyWithoutCompanyInput
@@ -18146,6 +18276,8 @@ export namespace Prisma {
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start?: Date | string | null
+    subscription_end?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     products?: ProductUncheckedCreateNestedManyWithoutCompanyInput
@@ -18179,6 +18311,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUpdateManyWithoutCompanyNestedInput
@@ -18197,6 +18331,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUncheckedUpdateManyWithoutCompanyNestedInput
@@ -18214,6 +18350,8 @@ export namespace Prisma {
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start?: Date | string | null
+    subscription_end?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     products?: ProductCreateNestedManyWithoutCompanyInput
@@ -18232,6 +18370,8 @@ export namespace Prisma {
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start?: Date | string | null
+    subscription_end?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     products?: ProductUncheckedCreateNestedManyWithoutCompanyInput
@@ -18372,6 +18512,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUpdateManyWithoutCompanyNestedInput
@@ -18390,6 +18532,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUncheckedUpdateManyWithoutCompanyNestedInput
@@ -18515,6 +18659,8 @@ export namespace Prisma {
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start?: Date | string | null
+    subscription_end?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     products?: ProductCreateNestedManyWithoutCompanyInput
@@ -18533,6 +18679,8 @@ export namespace Prisma {
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start?: Date | string | null
+    subscription_end?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     products?: ProductUncheckedCreateNestedManyWithoutCompanyInput
@@ -18634,6 +18782,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUpdateManyWithoutCompanyNestedInput
@@ -18652,6 +18802,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUncheckedUpdateManyWithoutCompanyNestedInput
@@ -18749,6 +18901,8 @@ export namespace Prisma {
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start?: Date | string | null
+    subscription_end?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     products?: ProductCreateNestedManyWithoutCompanyInput
@@ -18767,6 +18921,8 @@ export namespace Prisma {
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start?: Date | string | null
+    subscription_end?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     products?: ProductUncheckedCreateNestedManyWithoutCompanyInput
@@ -18834,6 +18990,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUpdateManyWithoutCompanyNestedInput
@@ -18852,6 +19010,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUncheckedUpdateManyWithoutCompanyNestedInput
@@ -18909,6 +19069,8 @@ export namespace Prisma {
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start?: Date | string | null
+    subscription_end?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     products?: ProductCreateNestedManyWithoutCompanyInput
@@ -18927,6 +19089,8 @@ export namespace Prisma {
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start?: Date | string | null
+    subscription_end?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     products?: ProductUncheckedCreateNestedManyWithoutCompanyInput
@@ -18994,6 +19158,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUpdateManyWithoutCompanyNestedInput
@@ -19012,6 +19178,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUncheckedUpdateManyWithoutCompanyNestedInput
@@ -19069,6 +19237,8 @@ export namespace Prisma {
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start?: Date | string | null
+    subscription_end?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     products?: ProductCreateNestedManyWithoutCompanyInput
@@ -19087,6 +19257,8 @@ export namespace Prisma {
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start?: Date | string | null
+    subscription_end?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     products?: ProductUncheckedCreateNestedManyWithoutCompanyInput
@@ -19154,6 +19326,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUpdateManyWithoutCompanyNestedInput
@@ -19172,6 +19346,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUncheckedUpdateManyWithoutCompanyNestedInput
@@ -19229,6 +19405,8 @@ export namespace Prisma {
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start?: Date | string | null
+    subscription_end?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     products?: ProductCreateNestedManyWithoutCompanyInput
@@ -19247,6 +19425,8 @@ export namespace Prisma {
     company_email: string
     company_contact_number: string
     company_address: string
+    subscription_start?: Date | string | null
+    subscription_end?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     products?: ProductUncheckedCreateNestedManyWithoutCompanyInput
@@ -19280,6 +19460,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUpdateManyWithoutCompanyNestedInput
@@ -19298,6 +19480,8 @@ export namespace Prisma {
     company_email?: StringFieldUpdateOperationsInput | string
     company_contact_number?: StringFieldUpdateOperationsInput | string
     company_address?: StringFieldUpdateOperationsInput | string
+    subscription_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUncheckedUpdateManyWithoutCompanyNestedInput
