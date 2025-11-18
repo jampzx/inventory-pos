@@ -74,6 +74,11 @@ const menuItems: { title: string; items: MenuItem[] }[] = [
         href: "/users",
       },
       {
+        icon: <FiUsers />,
+        label: "Companies",
+        href: "/companies",
+      },
+      {
         icon: <FiLogOut />,
         label: "Logout",
         href: "/logout",

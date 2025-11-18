@@ -11,6 +11,7 @@ const userSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
   user_type: z.enum(["admin", "user"]),
   status: z.enum(["active", "inactive"]),
+  company_id: z.string().min(1, "Company is required"),
 });
 
 export const POST = withAuth(async (req: NextRequest, user) => {
@@ -25,7 +26,7 @@ export const POST = withAuth(async (req: NextRequest, user) => {
       );
     }
 
-    const { username, password, ...rest } = parsed.data;
+    const { username, password, company_id, ...rest } = parsed.data;
 
     const existingUser = await prisma.user.findUnique({ where: { username } });
 
@@ -44,7 +45,7 @@ export const POST = withAuth(async (req: NextRequest, user) => {
         username,
         ...rest,
         password: hashedPassword,
-        company_id: user.company_id,
+        company_id: parseInt(company_id),
       },
     });
 

@@ -11,6 +11,7 @@ const userUpdateSchema = z.object({
   password: z.string().min(6).optional(),
   user_type: z.enum(["admin", "user"]),
   status: z.enum(["active", "inactive"]),
+  company_id: z.string().min(1, "Company is required"),
 });
 
 export async function PUT(
@@ -37,12 +38,11 @@ export async function PUT(
         );
       }
 
-      const { username, password, ...rest } = parsed.data;
+      const { username, password, company_id, ...rest } = parsed.data;
 
       const existingUser = await prisma.user.findUnique({
         where: {
           id,
-          company_id: user.company_id,
         },
       });
 
@@ -57,6 +57,7 @@ export async function PUT(
       const updatedData: any = {
         username,
         ...rest,
+        company_id: parseInt(company_id),
       };
 
       if (password) {
@@ -67,7 +68,6 @@ export async function PUT(
       const updatedUser = await prisma.user.update({
         where: {
           id,
-          company_id: user.company_id,
         },
         data: updatedData,
       });

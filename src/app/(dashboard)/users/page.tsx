@@ -16,11 +16,23 @@ type User = {
   username?: string;
   user_type: string;
   status: string;
+  company?: {
+    company_id: number;
+    company_name: string;
+    company_email: string;
+    company_contact_number: string;
+    company_address: string;
+    subscription_start: string;
+    subscription_end: string;
+    created_at: string;
+    updated_at: string;
+  };
 };
 
 const columns = [
   { header: "Name", accessor: "name" },
   { header: "User Name", accessor: "username" },
+  { header: "Company", accessor: "company_name" },
   { header: "User Type", accessor: "user_type" },
   { header: "Status", accessor: "status" },
   { header: "Actions", accessor: "action" },
@@ -29,7 +41,6 @@ const columns = [
 const ITEMS_PER_PAGE = 15;
 
 const UsersListPage = () => {
-  const { user, loadingUseUser } = useUser();
   const [users, setUsers] = useState<User[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -99,6 +110,7 @@ const UsersListPage = () => {
     >
       <td className="p-2">{item.name}</td>
       <td className="p-2">{item.username}</td>
+      <td className="p-2">{item.company?.company_name || "-"}</td>
       <td className="p-2 capitalize">{item.user_type}</td>
       <td className="p-2">
         <span

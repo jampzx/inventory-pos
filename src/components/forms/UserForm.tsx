@@ -16,6 +16,33 @@ type Props = {
 };
 
 const UserForm = ({ type, data, onClose, onSuccess }: Props) => {
+  const [companies, setCompanies] = useState<
+    { label: string; value: string }[]
+  >([]);
+  const [companyLoading, setCompanyLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      setCompanyLoading(true);
+      try {
+        const res = await fetch("/api/company/listing");
+        const result = await res.json();
+        if (result.success && Array.isArray(result.data)) {
+          setCompanies(
+            result.data.map((c: any) => ({
+              label: c.company_name,
+              value: c.company_id.toString(),
+            }))
+          );
+        }
+      } catch (e) {
+        setCompanies([]);
+      } finally {
+        setCompanyLoading(false);
+      }
+    };
+    fetchCompanies();
+  }, []);
   const schema = z
     .object({
       full_name: z.string().min(1, "Full name is required"),
@@ -35,6 +62,7 @@ const UserForm = ({ type, data, onClose, onSuccess }: Props) => {
       confirm_password: z.string().optional(),
       user_type: z.enum(["admin", "user"]),
       status: z.enum(["active", "inactive"]),
+      company_id: z.string().min(1, "Company is required"),
     })
     .refine(
       (data) =>
@@ -53,6 +81,7 @@ const UserForm = ({ type, data, onClose, onSuccess }: Props) => {
     register,
     reset,
     formState: { errors },
+    setValue,
   } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
@@ -60,15 +89,16 @@ const UserForm = ({ type, data, onClose, onSuccess }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (type === "update" && data) {
+    if (type === "update" && data && !companyLoading && companies.length > 0) {
       reset({
         full_name: data.name,
         username: data.email?.split("@")[0] || data.username,
         user_type: data.user_type,
         status: data.status,
+        company_id: data.company?.company_id?.toString() || "",
       });
     }
-  }, [type, data, reset]);
+  }, [type, data, reset, companyLoading, companies]);
 
   const onSubmit = handleSubmit(async (formData) => {
     setIsLoading(true);
@@ -126,6 +156,16 @@ const UserForm = ({ type, data, onClose, onSuccess }: Props) => {
       </h1>
 
       <div className="flex flex-wrap gap-4">
+        <DropdownField
+          label="Company"
+          name="company_id"
+          register={register}
+          error={errors.company_id}
+          options={companies}
+          selectProps={{
+            disabled: companyLoading || companies.length === 0,
+          }}
+        />
         <InputField
           label="Full Name"
           name="full_name"
