@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 import type { NextRequest } from "next/server";
+import { JwtUserPayload } from "@/types/auth";
 
 const PUBLIC_PATHS = ["/sign-in", "/unauthorized", "/api"];
-
-// Permissions removed: all authenticated users can access all routes
+const ADMIN_ONLY_PATHS = ["/users", "/companies"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -25,7 +25,20 @@ export async function middleware(request: NextRequest) {
       new TextEncoder().encode(process.env.JWT_SECRET)
     );
 
-    // Permissions removed: all authenticated users can access all routes
+    const user = payload as unknown as JwtUserPayload;
+
+    // Check if the route requires admin access
+    const isAdminOnlyRoute = ADMIN_ONLY_PATHS.some((path) =>
+      pathname.startsWith(path)
+    );
+
+    if (
+      isAdminOnlyRoute &&
+      user.user_type !== process.env.AUTHORIZED_USE_TYPE
+    ) {
+      return NextResponse.redirect(new URL("/unauthorized", request.url));
+    }
+
     return NextResponse.next();
   } catch (err) {
     console.warn("Invalid token:", err);

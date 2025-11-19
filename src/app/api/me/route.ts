@@ -18,6 +18,7 @@ export async function GET() {
 
     return NextResponse.json({
       user: decoded,
+      authorizedUserType: process.env.AUTHORIZED_USE_TYPE,
     });
   } catch (err) {
     console.error("Error in /api/me", err);

@@ -90,7 +90,7 @@ const menuItems: { title: string; items: MenuItem[] }[] = [
 const Menu = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const { user } = useUser();
+  const { user, authorizedUserType } = useUser();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [expandedSections, setExpandedSections] = useState<
     Record<string, boolean>
@@ -120,7 +120,16 @@ const Menu = () => {
     <>
       <div className="mt-4 text-sm">
         {menuItems.map((section) => {
-          const visibleItems = section.items;
+          // Filter out Users and Companies menu items for non-authorized users
+          const visibleItems = section.items.filter((item) => {
+            if (
+              user.user_type !== authorizedUserType &&
+              (item.label === "Users" || item.label === "Companies")
+            ) {
+              return false;
+            }
+            return true;
+          });
 
           if (visibleItems.length === 0) return null;
 

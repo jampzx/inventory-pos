@@ -17,10 +17,8 @@ const Homepage = () => {
       return;
     }
 
-    if (user.user_type === "admin") {
-      router.push("/admin");
-    } else if (user.user_type === "cashier") {
-      router.push("/cashier");
+    if (user.user_type) {
+      router.push("/analytics");
     } else {
       router.push("/sign-in");
     }

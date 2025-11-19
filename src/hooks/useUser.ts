@@ -8,6 +8,7 @@ let hasRedirectedOnce = false;
 
 export function useUser() {
   const [user, setUser] = useState<JwtUserPayload | null>(null);
+  const [authorizedUserType, setAuthorizedUserType] = useState<string>("");
   const [loadingUseUser, setLoadingUseUser] = useState(true);
   const router = useRouter();
   const { setPermissions } = usePermissions();
@@ -27,6 +28,7 @@ export function useUser() {
 
         const data = await res.json();
         setUser(data.user);
+        setAuthorizedUserType(data.authorizedUserType || "admin");
         setPermissions(data.permissions);
       } catch (err) {
         console.error("Failed to fetch user:", err);
@@ -42,5 +44,5 @@ export function useUser() {
     fetchUser();
   }, [router, setPermissions]);
 
-  return { user, loadingUseUser };
+  return { user, authorizedUserType, loadingUseUser };
 }

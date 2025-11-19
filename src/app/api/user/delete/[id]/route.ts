@@ -6,7 +6,7 @@ export async function DELETE(
   _req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  return withAuth(async (req, user) => {
+  return withAuth(async () => {
     try {
       const id = parseInt(params.id);
       if (isNaN(id)) {
@@ -19,7 +19,6 @@ export async function DELETE(
       await prisma.user.delete({
         where: {
           id,
-          company_id: user.company_id,
         },
       });
 

@@ -32,7 +32,7 @@ const LoginPage = () => {
       } else {
         const { name, user_type } = result.user;
         toast.success(`Welcome ${name}!`);
-        router.push(`/${user_type}`);
+        router.push(`/analytics`);
       }
     } catch (err) {
       console.error(err);
