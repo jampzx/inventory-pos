@@ -4,25 +4,61 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
+import Spinner from "@/components/Spinner";
 
 const ProductForm = dynamic(() => import("./forms/ProductForm"), {
-  loading: () => <h1>Loading...</h1>,
+  loading: () => (
+    <div className="flex justify-center items-center p-8">
+      <div className="flex flex-col items-center gap-3">
+        <Spinner size={32} color="lamaSky" />
+        <span className="text-sm text-gray-500">Loading form...</span>
+      </div>
+    </div>
+  ),
 });
 
 const OrderForm = dynamic(() => import("./forms/OrderForm"), {
-  loading: () => <h1>Loading...</h1>,
+  loading: () => (
+    <div className="flex justify-center items-center p-8">
+      <div className="flex flex-col items-center gap-3">
+        <Spinner size={32} color="lamaSky" />
+        <span className="text-sm text-gray-500">Loading form...</span>
+      </div>
+    </div>
+  ),
 });
 
 const UserForm = dynamic(() => import("./forms/UserForm"), {
-  loading: () => <h1>Loading...</h1>,
+  loading: () => (
+    <div className="flex justify-center items-center p-8">
+      <div className="flex flex-col items-center gap-3">
+        <Spinner size={32} color="lamaSky" />
+        <span className="text-sm text-gray-500">Loading form...</span>
+      </div>
+    </div>
+  ),
 });
 
 const ExpenseForm = dynamic(() => import("./forms/ExpenseForm"), {
-  loading: () => <h1>Loading...</h1>,
+  loading: () => (
+    <div className="flex justify-center items-center p-8">
+      <div className="flex flex-col items-center gap-3">
+        <Spinner size={32} color="lamaSky" />
+        <span className="text-sm text-gray-500">Loading form...</span>
+      </div>
+    </div>
+  ),
 });
 
 const CompanyForm = dynamic(() => import("./forms/CompanyForm"), {
-  loading: () => <h1>Loading...</h1>,
+  loading: () => (
+    <div className="flex justify-center items-center p-8">
+      <div className="flex flex-col items-center gap-3">
+        <Spinner size={32} color="lamaSky" />
+        <span className="text-sm text-gray-500">Loading form...</span>
+      </div>
+    </div>
+  ),
 });
 
 const forms: Record<string, any> = {

@@ -7,6 +7,7 @@ import { z } from "zod";
 import InputField from "../InputField";
 import DropdownField from "../DropdownField";
 import { toast } from "sonner";
+import Spinner from "@/components/Spinner";
 
 type Props = {
   type: "create" | "update";
@@ -217,14 +218,19 @@ const UserForm = ({ type, data, onClose, onSuccess }: Props) => {
       <div className="flex justify-end">
         <button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-2 rounded-md mt-4 w-full sm:w-auto"
+          className="bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-2 rounded-md mt-4 w-full sm:w-auto flex items-center justify-center gap-2"
           disabled={isLoading}
         >
-          {isLoading
-            ? "Processing..."
-            : type === "create"
-            ? "Create"
-            : "Update"}
+          {isLoading ? (
+            <>
+              <Spinner size={16} color="lamaYellow" />
+              <span>Processing...</span>
+            </>
+          ) : type === "create" ? (
+            "Create"
+          ) : (
+            "Update"
+          )}
         </button>
       </div>
     </form>

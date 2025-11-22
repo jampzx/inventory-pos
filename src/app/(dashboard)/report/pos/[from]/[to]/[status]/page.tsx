@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Table from "@/components/Table";
 import { toast } from "sonner";
 import { useParams } from "next/navigation";
+import Spinner from "@/components/Spinner";
 
 type TransactionItem = {
   product: { name: string };
@@ -135,7 +136,12 @@ export default function TransactionReportPage() {
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       <h1 className="text-lg font-semibold mb-4">Transaction Reports</h1>
       {loading ? (
-        <div className="text-center text-sm text-gray-500 p-4">Loading...</div>
+        <div className="flex justify-center items-center p-8">
+          <div className="flex flex-col items-center gap-3">
+            <Spinner size={32} color="lamaSky" />
+            <span className="text-sm text-gray-500">Loading report...</span>
+          </div>
+        </div>
       ) : transactions.length === 0 ? (
         <div className="text-center text-sm text-gray-500 p-4">
           No data found.

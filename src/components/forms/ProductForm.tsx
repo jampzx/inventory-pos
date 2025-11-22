@@ -8,6 +8,7 @@ import InputField from "../InputField";
 import DropdownField from "../DropdownField";
 import Image from "next/image";
 import { toast } from "sonner";
+import Spinner from "@/components/Spinner";
 
 const schema = z.object({
   name: z.string().min(1, { message: "Name is required!" }),
@@ -230,10 +231,19 @@ const ProductForm = ({ type, data, onClose, onSuccess }: Props) => {
 
       <button
         type="submit"
-        className="bg-blue-500 hover:bg-blue-600 transition text-white p-2 rounded-md w-full md:w-fit"
+        className="bg-blue-500 hover:bg-blue-600 transition text-white p-2 rounded-md w-full md:w-fit flex items-center justify-center gap-2"
         disabled={isLoading}
       >
-        {isLoading ? "Processing..." : type === "create" ? "Create" : "Update"}
+        {isLoading ? (
+          <>
+            <Spinner size={16} color="lamaYellow" />
+            <span>Processing...</span>
+          </>
+        ) : type === "create" ? (
+          "Create"
+        ) : (
+          "Update"
+        )}
       </button>
     </form>
   );

@@ -6,6 +6,7 @@ import InputField from "../InputField";
 import { z } from "zod";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import Spinner from "@/components/Spinner";
 
 const schema = z.object({
   company_name: z.string().min(1, { message: "Company name is required" }),
@@ -188,14 +189,19 @@ const CompanyForm = ({
       <div className="flex justify-end">
         <button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-2 rounded-md mt-4 w-full sm:w-auto"
+          className="bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-2 rounded-md mt-4 w-full sm:w-auto flex items-center justify-center gap-2"
           disabled={isSubmitting}
         >
-          {isSubmitting
-            ? "Submitting..."
-            : type === "create"
-            ? "Create"
-            : "Update"}
+          {isSubmitting ? (
+            <>
+              <Spinner size={16} color="lamaYellow" />
+              <span>Submitting...</span>
+            </>
+          ) : type === "create" ? (
+            "Create"
+          ) : (
+            "Update"
+          )}
         </button>
       </div>
     </form>

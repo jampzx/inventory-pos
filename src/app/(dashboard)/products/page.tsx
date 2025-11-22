@@ -8,6 +8,7 @@ import Table from "components/Table";
 import TableSearch from "components/TableSearch";
 import { useUser } from "@/hooks/useUser";
 import SingleProductModal from "@/components/forms/SingleProductModal";
+import Spinner from "@/components/Spinner";
 
 interface Product {
   id: number;
@@ -229,7 +230,12 @@ const ProductsListPage = () => {
       </div>
 
       {loading ? (
-        <div className="text-center text-sm p-4 text-gray-500">Loading...</div>
+        <div className="flex justify-center items-center p-8">
+          <div className="flex flex-col items-center gap-3">
+            <Spinner size={32} color="lamaSky" />
+            <span className="text-sm text-gray-500">Loading products...</span>
+          </div>
+        </div>
       ) : (
         <Table columns={columns} renderRow={renderRow} data={paginatedData} />
       )}

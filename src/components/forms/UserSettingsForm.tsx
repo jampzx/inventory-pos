@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import InputField from "../InputField";
 import { toast } from "sonner";
+import Spinner from "@/components/Spinner";
 
 type Props = {
   onSuccess?: () => void;
@@ -155,7 +156,7 @@ const UserSettingsForm = ({ onSuccess }: Props) => {
     return (
       <div className="flex justify-center items-center py-16">
         <div className="flex flex-col items-center gap-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-200 border-t-blue-600"></div>
+          <Spinner size={40} color="lamaSky" />
           <p className="text-gray-600 text-sm">Loading profile...</p>
         </div>
       </div>
@@ -468,7 +469,7 @@ const UserSettingsForm = ({ onSuccess }: Props) => {
               >
                 {isLoading ? (
                   <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                    <Spinner size={16} color="lamaYellow" />
                     Updating Profile...
                   </>
                 ) : (

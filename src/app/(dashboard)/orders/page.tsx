@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import ExportModal from "@/components/ExportModal";
 import { useRouter } from "next/navigation";
 import * as XLSX from "xlsx";
+import Spinner from "@/components/Spinner";
 
 type Order = {
   id: number;
@@ -273,7 +274,12 @@ const OrdersPage = () => {
       </div>
 
       {loading ? (
-        <div className="text-center text-sm text-gray-500 p-4">Loading...</div>
+        <div className="flex justify-center items-center p-8">
+          <div className="flex flex-col items-center gap-3">
+            <Spinner size={32} color="lamaSky" />
+            <span className="text-sm text-gray-500">Loading orders...</span>
+          </div>
+        </div>
       ) : (
         <>
           <Table columns={columns} renderRow={renderRow} data={paginated} />

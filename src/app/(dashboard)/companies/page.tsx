@@ -8,6 +8,7 @@ import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { useUser } from "@/hooks/useUser";
 import SingleCompanyModal from "@/components/SingleCompanyModal";
+import Spinner from "@/components/Spinner";
 
 type Company = {
   company_id: number;
@@ -202,7 +203,12 @@ const CompanyListPage = () => {
       </div>
 
       {loading ? (
-        <div className="text-center text-sm p-4 text-gray-500">Loading...</div>
+        <div className="flex justify-center items-center p-8">
+          <div className="flex flex-col items-center gap-3">
+            <Spinner size={32} color="lamaSky" />
+            <span className="text-sm text-gray-500">Loading companies...</span>
+          </div>
+        </div>
       ) : (
         <Table columns={columns} renderRow={renderRow} data={paginatedData} />
       )}

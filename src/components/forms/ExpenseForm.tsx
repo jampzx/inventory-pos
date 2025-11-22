@@ -6,6 +6,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InputField from "@/components/InputField";
 import { toast } from "sonner";
+import Spinner from "@/components/Spinner";
 
 type Props = {
   type: "create" | "update";
@@ -125,10 +126,19 @@ const ExpenseForm = ({ type, data, onClose, onSuccess }: Props) => {
       <div className="flex justify-end">
         <button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md mt-4 w-full sm:w-auto"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md mt-4 w-full sm:w-auto flex items-center justify-center gap-2"
           disabled={isLoading}
         >
-          {isLoading ? "Saving..." : type === "create" ? "Create" : "Update"}
+          {isLoading ? (
+            <>
+              <Spinner size={16} color="lamaYellow" />
+              <span>Saving...</span>
+            </>
+          ) : type === "create" ? (
+            "Create"
+          ) : (
+            "Update"
+          )}
         </button>
       </div>
     </form>

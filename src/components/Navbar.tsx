@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useUser } from "@/hooks/useUser";
+import Spinner from "@/components/Spinner";
 
 const Navbar = () => {
   const { user, loadingUseUser } = useUser();
@@ -11,8 +12,15 @@ const Navbar = () => {
       {/* ICONS AND USER */}
       <div className="flex items-center gap-6 justify-end w-full">
         <div className="flex flex-col">
-          <span className="text-xs leading-3 font-medium">
-            {user?.name || "Loading..."}
+          <span className="text-xs leading-3 font-medium flex items-center gap-2">
+            {loadingUseUser ? (
+              <>
+                <Spinner size={12} color="lamaSky" />
+                <span>Loading...</span>
+              </>
+            ) : (
+              user?.name || "Guest"
+            )}
           </span>
           <span className="text-[10px] text-gray-500 text-right capitalize">
             {user?.user_type || ""}

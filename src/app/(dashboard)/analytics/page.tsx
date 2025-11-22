@@ -16,6 +16,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import Spinner from "@/components/Spinner";
 
 interface AnalyticsData {
   dailySales: Array<{ date: string; sales: number }>;
@@ -85,7 +86,8 @@ const Analytics = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-lamaSkyLight via-white to-lamaPurpleLight">
-        <div className="px-6 py-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-lamaSky/40">
+        <div className="flex flex-col items-center gap-4 px-6 py-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-lamaSky/40">
+          <Spinner size={40} color="lamaSky" />
           <p className="text-sm font-medium text-gray-600 tracking-wide">
             Loading analytics…
           </p>
