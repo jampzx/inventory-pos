@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useState } from "react";
@@ -177,17 +178,33 @@ const FormModal = ({
         <Image src={`/${type}.png`} alt={type} width={16} height={16} />
       </button>
       {open && (
-        <div className="w-screen h-screen fixed left-0 top-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/30">
-          <div className="bg-white p-4 rounded-md relative w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%]">
-            <Form />
-            <div
-              className="absolute top-4 right-4 cursor-pointer"
-              onClick={handleClose}
+        <AnimatePresence>
+          <motion.div
+            className="w-screen h-screen fixed left-0 top-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/30"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <motion.div
+              className="bg-white p-4 rounded-md relative w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%]"
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
             >
-              <Image src="/close.png" alt="close" width={14} height={14} />
-            </div>
-          </div>
-        </div>
+              <Form />
+              <motion.div
+                className="absolute top-4 right-4 cursor-pointer"
+                onClick={handleClose}
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <Image src="/close.png" alt="close" width={14} height={14} />
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        </AnimatePresence>
       )}
     </>
   );

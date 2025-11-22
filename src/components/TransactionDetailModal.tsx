@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, AnimatePresence } from "framer-motion";
 import { TransactionType } from "@/types/types";
 import React from "react";
 
@@ -22,92 +23,119 @@ const TransactionDetailModal: React.FC<Props> = ({ transaction, onClose }) => {
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
-      <div className="bg-white max-w-2xl w-full rounded-lg p-6 relative shadow-lg overflow-y-auto max-h-[90vh]">
-        <button
-          className="absolute top-2 right-2 text-gray-500 hover:text-red-500"
-          onClick={onClose}
+    <AnimatePresence>
+      <motion.div
+        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+      >
+        <motion.div
+          className="bg-white max-w-2xl w-full rounded-lg p-6 relative shadow-lg overflow-y-auto max-h-[90vh]"
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: 20 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
         >
-          ✕
-        </button>
+          <motion.button
+            className="absolute top-2 right-2 text-gray-500 hover:text-red-500"
+            onClick={onClose}
+            whileHover={{ scale: 1.1, rotate: 90 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            ✕
+          </motion.button>
 
-        <h2 className="text-lg font-semibold mb-4">
-          Transaction #{transaction.id}
-        </h2>
+          <motion.h2
+            className="text-lg font-semibold mb-4"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+          >
+            Transaction #{transaction.id}
+          </motion.h2>
 
-        <div className="text-sm space-y-2">
-          <div>
-            <strong>Branch:</strong> {transaction.branch?.name}
-          </div>
-
-          <div>
-            <strong>Subtotal:</strong> ₱
-            {Number(transaction.subtotal).toFixed(2)}
-          </div>
-
-          <div>
-            <strong>Discount:</strong> ₱
-            {Number(transaction.discount_value).toFixed(2)}
-          </div>
-
-          <div>
-            <strong>Discount Type:</strong> {transaction.discount_type}
-          </div>
-
-          <div>
-            <strong>Total Paid:</strong> ₱
-            {Number(transaction.total_paid).toFixed(2)}
-          </div>
-          <div>
-            <strong>Change:</strong> ₱{Number(transaction.change).toFixed(2)}
-          </div>
-          <div>
-            <strong>Date:</strong>
-            {new Date(transaction.created_at).toLocaleString()}
-          </div>
-
-          <div>
-            <strong>Payments:</strong> ₱{Number(transaction.change).toFixed(2)}
-            <ul className="list-disc list-inside">
-              {transaction.payments.map((p, i) => (
-                <li key={i}>
-                  {p.payment_method}: ₱{Number(p.amount).toFixed(2)}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <strong>Items by Staff:</strong>
-            <div className="space-y-4 mt-2">
-              {Object.entries(itemsByStaff).map(([staffName, items], i) => (
-                <div key={i}>
-                  <div className="font-semibold mb-1">{staffName}</div>
-                  <ul className="list-disc list-inside ml-4 space-y-1">
-                    {items.map((item, j) => {
-                      const price = Number(item.price);
-                      const total = price * item.quantity;
-                      return (
-                        <li key={j}>
-                          {item.product.name} – Qty: {item.quantity} – ₱
-                          {price.toFixed(2)} each ={" "}
-                          <strong>₱{total.toFixed(2)}</strong>
-                          {item.bundledWith && (
-                            <span className="text-xs text-gray-500 ml-2">
-                              (bundled with {item.bundledWith.product.name})
-                            </span>
-                          )}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              ))}
+          <motion.div
+            className="text-sm space-y-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.2, staggerChildren: 0.05 }}
+          >
+            <div>
+              <strong>Branch:</strong> {transaction.branch?.name}
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
+            <div>
+              <strong>Subtotal:</strong> ₱
+              {Number(transaction.subtotal).toFixed(2)}
+            </div>
+
+            <div>
+              <strong>Discount:</strong> ₱
+              {Number(transaction.discount_value).toFixed(2)}
+            </div>
+
+            <div>
+              <strong>Discount Type:</strong> {transaction.discount_type}
+            </div>
+
+            <div>
+              <strong>Total Paid:</strong> ₱
+              {Number(transaction.total_paid).toFixed(2)}
+            </div>
+            <div>
+              <strong>Change:</strong> ₱{Number(transaction.change).toFixed(2)}
+            </div>
+            <div>
+              <strong>Date:</strong>
+              {new Date(transaction.created_at).toLocaleString()}
+            </div>
+
+            <div>
+              <strong>Payments:</strong> ₱
+              {Number(transaction.change).toFixed(2)}
+              <ul className="list-disc list-inside">
+                {transaction.payments.map((p, i) => (
+                  <li key={i}>
+                    {p.payment_method}: ₱{Number(p.amount).toFixed(2)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <strong>Items by Staff:</strong>
+              <div className="space-y-4 mt-2">
+                {Object.entries(itemsByStaff).map(([staffName, items], i) => (
+                  <div key={i}>
+                    <div className="font-semibold mb-1">{staffName}</div>
+                    <ul className="list-disc list-inside ml-4 space-y-1">
+                      {items.map((item, j) => {
+                        const price = Number(item.price);
+                        const total = price * item.quantity;
+                        return (
+                          <li key={j}>
+                            {item.product.name} – Qty: {item.quantity} – ₱
+                            {price.toFixed(2)} each ={" "}
+                            <strong>₱{total.toFixed(2)}</strong>
+                            {item.bundledWith && (
+                              <span className="text-xs text-gray-500 ml-2">
+                                (bundled with {item.bundledWith.product.name})
+                              </span>
+                            )}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, AnimatePresence } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import { useUser } from "@/hooks/useUser";
 import clsx from "clsx";
@@ -16,6 +17,7 @@ import {
   FiFileText,
   FiUsers,
   FiSettings,
+  FiChevronDown,
 } from "react-icons/fi";
 import { BsCashCoin } from "react-icons/bs";
 
@@ -124,8 +126,13 @@ const Menu = () => {
 
   return (
     <>
-      <div className="mt-4 text-sm">
-        {menuItems.map((section) => {
+      <motion.div
+        className="mt-4 text-sm"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        {menuItems.map((section, sectionIndex) => {
           // Filter out Users and Companies menu items for non-authorized users
           const visibleItems = section.items.filter((item) => {
             if (
@@ -142,54 +149,114 @@ const Menu = () => {
           const isExpanded = expandedSections[section.title] ?? true;
 
           return (
-            <div className="flex flex-col gap-2" key={section.title}>
-              <button
+            <motion.div
+              className="flex flex-col gap-2"
+              key={section.title}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{
+                duration: 0.3,
+                delay: 0.3 + sectionIndex * 0.1,
+                ease: "easeOut",
+              }}
+            >
+              <motion.button
                 onClick={() => toggleSection(section.title)}
                 className="hidden lg:flex items-center justify-between text-gray-400 font-light my-4 px-2 w-full"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
                 <span>{section.title}</span>
-              </button>
+                <motion.div
+                  animate={{ rotate: isExpanded ? 180 : 0 }}
+                  transition={{ duration: 0.2, ease: "easeInOut" }}
+                >
+                  <FiChevronDown className="text-sm" />
+                </motion.div>
+              </motion.button>
 
-              {isExpanded &&
-                visibleItems.map((item) => {
-                  const isActive = pathname === item.href;
+              <AnimatePresence>
+                {isExpanded &&
+                  visibleItems.map((item, itemIndex) => {
+                    const isActive = pathname === item.href;
 
-                  if (item.label === "Logout") {
+                    if (item.label === "Logout") {
+                      return (
+                        <motion.button
+                          key={item.label}
+                          onClick={() => setShowLogoutModal(true)}
+                          className={clsx(
+                            "flex items-center justify-center lg:justify-start gap-4 py-2 md:px-2 rounded-md hover:bg-lamaSkyLight text-left w-full",
+                            isActive
+                              ? "text-gray-500 bg-lamaSky"
+                              : "text-gray-500"
+                          )}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -10 }}
+                          transition={{
+                            duration: 0.2,
+                            delay: itemIndex * 0.05,
+                            ease: "easeOut",
+                          }}
+                          whileHover={{
+                            scale: 1.02,
+                            backgroundColor: "rgba(195, 235, 250, 0.4)",
+                          }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <motion.span
+                            className="text-lg"
+                            whileHover={{ scale: 1.1 }}
+                            transition={{ type: "spring", stiffness: 400 }}
+                          >
+                            {item.icon}
+                          </motion.span>
+                          <span className="hidden lg:block">{item.label}</span>
+                        </motion.button>
+                      );
+                    }
+
                     return (
-                      <button
+                      <motion.div
                         key={item.label}
-                        onClick={() => setShowLogoutModal(true)}
-                        className={clsx(
-                          "flex items-center justify-center lg:justify-start gap-4 py-2 md:px-2 rounded-md hover:bg-lamaSkyLight text-left w-full",
-                          isActive
-                            ? "text-gray-500 bg-lamaSky"
-                            : "text-gray-500"
-                        )}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -10 }}
+                        transition={{
+                          duration: 0.2,
+                          delay: itemIndex * 0.05,
+                          ease: "easeOut",
+                        }}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                       >
-                        <span className="text-lg">{item.icon}</span>
-                        <span className="hidden lg:block">{item.label}</span>
-                      </button>
+                        <Link
+                          href={item.href}
+                          className={clsx(
+                            "flex items-center justify-center lg:justify-start gap-4 py-2 md:px-2 rounded-md hover:bg-lamaSkyLight transition-colors",
+                            isActive
+                              ? "text-gray-500 bg-lamaSky"
+                              : "text-gray-500"
+                          )}
+                        >
+                          <motion.span
+                            className="text-lg"
+                            whileHover={{ scale: 1.1 }}
+                            transition={{ type: "spring", stiffness: 400 }}
+                          >
+                            {item.icon}
+                          </motion.span>
+                          <span className="hidden lg:block">{item.label}</span>
+                        </Link>
+                      </motion.div>
                     );
-                  }
-
-                  return (
-                    <Link
-                      href={item.href}
-                      key={item.label}
-                      className={clsx(
-                        "flex items-center justify-center lg:justify-start gap-4 py-2 md:px-2 rounded-md hover:bg-lamaSkyLight",
-                        isActive ? "text-gray-500 bg-lamaSky" : "text-gray-500"
-                      )}
-                    >
-                      <span className="text-lg">{item.icon}</span>
-                      <span className="hidden lg:block">{item.label}</span>
-                    </Link>
-                  );
-                })}
-            </div>
+                  })}
+              </AnimatePresence>
+            </motion.div>
           );
         })}
-      </div>
+      </motion.div>
 
       <ConfirmationModal
         isOpen={showLogoutModal}

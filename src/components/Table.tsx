@@ -1,3 +1,5 @@
+import { motion, AnimatePresence } from "framer-motion";
+
 const Table = ({
   columns,
   renderRow,
@@ -8,20 +10,52 @@ const Table = ({
   data: any[];
 }) => {
   return (
-    <div className="w-full overflow-x-auto mt-4">
-      <table className="min-w-max w-full text-sm">
-        <thead>
+    <motion.div
+      className="w-full overflow-x-auto mt-4"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+    >
+      <motion.table
+        className="min-w-max w-full text-sm"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3, delay: 0.2 }}
+      >
+        <motion.thead
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
+        >
           <tr className="text-left text-gray-500 whitespace-nowrap">
-            {columns.map((col) => (
-              <th key={col.accessor} className={`p-2 ${col.className || ""}`}>
+            {columns.map((col, index) => (
+              <motion.th
+                key={col.accessor}
+                className={`p-2 ${col.className || ""}`}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{
+                  duration: 0.3,
+                  delay: 0.1 + index * 0.05,
+                  ease: "easeOut",
+                }}
+              >
                 {col.header}
-              </th>
+              </motion.th>
             ))}
           </tr>
-        </thead>
-        <tbody>{data.map((item) => renderRow(item))}</tbody>
-      </table>
-    </div>
+        </motion.thead>
+        <motion.tbody
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.3 }}
+        >
+          <AnimatePresence>
+            {data.map((item) => renderRow(item))}
+          </AnimatePresence>
+        </motion.tbody>
+      </motion.table>
+    </motion.div>
   );
 };
 
