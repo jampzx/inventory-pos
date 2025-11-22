@@ -52,7 +52,7 @@ export const POST = withAuth(async (req: NextRequest, user) => {
       },
     });
 
-    // Update the order's remaining quantity
+    // Update the order's remaining quantity and status if completed
     await prisma.order.update({
       where: {
         id: orderId,
@@ -62,6 +62,8 @@ export const POST = withAuth(async (req: NextRequest, user) => {
         remaining_quantity: {
           decrement: quantity, // Subtract the quantity from the order's remaining quantity
         },
+        // Update status to "completed" if this stock-in completes the order
+        status: quantity === order.remaining_quantity ? "completed" : "pending",
       },
     });
 
