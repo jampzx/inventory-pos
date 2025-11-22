@@ -15,6 +15,7 @@ import {
   FiLogOut,
   FiFileText,
   FiUsers,
+  FiSettings,
 } from "react-icons/fi";
 import { BsCashCoin } from "react-icons/bs";
 
@@ -68,6 +69,11 @@ const menuItems: { title: string; items: MenuItem[] }[] = [
   {
     title: "Account",
     items: [
+      {
+        icon: <FiSettings />,
+        label: "Settings",
+        href: "/settings",
+      },
       {
         icon: <FiUsers />,
         label: "Users",

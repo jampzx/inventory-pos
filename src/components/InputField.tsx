@@ -8,6 +8,7 @@ type InputFieldProps = {
   defaultValue?: string;
   error?: FieldError;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
+  mdWidthClass?: string; // e.g., 'md:w-1/2', 'md:w-1/3', etc.
 };
 
 const InputField = ({
@@ -18,9 +19,10 @@ const InputField = ({
   defaultValue,
   error,
   inputProps,
+  mdWidthClass = "md:w-1/4",
 }: InputFieldProps) => {
   return (
-    <div className="flex flex-col gap-2 w-full md:w-1/4">
+    <div className={`flex flex-col gap-2 w-full ${mdWidthClass}`}>
       <label className="text-xs text-gray-500">{label}</label>
       <input
         type={type}
