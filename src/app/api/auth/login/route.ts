@@ -1,12 +1,16 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-import { signJwt } from "@/lib/jwt";
+import {
+  signJwt,
+  generateSessionId,
+  getSessionExpirationDate,
+} from "@/lib/jwt";
 import { cookies } from "next/headers";
 import { env } from "process";
 
 export async function POST(req: Request) {
-  const { username, password } = await req.json();
+  const { username, password, forceLogin = false } = await req.json();
 
   // Fetch user and their company's subscription dates
   const user = await prisma.user.findUnique({
@@ -18,6 +22,9 @@ export async function POST(req: Request) {
       user_type: true,
       password: true,
       company_id: true,
+      session_token: true,
+      session_expires_at: true,
+      last_login_at: true,
       company: {
         select: {
           subscription_start: true,
@@ -59,13 +66,47 @@ export async function POST(req: Request) {
     );
   }
 
-  // Add company_id to the JWT payload
+  // Check if user has an active session and forceLogin is not requested
+  const hasActiveSession =
+    user.session_token &&
+    user.session_expires_at &&
+    user.session_expires_at > new Date();
+
+  if (hasActiveSession && !forceLogin) {
+    return NextResponse.json(
+      {
+        success: false,
+        requiresConfirmation: true,
+        message:
+          "This account is currently logged in on another device. Do you want to force logout and continue?",
+        lastLoginAt: user.last_login_at,
+      },
+      { status: 409 }
+    );
+  }
+
+  // Generate new session
+  const sessionId = generateSessionId();
+  const sessionExpiresAt = getSessionExpirationDate();
+
+  // Invalidate any existing session and create new one
+  await prisma.user.update({
+    where: { id: user.id },
+    data: {
+      session_token: sessionId,
+      last_login_at: new Date(),
+      session_expires_at: sessionExpiresAt,
+    },
+  });
+
+  // Add session_id to the JWT payload
   const token = signJwt({
     id: user.id,
     name: user.full_name,
     username: user.username,
     user_type: user.user_type,
     company_id: user.company_id,
+    session_id: sessionId,
   });
 
   cookies().set("token", token, {

@@ -7,4 +7,5 @@ export interface JwtUserPayload {
   created_at?: string;
   updated_at?: string;
   company_id: number;
+  session_id: string;
 }

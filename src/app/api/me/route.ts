@@ -16,6 +16,28 @@ export async function GET() {
   try {
     const decoded = (await verifyJwt(token)) as JwtUserPayload;
 
+    if (!decoded) {
+      return NextResponse.json({ user: null }, { status: 401 });
+    }
+
+    // Validate session against database
+    const dbUser = await prisma.user.findUnique({
+      where: { id: decoded.id },
+      select: {
+        session_token: true,
+        session_expires_at: true,
+      },
+    });
+
+    if (
+      !dbUser ||
+      !dbUser.session_token ||
+      dbUser.session_token !== decoded.session_id ||
+      (dbUser.session_expires_at && dbUser.session_expires_at < new Date())
+    ) {
+      return NextResponse.json({ user: null }, { status: 401 });
+    }
+
     return NextResponse.json({
       user: decoded,
       authorizedUserType: process.env.AUTHORIZED_USE_TYPE,

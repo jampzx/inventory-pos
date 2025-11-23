@@ -10,10 +10,13 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showConcurrentSessionModal, setShowConcurrentSessionModal] =
+    useState(false);
+  const [sessionConflictData, setSessionConflictData] = useState<any>(null);
 
   const router = useRouter();
 
-  const handleSignIn = async (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent, forceLogin = false) => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
@@ -22,16 +25,22 @@ const LoginPage = () => {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, forceLogin }),
       });
 
       const result = await res.json();
 
       if (!result.success) {
-        setError(result.message || "Invalid credentials");
+        if (result.requiresConfirmation) {
+          setSessionConflictData(result);
+          setShowConcurrentSessionModal(true);
+        } else {
+          setError(result.message || "Invalid credentials");
+        }
       } else {
         const { name, user_type } = result.user;
         toast.success(`Welcome ${name}!`);
+        setShowConcurrentSessionModal(false);
         router.push(`/analytics`);
       }
     } catch (err) {
@@ -40,6 +49,15 @@ const LoginPage = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleForceLogin = (e: React.FormEvent) => {
+    handleSignIn(e, true);
+  };
+
+  const handleCancelForceLogin = () => {
+    setShowConcurrentSessionModal(false);
+    setSessionConflictData(null);
   };
 
   return (
@@ -87,6 +105,41 @@ const LoginPage = () => {
           {isLoading ? "Signing In..." : "Sign In"}
         </button>
       </form>
+
+      {/* Concurrent Session Modal */}
+      {showConcurrentSessionModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full">
+            <h3 className="text-lg font-semibold mb-4">
+              Account Already Logged In
+            </h3>
+            <p className="text-sm text-gray-600 mb-4">
+              {sessionConflictData?.message}
+            </p>
+            {sessionConflictData?.lastLoginAt && (
+              <p className="text-xs text-gray-500 mb-6">
+                Last login:{" "}
+                {new Date(sessionConflictData.lastLoginAt).toLocaleString()}
+              </p>
+            )}
+            <div className="flex gap-3">
+              <button
+                onClick={handleCancelForceLogin}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleForceLogin}
+                disabled={isLoading}
+                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition disabled:opacity-50"
+              >
+                {isLoading ? "Logging In..." : "Force Login"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

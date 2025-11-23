@@ -6,6 +6,7 @@ import Menu from "components/Menu";
 import Navbar from "components/Navbar";
 import Image from "next/image";
 import Link from "next/link";
+import { useSessionMonitor } from "@/hooks/useSessionMonitor";
 
 export default function DashboardLayout({
   children,
@@ -13,6 +14,9 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
+
+  // Monitor session status and handle automatic logout
+  useSessionMonitor();
 
   return (
     <div className="h-screen flex">

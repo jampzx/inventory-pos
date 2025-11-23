@@ -3198,6 +3198,9 @@ export namespace Prisma {
     status: string | null
     created_at: Date | null
     updated_at: Date | null
+    session_token: string | null
+    last_login_at: Date | null
+    session_expires_at: Date | null
     company_id: number | null
   }
 
@@ -3210,6 +3213,9 @@ export namespace Prisma {
     status: string | null
     created_at: Date | null
     updated_at: Date | null
+    session_token: string | null
+    last_login_at: Date | null
+    session_expires_at: Date | null
     company_id: number | null
   }
 
@@ -3222,6 +3228,9 @@ export namespace Prisma {
     status: number
     created_at: number
     updated_at: number
+    session_token: number
+    last_login_at: number
+    session_expires_at: number
     company_id: number
     _all: number
   }
@@ -3246,6 +3255,9 @@ export namespace Prisma {
     status?: true
     created_at?: true
     updated_at?: true
+    session_token?: true
+    last_login_at?: true
+    session_expires_at?: true
     company_id?: true
   }
 
@@ -3258,6 +3270,9 @@ export namespace Prisma {
     status?: true
     created_at?: true
     updated_at?: true
+    session_token?: true
+    last_login_at?: true
+    session_expires_at?: true
     company_id?: true
   }
 
@@ -3270,6 +3285,9 @@ export namespace Prisma {
     status?: true
     created_at?: true
     updated_at?: true
+    session_token?: true
+    last_login_at?: true
+    session_expires_at?: true
     company_id?: true
     _all?: true
   }
@@ -3369,6 +3387,9 @@ export namespace Prisma {
     status: string
     created_at: Date
     updated_at: Date
+    session_token: string | null
+    last_login_at: Date | null
+    session_expires_at: Date | null
     company_id: number
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
@@ -3400,6 +3421,9 @@ export namespace Prisma {
     status?: boolean
     created_at?: boolean
     updated_at?: boolean
+    session_token?: boolean
+    last_login_at?: boolean
+    session_expires_at?: boolean
     company_id?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     transactions?: boolean | User$transactionsArgs<ExtArgs>
@@ -3415,6 +3439,9 @@ export namespace Prisma {
     status?: boolean
     created_at?: boolean
     updated_at?: boolean
+    session_token?: boolean
+    last_login_at?: boolean
+    session_expires_at?: boolean
     company_id?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -3428,6 +3455,9 @@ export namespace Prisma {
     status?: boolean
     created_at?: boolean
     updated_at?: boolean
+    session_token?: boolean
+    last_login_at?: boolean
+    session_expires_at?: boolean
     company_id?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -3441,10 +3471,13 @@ export namespace Prisma {
     status?: boolean
     created_at?: boolean
     updated_at?: boolean
+    session_token?: boolean
+    last_login_at?: boolean
+    session_expires_at?: boolean
     company_id?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "full_name" | "username" | "password" | "user_type" | "status" | "created_at" | "updated_at" | "company_id", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "full_name" | "username" | "password" | "user_type" | "status" | "created_at" | "updated_at" | "session_token" | "last_login_at" | "session_expires_at" | "company_id", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     transactions?: boolean | User$transactionsArgs<ExtArgs>
@@ -3472,6 +3505,9 @@ export namespace Prisma {
       status: string
       created_at: Date
       updated_at: Date
+      session_token: string | null
+      last_login_at: Date | null
+      session_expires_at: Date | null
       company_id: number
     }, ExtArgs["result"]["user"]>
     composites: {}
@@ -3906,6 +3942,9 @@ export namespace Prisma {
     readonly status: FieldRef<"User", 'String'>
     readonly created_at: FieldRef<"User", 'DateTime'>
     readonly updated_at: FieldRef<"User", 'DateTime'>
+    readonly session_token: FieldRef<"User", 'String'>
+    readonly last_login_at: FieldRef<"User", 'DateTime'>
+    readonly session_expires_at: FieldRef<"User", 'DateTime'>
     readonly company_id: FieldRef<"User", 'Int'>
   }
     
@@ -13955,6 +13994,9 @@ export namespace Prisma {
     status: 'status',
     created_at: 'created_at',
     updated_at: 'updated_at',
+    session_token: 'session_token',
+    last_login_at: 'last_login_at',
+    session_expires_at: 'session_expires_at',
     company_id: 'company_id'
   };
 
@@ -14295,6 +14337,9 @@ export namespace Prisma {
     status?: StringFilter<"User"> | string
     created_at?: DateTimeFilter<"User"> | Date | string
     updated_at?: DateTimeFilter<"User"> | Date | string
+    session_token?: StringNullableFilter<"User"> | string | null
+    last_login_at?: DateTimeNullableFilter<"User"> | Date | string | null
+    session_expires_at?: DateTimeNullableFilter<"User"> | Date | string | null
     company_id?: IntFilter<"User"> | number
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     transactions?: TransactionListRelationFilter
@@ -14309,6 +14354,9 @@ export namespace Prisma {
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    session_token?: SortOrderInput | SortOrder
+    last_login_at?: SortOrderInput | SortOrder
+    session_expires_at?: SortOrderInput | SortOrder
     company_id?: SortOrder
     company?: CompanyOrderByWithRelationInput
     transactions?: TransactionOrderByRelationAggregateInput
@@ -14317,6 +14365,7 @@ export namespace Prisma {
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: number
     username?: string
+    session_token?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
@@ -14326,10 +14375,12 @@ export namespace Prisma {
     status?: StringFilter<"User"> | string
     created_at?: DateTimeFilter<"User"> | Date | string
     updated_at?: DateTimeFilter<"User"> | Date | string
+    last_login_at?: DateTimeNullableFilter<"User"> | Date | string | null
+    session_expires_at?: DateTimeNullableFilter<"User"> | Date | string | null
     company_id?: IntFilter<"User"> | number
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     transactions?: TransactionListRelationFilter
-  }, "id" | "username">
+  }, "id" | "username" | "session_token">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -14340,6 +14391,9 @@ export namespace Prisma {
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    session_token?: SortOrderInput | SortOrder
+    last_login_at?: SortOrderInput | SortOrder
+    session_expires_at?: SortOrderInput | SortOrder
     company_id?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
@@ -14360,6 +14414,9 @@ export namespace Prisma {
     status?: StringWithAggregatesFilter<"User"> | string
     created_at?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    session_token?: StringNullableWithAggregatesFilter<"User"> | string | null
+    last_login_at?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    session_expires_at?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     company_id?: IntWithAggregatesFilter<"User"> | number
   }
 
@@ -15105,6 +15162,9 @@ export namespace Prisma {
     status: string
     created_at?: Date | string
     updated_at?: Date | string
+    session_token?: string | null
+    last_login_at?: Date | string | null
+    session_expires_at?: Date | string | null
     company: CompanyCreateNestedOneWithoutUsersInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
   }
@@ -15118,6 +15178,9 @@ export namespace Prisma {
     status: string
     created_at?: Date | string
     updated_at?: Date | string
+    session_token?: string | null
+    last_login_at?: Date | string | null
+    session_expires_at?: Date | string | null
     company_id: number
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
   }
@@ -15130,6 +15193,9 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_token?: NullableStringFieldUpdateOperationsInput | string | null
+    last_login_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company?: CompanyUpdateOneRequiredWithoutUsersNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
   }
@@ -15143,6 +15209,9 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_token?: NullableStringFieldUpdateOperationsInput | string | null
+    last_login_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company_id?: IntFieldUpdateOperationsInput | number
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -15156,6 +15225,9 @@ export namespace Prisma {
     status: string
     created_at?: Date | string
     updated_at?: Date | string
+    session_token?: string | null
+    last_login_at?: Date | string | null
+    session_expires_at?: Date | string | null
     company_id: number
   }
 
@@ -15167,6 +15239,9 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_token?: NullableStringFieldUpdateOperationsInput | string | null
+    last_login_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -15178,6 +15253,9 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_token?: NullableStringFieldUpdateOperationsInput | string | null
+    last_login_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company_id?: IntFieldUpdateOperationsInput | number
   }
 
@@ -16046,6 +16124,17 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type TransactionListRelationFilter = {
     every?: TransactionWhereInput
     some?: TransactionWhereInput
@@ -16065,6 +16154,9 @@ export namespace Prisma {
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    session_token?: SortOrder
+    last_login_at?: SortOrder
+    session_expires_at?: SortOrder
     company_id?: SortOrder
   }
 
@@ -16082,6 +16174,9 @@ export namespace Prisma {
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    session_token?: SortOrder
+    last_login_at?: SortOrder
+    session_expires_at?: SortOrder
     company_id?: SortOrder
   }
 
@@ -16094,12 +16189,29 @@ export namespace Prisma {
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    session_token?: SortOrder
+    last_login_at?: SortOrder
+    session_expires_at?: SortOrder
     company_id?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
     id?: SortOrder
     company_id?: SortOrder
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type PaymentTypeCountOrderByAggregateInput = {
@@ -16582,17 +16694,6 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type ProductListRelationFilter = {
     every?: ProductWhereInput
     some?: ProductWhereInput
@@ -16675,20 +16776,6 @@ export namespace Prisma {
 
   export type CompanySumOrderByAggregateInput = {
     company_id?: SortOrder
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type CompanyCreateNestedOneWithoutProductsInput = {
@@ -16835,6 +16922,10 @@ export namespace Prisma {
     connectOrCreate?: TransactionCreateOrConnectWithoutUserInput | TransactionCreateOrConnectWithoutUserInput[]
     createMany?: TransactionCreateManyUserInputEnvelope
     connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type CompanyUpdateOneRequiredWithoutUsersNestedInput = {
@@ -17337,10 +17428,6 @@ export namespace Prisma {
     connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-  }
-
   export type ProductUpdateManyWithoutCompanyNestedInput = {
     create?: XOR<ProductCreateWithoutCompanyInput, ProductUncheckedCreateWithoutCompanyInput> | ProductCreateWithoutCompanyInput[] | ProductUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: ProductCreateOrConnectWithoutCompanyInput | ProductCreateOrConnectWithoutCompanyInput[]
@@ -17756,6 +17843,31 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type NestedEnumDiscountTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.DiscountType | EnumDiscountTypeFieldRefInput<$PrismaModel>
     in?: $Enums.DiscountType[] | ListEnumDiscountTypeFieldRefInput<$PrismaModel>
@@ -17841,31 +17953,6 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type CompanyCreateWithoutProductsInput = {
@@ -18397,6 +18484,9 @@ export namespace Prisma {
     status: string
     created_at?: Date | string
     updated_at?: Date | string
+    session_token?: string | null
+    last_login_at?: Date | string | null
+    session_expires_at?: Date | string | null
     company: CompanyCreateNestedOneWithoutUsersInput
   }
 
@@ -18409,6 +18499,9 @@ export namespace Prisma {
     status: string
     created_at?: Date | string
     updated_at?: Date | string
+    session_token?: string | null
+    last_login_at?: Date | string | null
+    session_expires_at?: Date | string | null
     company_id: number
   }
 
@@ -18565,6 +18658,9 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_token?: NullableStringFieldUpdateOperationsInput | string | null
+    last_login_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company?: CompanyUpdateOneRequiredWithoutUsersNestedInput
   }
 
@@ -18577,6 +18673,9 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_token?: NullableStringFieldUpdateOperationsInput | string | null
+    last_login_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company_id?: IntFieldUpdateOperationsInput | number
   }
 
@@ -19541,6 +19640,9 @@ export namespace Prisma {
     status: string
     created_at?: Date | string
     updated_at?: Date | string
+    session_token?: string | null
+    last_login_at?: Date | string | null
+    session_expires_at?: Date | string | null
     transactions?: TransactionCreateNestedManyWithoutUserInput
   }
 
@@ -19553,6 +19655,9 @@ export namespace Prisma {
     status: string
     created_at?: Date | string
     updated_at?: Date | string
+    session_token?: string | null
+    last_login_at?: Date | string | null
+    session_expires_at?: Date | string | null
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -19836,6 +19941,9 @@ export namespace Prisma {
     status?: StringFilter<"User"> | string
     created_at?: DateTimeFilter<"User"> | Date | string
     updated_at?: DateTimeFilter<"User"> | Date | string
+    session_token?: StringNullableFilter<"User"> | string | null
+    last_login_at?: DateTimeNullableFilter<"User"> | Date | string | null
+    session_expires_at?: DateTimeNullableFilter<"User"> | Date | string | null
     company_id?: IntFilter<"User"> | number
   }
 
@@ -20239,6 +20347,9 @@ export namespace Prisma {
     status: string
     created_at?: Date | string
     updated_at?: Date | string
+    session_token?: string | null
+    last_login_at?: Date | string | null
+    session_expires_at?: Date | string | null
   }
 
   export type PaymentTypeCreateManyCompanyInput = {
@@ -20361,6 +20472,9 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_token?: NullableStringFieldUpdateOperationsInput | string | null
+    last_login_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     transactions?: TransactionUpdateManyWithoutUserNestedInput
   }
 
@@ -20373,6 +20487,9 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_token?: NullableStringFieldUpdateOperationsInput | string | null
+    last_login_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -20385,6 +20502,9 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_token?: NullableStringFieldUpdateOperationsInput | string | null
+    last_login_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PaymentTypeUpdateWithoutCompanyInput = {

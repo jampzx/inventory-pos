@@ -46,6 +46,11 @@ model User {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
+  // Session tracking fields
+  session_token      String?   @unique
+  last_login_at      DateTime?
+  session_expires_at DateTime?
+
   // Relations
   company_id   Int
   company      Company       @relation(fields: [company_id], references: [company_id])

@@ -143,6 +143,9 @@ exports.Prisma.UserScalarFieldEnum = {
   status: 'status',
   created_at: 'created_at',
   updated_at: 'updated_at',
+  session_token: 'session_token',
+  last_login_at: 'last_login_at',
+  session_expires_at: 'session_expires_at',
   company_id: 'company_id'
 };
 
