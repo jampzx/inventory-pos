@@ -18,35 +18,35 @@ const LowActivityProducts = ({ data }: LowActivityProductsProps) => {
       transition={{ duration: 0.6, delay: 1.2 }}
       className="bg-white/80 backdrop-blur-sm border border-lamaYellowLight/80 rounded-2xl shadow-sm hover:shadow-md transition-shadow"
     >
-      <div className="p-5 md:p-6">
-        <div className="flex items-center justify-between mb-4">
+      <div className="p-3 sm:p-4 md:p-5 lg:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4 gap-2">
           <div>
-            <h2 className="text-lg md:text-xl font-semibold text-gray-900">
+            <h2 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900">
               Low-Activity Products
             </h2>
-            <p className="text-xs text-gray-500">
+            <p className="text-[10px] sm:text-xs text-gray-500">
               Identify items with minimal sales activity.
             </p>
           </div>
         </div>
 
         <div className="overflow-x-auto rounded-xl border border-gray-100">
-          <table className="min-w-full divide-y divide-gray-200 text-sm">
+          <table className="min-w-full divide-y divide-gray-200 text-xs sm:text-sm">
             <thead className="bg-lamaYellowLight">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Rank
+                <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  #
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Product Name
+                <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Product
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Quantity Sold
+                <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell">
+                  Sold
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Current Stock
+                <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell">
+                  Stock
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-semibold text-gray-600 uppercase tracking-wider">
                   Status
                 </th>
               </tr>
@@ -81,20 +81,20 @@ const LowActivityProducts = ({ data }: LowActivityProductsProps) => {
                     }}
                     className="hover:bg-lamaSkyLight/60 transition-colors"
                   >
-                    <td className="px-4 py-3 whitespace-nowrap text-gray-900">
+                    <td className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap text-gray-900 text-xs sm:text-sm">
                       {index + 1}
                     </td>
-                    <td className="px-4 py-3 whitespace-nowrap font-medium text-gray-900">
+                    <td className="px-2 sm:px-4 py-2 sm:py-3 font-medium text-gray-900 text-xs sm:text-sm max-w-[120px] sm:max-w-none truncate">
                       {product.name}
                     </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-gray-600">
+                    <td className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap text-gray-600 text-xs sm:text-sm hidden sm:table-cell">
                       {product.quantity}
                     </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-gray-600">
+                    <td className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap text-gray-600 text-xs sm:text-sm hidden sm:table-cell">
                       {product.stock}
                     </td>
-                    <td className="px-4 py-3 whitespace-nowrap">
-                      <span className={badgeClass}>
+                    <td className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
+                      <span className={`${badgeClass} text-[10px] sm:text-xs`}>
                         {isNoSales
                           ? "No Sales"
                           : isLowActivity

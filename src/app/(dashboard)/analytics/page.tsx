@@ -111,12 +111,12 @@ const Analytics = () => {
       : null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br via-white to-lamaPurpleLight p-6 md:p-8">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gradient-to-br via-white to-lamaPurpleLight p-2 sm:p-4 md:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
         <AnalyticsHeader />
 
         {/* Metric Cards */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
           <MetricCard
             title="Total Sales (Last 30 Days)"
             value={formatCurrency(totalSales)}

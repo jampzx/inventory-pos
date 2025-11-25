@@ -192,11 +192,11 @@ export default function POSPage() {
   }
 
   return (
-    <main className="p-4 md:p-6 lg:p-8 flex flex-col lg:flex-row gap-6 min-h-screen bg-gray-50">
+    <main className="p-2 sm:p-4 md:p-6 lg:p-8 flex flex-col lg:flex-row gap-4 sm:gap-6 min-h-screen bg-gray-50">
       <section className="flex-1">
-        <header className="flex flex-col md:flex-row items-center gap-4 mb-6">
+        <header className="flex flex-col items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
           {/* Search */}
-          <div className="relative w-full md:flex-1">
+          <div className="relative w-full">
             <input
               type="text"
               placeholder="Search products..."
@@ -205,12 +205,12 @@ export default function POSPage() {
                 setSearchTerm(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full pl-10 pr-4 py-2 rounded-md bg-lamaPurpleLight text-sm placeholder-gray-500 focus:border-lamaSky focus:ring-1 focus:ring-lamaSky focus:outline-none shadow-sm"
+              className="w-full pl-10 pr-4 py-2 sm:py-3 rounded-md bg-lamaPurpleLight text-sm placeholder-gray-500 focus:border-lamaSky focus:ring-1 focus:ring-lamaSky focus:outline-none shadow-sm"
             />
-            <FiSearch className="absolute left-3 top-2.5 text-gray-500 text-base" />
+            <FiSearch className="absolute left-3 top-2.5 sm:top-3.5 text-gray-500 text-base" />
           </div>
         </header>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
           {paginatedProducts.map((product, index) => (
             <button
               key={product.id}
@@ -257,8 +257,8 @@ export default function POSPage() {
         />
       </section>
 
-      <aside className="w-full lg:w-96 rounded shadow-md p-4 space-y-4 bg-lamaPurpleLight">
-        <div className="text-lg font-bold text-gray-800">
+      <aside className="w-full lg:w-96 rounded shadow-md p-3 sm:p-4 space-y-3 sm:space-y-4 bg-lamaPurpleLight">
+        <div className="text-base sm:text-lg font-bold text-gray-800">
           🧾 Order Information
         </div>
 

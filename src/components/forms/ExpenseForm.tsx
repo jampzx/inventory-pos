@@ -95,12 +95,12 @@ const ExpenseForm = ({ type, data, onClose, onSuccess }: Props) => {
   });
 
   return (
-    <form className="flex flex-col gap-6" onSubmit={onSubmit}>
-      <h1 className="text-lg font-semibold">
+    <form className="flex flex-col gap-4 sm:gap-6" onSubmit={onSubmit}>
+      <h1 className="text-base sm:text-lg font-semibold">
         {type === "create" ? "Create Expense" : "Update Expense"}
       </h1>
 
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         <InputField
           label="Description"
           name="description"
@@ -123,10 +123,10 @@ const ExpenseForm = ({ type, data, onClose, onSuccess }: Props) => {
         />
       </div>
 
-      <div className="flex justify-end">
+      <div className="flex justify-end pt-2">
         <button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md mt-4 w-full sm:w-auto flex items-center justify-center gap-2"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 rounded-md w-full sm:w-auto flex items-center justify-center gap-2 text-sm"
           disabled={isLoading}
         >
           {isLoading ? (

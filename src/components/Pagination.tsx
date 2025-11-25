@@ -13,7 +13,7 @@ const Pagination = ({
 
   return (
     <motion.div
-      className="p-4 flex items-center justify-between text-gray-500"
+      className="p-2 sm:p-4 flex items-center justify-between text-gray-500"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
@@ -21,7 +21,7 @@ const Pagination = ({
       <motion.button
         disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}
-        className="py-2 px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+        className="py-1 sm:py-2 px-2 sm:px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
         whileHover={{
           scale: currentPage === 1 ? 1 : 1.05,
           backgroundColor: currentPage === 1 ? undefined : "rgb(203, 213, 225)",
@@ -31,16 +31,16 @@ const Pagination = ({
         Prev
       </motion.button>
       <motion.div
-        className="flex items-center gap-2 text-sm"
+        className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm overflow-x-auto max-w-[50%] scrollbar-hide"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3, delay: 0.1 }}
       >
-        {pages.map((page, index) => (
+        {pages.slice(0, 7).map((page, index) => (
           <motion.button
             key={page}
             onClick={() => onPageChange(page)}
-            className={`px-2 rounded-sm transition-colors ${
+            className={`px-2 py-1 rounded-sm transition-colors min-w-[24px] flex-shrink-0 ${
               page === currentPage ? "bg-lamaSky text-white" : ""
             }`}
             initial={{ opacity: 0, scale: 0.8 }}
@@ -62,11 +62,12 @@ const Pagination = ({
             {page}
           </motion.button>
         ))}
+        {pages.length > 7 && <span className="text-gray-400 px-1">...</span>}
       </motion.div>
       <motion.button
         disabled={currentPage === totalPages}
         onClick={() => onPageChange(currentPage + 1)}
-        className="py-2 px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+        className="py-1 sm:py-2 px-2 sm:px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
         whileHover={{
           scale: currentPage === totalPages ? 1 : 1.05,
           backgroundColor:

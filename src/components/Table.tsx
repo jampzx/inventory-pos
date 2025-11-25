@@ -11,13 +11,13 @@ const Table = ({
 }) => {
   return (
     <motion.div
-      className="w-full overflow-x-auto mt-4"
+      className="w-full overflow-x-auto mt-3 sm:mt-4 bg-white rounded border shadow-sm"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
       <motion.table
-        className="min-w-max w-full text-sm"
+        className="min-w-full w-full text-xs sm:text-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, delay: 0.2 }}
@@ -27,11 +27,13 @@ const Table = ({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
         >
-          <tr className="text-left text-gray-500 whitespace-nowrap">
+          <tr className="text-left text-gray-500 whitespace-nowrap bg-gray-50 border-b">
             {columns.map((col, index) => (
               <motion.th
                 key={col.accessor}
-                className={`p-2 ${col.className || ""}`}
+                className={`p-2 sm:p-3 font-medium text-xs sm:text-sm ${
+                  col.className || ""
+                }`}
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{

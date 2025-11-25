@@ -187,7 +187,7 @@ const FormModal = ({
             transition={{ duration: 0.2 }}
           >
             <motion.div
-              className="bg-white p-4 rounded-md relative w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%]"
+              className="bg-white p-3 sm:p-4 md:p-6 rounded-md relative w-[95%] max-w-4xl max-h-[95vh] overflow-y-auto"
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}

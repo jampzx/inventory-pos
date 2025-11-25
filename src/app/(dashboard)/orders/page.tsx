@@ -199,12 +199,12 @@ const OrdersPage = () => {
   };
 
   return (
-    <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
-      <div className="flex items-center justify-between">
-        <h1 className="text-lg font-semibold">Orders</h1>
-        <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+    <div className="bg-white p-2 sm:p-4 rounded-md flex-1 m-2 sm:m-4 mt-0">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="text-base sm:text-lg font-semibold">Orders</h1>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
           <TableSearch onSearch={setSearchTerm} />
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto">
             <select
               className="text-sm px-3 py-2 rounded-lg border border-gray-300 bg-white shadow-sm"
               value={sortKey}
@@ -237,10 +237,10 @@ const OrdersPage = () => {
       </div>
 
       {/* Summary Metrics */}
-      <div className="text-sm font-medium text-gray-700 mb-4 space-y-1">
-        <div>
-          Total Expenses:{" "}
-          <span className="text-red-600 font-semibold">
+      <div className="text-xs sm:text-sm font-medium text-gray-700 mb-3 mt-2 sm:mb-4 space-y-1 bg-gray-50 p-2 sm:p-3 rounded">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
+          <span className="text-gray-600">Total Expenses:</span>
+          <span className="text-red-600 font-semibold text-sm sm:text-base">
             ₱
             {filteredAndSorted
               .filter((o) => o.status !== "voided")
@@ -252,9 +252,9 @@ const OrdersPage = () => {
           </span>
         </div>
 
-        <div>
-          Net Profit:{" "}
-          <span className="text-blue-600 font-semibold">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
+          <span className="text-gray-600">Net Profit:</span>
+          <span className="text-blue-600 font-semibold text-sm sm:text-base">
             ₱
             {filteredAndSorted
               .filter((o) => o.status !== "voided")

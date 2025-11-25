@@ -30,33 +30,37 @@ const TopProductsChart = ({ data }: TopProductsChartProps) => {
       transition={{ duration: 0.6, delay: 1.0 }}
       className="bg-white/80 backdrop-blur-sm border border-lamaPurpleLight/80 rounded-2xl shadow-sm hover:shadow-md transition-shadow"
     >
-      <div className="p-5 md:p-6">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h2 className="text-lg md:text-xl font-semibold text-gray-900">
+      <div className="p-3 sm:p-4 md:p-5 lg:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4 gap-2">
+          <div className="flex-1">
+            <h2 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900">
               Top-Selling Products
             </h2>
-            <p className="text-xs text-gray-500">
+            <p className="text-[10px] sm:text-xs text-gray-500">
               Compare quantity sold and revenue side by side.
             </p>
           </div>
           {topProduct && (
-            <div className="hidden md:flex flex-col items-end text-xs text-gray-500">
-              <span className="font-medium text-gray-700">Best performer</span>
-              <span>{topProduct.name}</span>
+            <div className="flex flex-col items-start sm:items-end text-xs text-gray-500">
+              <span className="font-medium text-gray-700 text-xs sm:text-sm">
+                Best performer
+              </span>
+              <span className="text-[10px] sm:text-xs truncate max-w-[120px]">
+                {topProduct.name}
+              </span>
             </div>
           )}
         </div>
-        <div className="h-[320px] md:h-[400px]">
+        <div className="h-[280px] sm:h-[320px] md:h-[360px] lg:h-[400px]">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={data} layout="vertical" margin={{ left: 100 }}>
+            <BarChart data={data} layout="vertical" margin={{ left: 60 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-              <XAxis type="number" tick={{ fontSize: 11 }} />
+              <XAxis type="number" tick={{ fontSize: 9 }} />
               <YAxis
                 dataKey="name"
                 type="category"
-                width={140}
-                tick={{ fontSize: 11 }}
+                width={80}
+                tick={{ fontSize: 9 }}
               />
               <Tooltip
                 formatter={(value: number, name: string) => {

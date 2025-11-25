@@ -154,13 +154,13 @@ const TransactionsListPage = () => {
   );
 
   return (
-    <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-2">
-        <h1 className="text-lg font-semibold">All Transactions</h1>
+    <div className="bg-white p-2 sm:p-4 rounded-md flex-1 m-2 sm:m-4 mt-0">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="text-base sm:text-lg font-semibold">All Transactions</h1>
 
-        <div className="flex flex-col md:flex-row md:items-center gap-4 w-full md:w-auto">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
           <TableSearch onSearch={setSearchTerm} />
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto">
             <select
               className="text-sm px-3 py-2 rounded-lg border border-gray-300 bg-white shadow-sm"
               value={sortKey}
@@ -191,9 +191,9 @@ const TransactionsListPage = () => {
       </div>
 
       {/* Total Paid Summary (just below the filters & controls) */}
-      <div className="text-sm text-gray-600 font-medium mb-2">
-        Total Sales:{" "}
-        <span className="text-black font-semibold">
+      <div className="text-xs sm:text-sm text-gray-600 font-medium mb-2 mt-2 bg-gray-50 p-2 sm:p-3 rounded">
+        <span className="block sm:inline">Total Sales:</span>
+        <span className="text-black font-semibold text-sm sm:text-base block sm:inline sm:ml-2">
           ₱
           {filteredAndSorted
             .filter((tx) => tx.status !== "voided")

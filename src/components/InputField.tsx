@@ -20,7 +20,7 @@ const InputField = ({
   defaultValue,
   error,
   inputProps,
-  mdWidthClass = "md:w-1/4",
+  mdWidthClass = "w-full",
 }: InputFieldProps) => {
   return (
     <motion.div
@@ -30,7 +30,7 @@ const InputField = ({
       transition={{ duration: 0.3, ease: "easeOut" }}
     >
       <motion.label
-        className="text-xs text-gray-500"
+        className="text-xs sm:text-sm text-gray-500 font-medium"
         initial={{ opacity: 0, x: -5 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.2, delay: 0.1 }}
@@ -40,9 +40,9 @@ const InputField = ({
       <motion.input
         type={type}
         {...register(name)}
-        className={`ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full transition-all duration-200 ${
+        className={`ring-[1.5px] ring-gray-300 p-2 sm:p-3 rounded-md text-sm w-full transition-all duration-200 ${
           error ? "ring-red-400 focus:ring-red-500" : "focus:ring-blue-500"
-        }`}
+        } focus:outline-none`}
         {...inputProps}
         defaultValue={defaultValue}
         whileFocus={{

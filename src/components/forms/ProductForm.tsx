@@ -131,11 +131,11 @@ const ProductForm = ({ type, data, onClose, onSuccess }: Props) => {
   });
 
   return (
-    <form className="flex flex-col gap-6" onSubmit={onSubmit}>
-      <h1 className="text-lg md:text-xl font-semibold">
+    <form className="flex flex-col gap-4 sm:gap-6" onSubmit={onSubmit}>
+      <h1 className="text-base sm:text-lg md:text-xl font-semibold">
         {type === "create" ? "Create a new product" : "Update product"}
       </h1>
-      <div className="flex flex-wrap gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         <InputField
           label="Name"
           name="name"
@@ -181,10 +181,12 @@ const ProductForm = ({ type, data, onClose, onSuccess }: Props) => {
         />
       </div>
 
-      <div className="flex flex-col gap-2 w-full md:w-1/4">
-        <label className="text-xs text-gray-500">Upload Image</label>
+      <div className="flex flex-col gap-2 w-full sm:col-span-2 md:col-span-1">
+        <label className="text-xs sm:text-sm text-gray-500 font-medium">
+          Upload Image
+        </label>
         <div
-          className="relative flex items-center justify-center w-full aspect-square border-2 border-dashed border-gray-300 rounded-md bg-gray-50 hover:bg-gray-100 cursor-pointer overflow-hidden"
+          className="relative flex items-center justify-center w-full h-32 sm:h-40 md:aspect-square border-2 border-dashed border-gray-300 rounded-md bg-gray-50 hover:bg-gray-100 cursor-pointer overflow-hidden"
           onClick={() => document.getElementById("img")?.click()}
         >
           {previewUrl ? (
@@ -231,7 +233,7 @@ const ProductForm = ({ type, data, onClose, onSuccess }: Props) => {
 
       <button
         type="submit"
-        className="bg-blue-500 hover:bg-blue-600 transition text-white p-2 rounded-md w-full md:w-fit flex items-center justify-center gap-2"
+        className="bg-blue-500 hover:bg-blue-600 transition text-white p-2 sm:p-3 rounded-md w-full sm:w-auto flex items-center justify-center gap-2 text-sm"
         disabled={isLoading}
       >
         {isLoading ? (

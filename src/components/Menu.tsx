@@ -27,6 +27,10 @@ type MenuItem = {
   href: string;
 };
 
+interface MenuProps {
+  onItemClick?: () => void;
+}
+
 const menuItems: { title: string; items: MenuItem[] }[] = [
   {
     title: "Dashboard",
@@ -95,7 +99,7 @@ const menuItems: { title: string; items: MenuItem[] }[] = [
   },
 ];
 
-const Menu = () => {
+const Menu = ({ onItemClick }: MenuProps) => {
   const pathname = usePathname();
   const router = useRouter();
   const { user, authorizedUserType } = useUser();
@@ -162,7 +166,7 @@ const Menu = () => {
             >
               <motion.button
                 onClick={() => toggleSection(section.title)}
-                className="hidden lg:flex items-center justify-between text-gray-400 font-light my-4 px-2 w-full"
+                className="flex items-center justify-between text-gray-400 font-light my-4 px-2 w-full"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -184,9 +188,12 @@ const Menu = () => {
                       return (
                         <motion.button
                           key={item.label}
-                          onClick={() => setShowLogoutModal(true)}
+                          onClick={() => {
+                            setShowLogoutModal(true);
+                            onItemClick?.();
+                          }}
                           className={clsx(
-                            "flex items-center justify-center lg:justify-start gap-4 py-2 md:px-2 rounded-md hover:bg-lamaSkyLight text-left w-full",
+                            "flex items-center justify-start gap-4 py-2 md:px-2 rounded-md hover:bg-lamaSkyLight text-left w-full",
                             isActive
                               ? "text-gray-500 bg-lamaSky"
                               : "text-gray-500"
@@ -206,13 +213,13 @@ const Menu = () => {
                           whileTap={{ scale: 0.98 }}
                         >
                           <motion.span
-                            className="text-lg"
+                            className="text-base sm:text-lg"
                             whileHover={{ scale: 1.1 }}
                             transition={{ type: "spring", stiffness: 400 }}
                           >
                             {item.icon}
                           </motion.span>
-                          <span className="hidden lg:block">{item.label}</span>
+                          <span>{item.label}</span>
                         </motion.button>
                       );
                     }
@@ -233,21 +240,22 @@ const Menu = () => {
                       >
                         <Link
                           href={item.href}
+                          onClick={onItemClick}
                           className={clsx(
-                            "flex items-center justify-center lg:justify-start gap-4 py-2 md:px-2 rounded-md hover:bg-lamaSkyLight transition-colors",
+                            "flex items-center justify-start gap-4 py-2 md:px-2 rounded-md hover:bg-lamaSkyLight transition-colors",
                             isActive
                               ? "text-gray-500 bg-lamaSky"
                               : "text-gray-500"
                           )}
                         >
                           <motion.span
-                            className="text-lg"
+                            className="text-base sm:text-lg"
                             whileHover={{ scale: 1.1 }}
                             transition={{ type: "spring", stiffness: 400 }}
                           >
                             {item.icon}
                           </motion.span>
-                          <span className="hidden lg:block">{item.label}</span>
+                          <span>{item.label}</span>
                         </Link>
                       </motion.div>
                     );

@@ -133,21 +133,36 @@ export default function TransactionReportPage() {
   };
 
   return (
-    <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
-      <h1 className="text-lg font-semibold mb-4">Transaction Reports</h1>
+    <div className="bg-white p-2 sm:p-4 rounded-md flex-1 m-2 sm:m-4 mt-0">
+      <h1 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">
+        Transaction Reports
+      </h1>
       {loading ? (
-        <div className="flex justify-center items-center p-8">
+        <div className="flex justify-center items-center p-6 sm:p-8">
           <div className="flex flex-col items-center gap-3">
             <Spinner size={32} color="lamaSky" />
             <span className="text-sm text-gray-500">Loading report...</span>
           </div>
         </div>
       ) : transactions.length === 0 ? (
-        <div className="text-center text-sm text-gray-500 p-4">
-          No data found.
+        <div className="text-center text-sm text-gray-500 p-4 sm:p-8 bg-gray-50 rounded">
+          No data found for the selected date range and status.
         </div>
       ) : (
-        <Table columns={columns} renderRow={renderRow} data={transactions} />
+        <>
+          <div className="mb-3 sm:mb-4 p-2 sm:p-3 bg-gray-50 rounded text-xs sm:text-sm">
+            <div className="font-medium text-gray-700">
+              Total Transactions: {transactions.length}
+            </div>
+            <div className="font-medium text-gray-700">
+              Total Sales: ₱
+              {transactions
+                .reduce((sum, tx) => sum + Number(tx.total_paid), 0)
+                .toFixed(2)}
+            </div>
+          </div>
+          <Table columns={columns} renderRow={renderRow} data={transactions} />
+        </>
       )}
     </div>
   );

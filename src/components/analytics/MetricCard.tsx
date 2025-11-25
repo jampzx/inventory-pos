@@ -48,14 +48,16 @@ const MetricCard = ({
       className={`relative overflow-hidden rounded-2xl bg-white/80 backdrop-blur-sm ${colors.border} shadow-sm cursor-pointer`}
     >
       <div
-        className={`absolute -right-6 -top-6 h-20 w-20 rounded-full ${colors.background}`}
+        className={`absolute -right-4 sm:-right-6 -top-4 sm:-top-6 h-16 w-16 sm:h-20 sm:w-20 rounded-full ${colors.background}`}
       />
-      <div className="p-4 md:p-5 relative z-10">
-        <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+      <div className="p-3 sm:p-4 md:p-5 relative z-10">
+        <p className="text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
           {title}
         </p>
-        <p className="mt-2 text-2xl font-bold text-gray-900">{value}</p>
-        <p className="mt-1 text-xs text-gray-500">{subtitle}</p>
+        <p className="mt-1 sm:mt-2 text-lg sm:text-xl md:text-2xl font-bold text-gray-900">
+          {value}
+        </p>
+        <p className="mt-1 text-[10px] sm:text-xs text-gray-500">{subtitle}</p>
       </div>
     </motion.div>
   );

@@ -232,14 +232,12 @@ const UserSettingsForm = ({ onSuccess }: Props) => {
                       name="full_name"
                       register={register}
                       error={errors.full_name}
-                      mdWidthClass="md:w-1/2"
                     />
                     <InputField
                       label="Username"
                       name="username"
                       register={register}
                       error={errors.username}
-                      mdWidthClass="md:w-1/2"
                     />
                     <InputField
                       label="Current Password"
@@ -250,7 +248,6 @@ const UserSettingsForm = ({ onSuccess }: Props) => {
                       inputProps={{
                         placeholder: "Enter current password to change",
                       }}
-                      mdWidthClass="md:w-1/2"
                     />
                     <InputField
                       label="New Password"
@@ -261,7 +258,6 @@ const UserSettingsForm = ({ onSuccess }: Props) => {
                       inputProps={{
                         placeholder: "Enter new password (min. 6 characters)",
                       }}
-                      mdWidthClass="md:w-1/2"
                     />
                     {newPassword && (
                       <InputField
@@ -271,7 +267,6 @@ const UserSettingsForm = ({ onSuccess }: Props) => {
                         register={register}
                         error={errors.confirm_password}
                         inputProps={{ placeholder: "Confirm new password" }}
-                        mdWidthClass="md:w-1/2"
                       />
                     )}
                   </div>

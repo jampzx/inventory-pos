@@ -151,12 +151,12 @@ const UserForm = ({ type, data, onClose, onSuccess }: Props) => {
   });
 
   return (
-    <form className="flex flex-col gap-6" onSubmit={onSubmit}>
-      <h1 className="text-lg md:text-xl font-semibold">
+    <form className="flex flex-col gap-4 sm:gap-6" onSubmit={onSubmit}>
+      <h1 className="text-base sm:text-lg md:text-xl font-semibold">
         {type === "create" ? "Create New User" : "Update User"}
       </h1>
 
-      <div className="flex flex-wrap gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         <DropdownField
           label="Company"
           name="company_id"
@@ -215,10 +215,10 @@ const UserForm = ({ type, data, onClose, onSuccess }: Props) => {
         />
       </div>
 
-      <div className="flex justify-end">
+      <div className="flex justify-end pt-2">
         <button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-2 rounded-md mt-4 w-full sm:w-auto flex items-center justify-center gap-2"
+          className="bg-blue-600 hover:bg-blue-700 transition text-white px-4 sm:px-6 py-2 rounded-md w-full sm:w-auto flex items-center justify-center gap-2 text-sm"
           disabled={isLoading}
         >
           {isLoading ? (

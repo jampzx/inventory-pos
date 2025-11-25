@@ -13,10 +13,10 @@ const AnalyticsHeader = () => {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
+        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-gray-900">
           Analytics Dashboard
         </h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-xs sm:text-sm text-gray-500">
           Overview of sales, expenses, payment methods, and product performance.
         </p>
       </motion.div>
