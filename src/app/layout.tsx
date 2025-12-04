@@ -7,8 +7,8 @@ import { PermissionProvider } from "@/context/PermissionContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "JA Barber Shop Management System",
-  description: "Barber Shop Management System",
+  title: "JA POS Management System",
+  description: "Point of Sale Management System",
   icons: {
     icon: "/logo.png",
   },

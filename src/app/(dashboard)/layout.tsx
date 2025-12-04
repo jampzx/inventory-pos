@@ -92,7 +92,7 @@ export default function DashboardLayout({
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2, duration: 0.3 }}
             >
-              PapiSy Hairs
+              POS System
             </motion.span>
           </Link>
         </motion.div>
