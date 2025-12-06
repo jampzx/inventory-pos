@@ -62,6 +62,17 @@ const CompanyForm = dynamic(() => import("./forms/CompanyForm"), {
   ),
 });
 
+const CustomerForm = dynamic(() => import("./forms/CustomerForm"), {
+  loading: () => (
+    <div className="flex justify-center items-center p-8">
+      <div className="flex flex-col items-center gap-3">
+        <Spinner size={32} color="lamaSky" />
+        <span className="text-sm text-gray-500">Loading form...</span>
+      </div>
+    </div>
+  ),
+});
+
 const forms: Record<string, any> = {
   product: (type: string, data: any, props: any) => (
     <ProductForm type={type} data={data} {...props} />
@@ -77,6 +88,9 @@ const forms: Record<string, any> = {
   ),
   company: (type: string, data: any, props: any) => (
     <CompanyForm type={type} data={data} {...props} />
+  ),
+  customer: (type: string, data: any, props: any) => (
+    <CustomerForm type={type} data={data} {...props} />
   ),
 };
 

@@ -45,6 +45,27 @@ export type CartItem = {
   staffId?: number;
 };
 
+export type Customer = {
+  id: number;
+  name: string;
+  email?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  notes?: string | null;
+  status: string;
+  created_at: string;
+  updated_at: string;
+  company_id: number;
+};
+
+export type CustomerFormData = {
+  name: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  notes?: string;
+};
+
 export type TransactionType = {
   id: number;
   subtotal: number;
@@ -54,6 +75,8 @@ export type TransactionType = {
   change: number;
   created_at: string;
   status: string;
+  customer_id?: number | null;
+  customer?: Customer | null;
   branch: { id: number; name: string };
   staff?: { id: number; staff_name: string };
   payments: { payment_method: string; amount: number }[];

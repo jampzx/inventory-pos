@@ -87,6 +87,11 @@ const menuItems: { title: string; items: MenuItem[] }[] = [
       },
       {
         icon: <FiUsers />,
+        label: "Customers",
+        href: "/customers",
+      },
+      {
+        icon: <FiUsers />,
         label: "Companies",
         href: "/companies",
       },

@@ -19,13 +19,33 @@ const transactionSchema = z.object({
   ),
   discountType: z.enum(["AMOUNT", "PERCENT"]),
   discountValue: z.number().min(0),
+  customerId: z.number().optional().nullable(),
 });
 
 export const POST = withAuth(async (req: NextRequest, user) => {
   try {
     const body = await req.json();
     const parsed = transactionSchema.parse(body);
-    const { cartItems, payments, discountType, discountValue } = parsed;
+    const { cartItems, payments, discountType, discountValue, customerId } =
+      parsed;
+
+    // Validate customer belongs to same company if provided
+    if (customerId) {
+      const customer = await prisma.customer.findFirst({
+        where: {
+          id: customerId,
+          company_id: user.company_id,
+          status: "active",
+        },
+      });
+
+      if (!customer) {
+        return NextResponse.json(
+          { success: false, error: "Invalid customer selected" },
+          { status: 400 }
+        );
+      }
+    }
 
     const subtotal = cartItems.reduce(
       (sum, item) => sum + item.price * item.quantity,
@@ -53,6 +73,7 @@ export const POST = withAuth(async (req: NextRequest, user) => {
         discount_value: discountValue,
         company_id: user.company_id,
         user_id: user.id,
+        customer_id: customerId || null,
       },
     });
 

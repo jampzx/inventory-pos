@@ -162,6 +162,7 @@ exports.Prisma.PaymentTypeScalarFieldEnum = {
 exports.Prisma.TransactionScalarFieldEnum = {
   id: 'id',
   user_id: 'user_id',
+  customer_id: 'customer_id',
   subtotal: 'subtotal',
   total_paid: 'total_paid',
   discount_type: 'discount_type',
@@ -226,6 +227,19 @@ exports.Prisma.ExpenseScalarFieldEnum = {
   company_id: 'company_id'
 };
 
+exports.Prisma.CustomerScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  address: 'address',
+  notes: 'notes',
+  status: 'status',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  company_id: 'company_id'
+};
+
 exports.Prisma.CompanyScalarFieldEnum = {
   company_id: 'company_id',
   company_name: 'company_name',
@@ -267,6 +281,7 @@ exports.Prisma.ModelName = {
   TransactionDetail: 'TransactionDetail',
   Order: 'Order',
   Expense: 'Expense',
+  Customer: 'Customer',
   Company: 'Company'
 };
 

@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Product, CartItem } from "@/types/types";
+import { Product, CartItem, Customer } from "@/types/types";
 import { addItemsToCart } from "@/app/utils/cartUtils";
 import { toast } from "sonner";
 import Spinner from "@/components/Spinner";
 import ConfirmationModal from "@/components/ConfirmationModal";
 import Pagination from "@/components/Pagination";
+import CustomerSelector from "@/components/CustomerSelector";
 import { FiSearch } from "react-icons/fi";
 
 export default function POSPage() {
@@ -31,6 +32,9 @@ export default function POSPage() {
   );
   const [discountType, setDiscountType] = useState("AMOUNT");
   const [discountValue, setDiscountValue] = useState(0);
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
+    null
+  );
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -114,6 +118,32 @@ export default function POSPage() {
     0
   );
 
+  const handleQuickCreateCustomer = async (name: string, phone?: string) => {
+    try {
+      const response = await fetch("/api/customer/quick-create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, phone }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setSelectedCustomer(result.data);
+        if (result.isExisting) {
+          toast.info(result.message);
+        } else {
+          toast.success("Customer created successfully");
+        }
+      } else {
+        toast.error("Failed to create customer");
+      }
+    } catch (error) {
+      console.error("Quick create customer error:", error);
+      toast.error("An error occurred");
+    }
+  };
+
   // Integrate the API for checkout
   // Ensure all payment amounts are numbers in handleCheckout
   const handleCheckout = async () => {
@@ -162,6 +192,7 @@ export default function POSPage() {
           payments,
           discountType,
           discountValue,
+          customerId: selectedCustomer?.id || null,
         }),
       });
 
@@ -170,6 +201,7 @@ export default function POSPage() {
       if (response.ok && result.success) {
         toast.success("Transaction completed successfully.");
         setCart([]);
+        setSelectedCustomer(null);
         setPayment(
           Object.fromEntries(paymentMethods.map((method) => [method.key, 0]))
         );
@@ -321,6 +353,15 @@ export default function POSPage() {
               ₱{Number(subtotal).toFixed(2)}
             </span>
           </div>
+        </div>
+
+        <div>
+          <div className="font-medium mb-2 text-gray-700">Customer</div>
+          <CustomerSelector
+            selectedCustomer={selectedCustomer}
+            onCustomerSelect={setSelectedCustomer}
+            onQuickCreate={handleQuickCreateCustomer}
+          />
         </div>
 
         <div>

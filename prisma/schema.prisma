@@ -78,6 +78,7 @@ model PaymentType {
 model Transaction {
   id             Int          @id @default(autoincrement())
   user_id        Int?
+  customer_id    Int?
   subtotal       Decimal
   total_paid     Decimal
   discount_type  DiscountType @default(AMOUNT)
@@ -89,12 +90,14 @@ model Transaction {
   // Relations
   company_id  Int
   company     Company  @relation(fields: [company_id], references: [company_id])
-  user     User?                @relation(fields: [user_id], references: [id])
-  items    TransactionItem[]
-  payments TransactionPayment[]
-  details  TransactionDetail[]
+  user        User?                @relation(fields: [user_id], references: [id])
+  customer    Customer?            @relation(fields: [customer_id], references: [id])
+  items       TransactionItem[]
+  payments    TransactionPayment[]
+  details     TransactionDetail[]
 
   @@map("transactions")
+  @@index([customer_id])
 }
 
 model TransactionItem {
@@ -181,6 +184,28 @@ model Expense {
   @@map("expenses")
 }
 
+model Customer {
+  id            Int      @id @default(autoincrement())
+  name          String   @db.VarChar(255)
+  email         String?  @db.VarChar(255)
+  phone         String?  @db.VarChar(50)
+  address       String?  @db.Text
+  notes         String?  @db.Text
+  status        String   @default("active")
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  // Relations
+  company_id    Int
+  company       Company       @relation(fields: [company_id], references: [company_id])
+  transactions  Transaction[]
+
+  @@map("customers")
+  @@index([company_id])
+  @@index([phone])
+  @@index([email])
+}
+
 
 model Company {
   company_id            Int     @id @default(autoincrement())
@@ -203,6 +228,7 @@ model Company {
   transactionDetails    TransactionDetail[]
   orders                Order[]
   expenses              Expense[]
+  customers             Customer[]
 }
 
 enum DiscountType {
