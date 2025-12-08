@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { Product, CartItem, Customer } from "@/types/types";
 import { addItemsToCart } from "@/app/utils/cartUtils";
 import { toast } from "sonner";
@@ -8,7 +9,7 @@ import Spinner from "@/components/Spinner";
 import ConfirmationModal from "@/components/ConfirmationModal";
 import Pagination from "@/components/Pagination";
 import CustomerSelector from "@/components/CustomerSelector";
-import { FiSearch } from "react-icons/fi";
+import { FiSearch, FiPackage, FiShoppingBag } from "react-icons/fi";
 
 export default function POSPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -242,8 +243,8 @@ export default function POSPage() {
             <FiSearch className="absolute left-3 top-2.5 sm:top-3.5 text-gray-500 text-base" />
           </div>
         </header>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
-          {paginatedProducts.map((product, index) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-5">
+          {paginatedProducts.map((product) => (
             <button
               key={product.id}
               onClick={() => {
@@ -253,27 +254,91 @@ export default function POSPage() {
                 }
                 setSelectedProduct(product);
               }}
-              className={`rounded-2xl p-4 min-w-[130px] text-left transition transform hover:-translate-y-0.5 hover:shadow-md 
-    ${index % 2 === 0 ? "bg-lamaPurple" : "bg-lamaYellow"}`}
+              className="group bg-white rounded-xl shadow-sm hover:shadow-xl border border-gray-100 overflow-hidden transition-all duration-300 transform hover:-translate-y-1 text-left focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <div className="flex justify-between items-center">
-                <span
-                  className={`text-[10px]  px-2 py-1 rounded-full text-black font-medium shadow ${
-                    index % 2 === 0 ? "bg-lamaYellow" : "bg-lamaPurple"
-                  }`}
-                >
-                  {product.product_type === "service"
-                    ? "Service"
-                    : `Stock: ${product.stock}`}
-                </span>
+              {/* Product Image */}
+              <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 aspect-square overflow-hidden">
+                {product.image_url ? (
+                  <Image
+                    src={product.image_url}
+                    alt={product.name}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
+                    className="object-cover group-hover:scale-110 transition-transform duration-300"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = "/placeholder-product.png";
+                    }}
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <FiPackage className="w-16 h-16 text-gray-300" />
+                  </div>
+                )}
+
+                {/* Status Badge */}
+                {product.status !== "active" && (
+                  <div className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full font-medium shadow-lg">
+                    Inactive
+                  </div>
+                )}
+
+                {/* Stock Badge */}
+                <div className="absolute top-2 right-2">
+                  {product.product_type === "service" ? (
+                    <div className="bg-blue-500 text-white text-xs px-2.5 py-1 rounded-full font-medium shadow-lg flex items-center gap-1">
+                      <FiShoppingBag className="w-3 h-3" />
+                      Service
+                    </div>
+                  ) : (
+                    <div
+                      className={`text-xs px-2.5 py-1 rounded-full font-medium shadow-lg ${
+                        product.stock === 0
+                          ? "bg-red-500 text-white"
+                          : product.stock <= 10
+                          ? "bg-orange-500 text-white"
+                          : "bg-green-500 text-white"
+                      }`}
+                    >
+                      Stock: {product.stock}
+                    </div>
+                  )}
+                </div>
               </div>
 
-              <h2 className="text-lg font-bold my-3 text-gray-800">
-                {product.name}
-              </h2>
-              <p className="text-xl font-bold text-white drop-shadow-sm">
-                ₱{Number(product.price).toFixed(2)}
-              </p>
+              {/* Product Info */}
+              <div className="p-4 space-y-2">
+                {/* Category */}
+                {product.category?.name && (
+                  <div className="text-xs text-blue-600 font-medium uppercase tracking-wide">
+                    {product.category.name}
+                  </div>
+                )}
+
+                {/* Product Name */}
+                <h2 className="text-base font-bold text-gray-800 line-clamp-2 group-hover:text-blue-600 transition-colors min-h-[3rem]">
+                  {product.name}
+                </h2>
+
+                {/* Description */}
+                {product.description && (
+                  <p className="text-xs text-gray-500 line-clamp-2">
+                    {product.description}
+                  </p>
+                )}
+
+                {/* Price */}
+                <div className="pt-2 border-t border-gray-100">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-500 font-medium">
+                      Price
+                    </span>
+                    <span className="text-xl font-bold text-blue-600">
+                      ₱{Number(product.price).toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+              </div>
             </button>
           ))}
         </div>
@@ -408,87 +473,203 @@ export default function POSPage() {
 
       {/* MODAL */}
       {selectedProduct && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
-          <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-lg relative">
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 px-2 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-xl relative max-h-[80vh] flex flex-col animate-fadeIn">
             {/* Close Button */}
             <button
-              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition"
+              className="absolute top-4 right-4 z-10 text-gray-400 hover:text-gray-600 transition bg-white rounded-full p-2 shadow-lg hover:shadow-xl"
               onClick={() => setSelectedProduct(null)}
             >
               ✕
             </button>
 
-            {/* Header */}
-            <h2 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">
-              🛒 Add Product to Cart
-            </h2>
+            {/* Product Image Header */}
+            <div className="relative bg-gradient-to-br from-blue-50 to-purple-50 h-36 overflow-hidden rounded-t-2xl">
+              {selectedProduct.image_url ? (
+                <Image
+                  src={selectedProduct.image_url}
+                  alt={selectedProduct.name}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 672px"
+                  className="object-cover"
+                  priority
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = "/placeholder-product.png";
+                  }}
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <FiPackage className="w-24 h-24 text-gray-300" />
+                </div>
+              )}
 
-            {/* Product Info */}
-            <div className="grid grid-cols-2 gap-4 text-sm text-gray-700 mb-4">
+              {/* Overlay Gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+            </div>
+
+            <div className="p-4 sm:p-5 space-y-4 flex-1 overflow-y-auto">
+              {/* Header */}
               <div>
-                <label className="block text-xs text-gray-500 mb-1">
-                  Product
-                </label>
-                <div className="font-medium">{selectedProduct.name}</div>
-              </div>
-              <div>
-                <label className="block text-xs text-gray-500 mb-1">
-                  Price
-                </label>
-                <div className="text-blue-600 font-semibold">
-                  ₱{Number(selectedProduct.price).toFixed(2)}
+                <div className="flex items-start justify-between gap-4 mb-2">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 leading-tight">
+                    {selectedProduct.name}
+                  </h2>
+                  <div className="text-right">
+                    <div className="text-3xl font-bold text-blue-600">
+                      ₱{Number(selectedProduct.price).toFixed(2)}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Category & Type Badges */}
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {selectedProduct.category?.name && (
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                      {selectedProduct.category.name}
+                    </span>
+                  )}
+                  <span
+                    className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${
+                      selectedProduct.product_type === "service"
+                        ? "bg-purple-100 text-purple-700"
+                        : "bg-green-100 text-green-700"
+                    }`}
+                  >
+                    {selectedProduct.product_type === "service" ? (
+                      <>
+                        <FiShoppingBag className="w-3 h-3" /> Service
+                      </>
+                    ) : (
+                      <>
+                        <FiPackage className="w-3 h-3" /> Product
+                      </>
+                    )}
+                  </span>
+                  {selectedProduct.product_type !== "service" && (
+                    <span
+                      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                        selectedProduct.stock === 0
+                          ? "bg-red-100 text-red-700"
+                          : selectedProduct.stock <= 10
+                          ? "bg-orange-100 text-orange-700"
+                          : "bg-green-100 text-green-700"
+                      }`}
+                    >
+                      {selectedProduct.stock === 0
+                        ? "Out of Stock"
+                        : `${selectedProduct.stock} in stock`}
+                    </span>
+                  )}
                 </div>
               </div>
-            </div>
 
-            {/* Quantity Control */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Quantity
-              </label>
-              <div className="flex items-center gap-2 w-full">
+              {/* Description */}
+              {selectedProduct.description && (
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="text-sm font-semibold text-gray-700 mb-2">
+                    Description
+                  </h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {selectedProduct.description}
+                  </p>
+                </div>
+              )}
+
+              {/* Product Details Grid */}
+              <div className="grid grid-cols-2 gap-4 bg-gradient-to-br from-gray-50 to-blue-50 rounded-lg p-4">
+                <div>
+                  <div className="text-xs text-gray-500 mb-1 font-medium">
+                    Unit Price
+                  </div>
+                  <div className="text-lg font-bold text-gray-800">
+                    ₱{Number(selectedProduct.price).toFixed(2)}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs text-gray-500 mb-1 font-medium">
+                    Type
+                  </div>
+                  <div className="text-lg font-semibold text-gray-800 capitalize">
+                    {selectedProduct.product_type}
+                  </div>
+                </div>
+                {selectedProduct.commissionCategory?.name && (
+                  <div className="col-span-2">
+                    <div className="text-xs text-gray-500 mb-1 font-medium">
+                      Commission Category
+                    </div>
+                    <div className="text-sm font-medium text-gray-800">
+                      {selectedProduct.commissionCategory.name}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Quantity Control */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-3">
+                  Quantity
+                </label>
+                <div className="flex items-center gap-3">
+                  <button
+                    className="w-12 h-12 rounded-lg border-2 border-gray-300 text-xl font-bold hover:bg-gray-100 hover:border-gray-400 transition-all active:scale-95"
+                    onClick={() =>
+                      setSelectedQuantity((q) => Math.max(1, q - 1))
+                    }
+                  >
+                    -
+                  </button>
+
+                  <input
+                    type="number"
+                    min={1}
+                    value={selectedQuantity}
+                    onChange={(e) =>
+                      setSelectedQuantity(
+                        Math.max(1, parseInt(e.target.value) || 1)
+                      )
+                    }
+                    className="flex-1 text-center border-2 border-gray-300 rounded-lg py-3 text-lg font-semibold focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                  />
+
+                  <button
+                    className="w-12 h-12 rounded-lg border-2 border-gray-300 text-xl font-bold hover:bg-gray-100 hover:border-gray-400 transition-all active:scale-95"
+                    onClick={() => setSelectedQuantity((q) => q + 1)}
+                  >
+                    +
+                  </button>
+                </div>
+
+                {/* Total Price Preview */}
+                <div className="mt-4 bg-blue-50 rounded-lg p-3 border border-blue-100">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-600">Total Price</span>
+                    <span className="text-2xl font-bold text-blue-600">
+                      ₱
+                      {(
+                        Number(selectedProduct.price) * selectedQuantity
+                      ).toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-2 pt-2 sticky bottom-0 bg-white pb-2 z-10">
                 <button
-                  className="w-10 h-10 rounded-md border text-lg font-semibold hover:bg-gray-100"
-                  onClick={() => setSelectedQuantity((q) => Math.max(1, q - 1))}
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-all active:scale-95"
+                  onClick={() => setSelectedProduct(null)}
                 >
-                  -
+                  Cancel
                 </button>
-
-                <input
-                  type="number"
-                  min={1}
-                  value={selectedQuantity}
-                  onChange={(e) =>
-                    setSelectedQuantity(
-                      Math.max(1, parseInt(e.target.value) || 1)
-                    )
-                  }
-                  className="flex-1 text-center border rounded-md py-2 text-sm"
-                />
-
                 <button
-                  className="w-10 h-10 rounded-md border text-lg font-semibold hover:bg-gray-100"
-                  onClick={() => setSelectedQuantity((q) => q + 1)}
+                  className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-md text-sm font-semibold hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl transition-all active:scale-95"
+                  onClick={handleAddToCart}
                 >
-                  +
+                  🛒 Add to Cart
                 </button>
               </div>
-            </div>
-
-            {/* Actions */}
-            <div className="mt-6 flex justify-end gap-3">
-              <button
-                className="px-4 py-2 border rounded-md text-sm text-gray-600 hover:bg-gray-100"
-                onClick={() => setSelectedProduct(null)}
-              >
-                Cancel
-              </button>
-              <button
-                className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700"
-                onClick={handleAddToCart}
-              >
-                Add to Cart
-              </button>
             </div>
           </div>
         </div>
