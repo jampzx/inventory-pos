@@ -11,7 +11,7 @@ const Table = ({
 }) => {
   return (
     <motion.div
-      className="w-full overflow-x-auto mt-3 sm:mt-4 bg-white rounded border shadow-sm"
+      className="w-full overflow-x-auto mt-3 sm:mt-4 bg-white rounded-xl border border-gray-200 shadow-lg"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
@@ -27,7 +27,7 @@ const Table = ({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
         >
-          <tr className="text-left text-gray-500 whitespace-nowrap bg-gray-50 border-b">
+          <tr className="text-left text-gray-700 whitespace-nowrap bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 border-b-2 border-purple-100">
             {columns.map((col, index) => (
               <motion.th
                 key={col.accessor}

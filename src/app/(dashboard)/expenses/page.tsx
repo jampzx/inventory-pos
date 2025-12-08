@@ -174,9 +174,11 @@ const ExpensesListPage = () => {
   );
 
   return (
-    <div className="bg-white p-2 sm:p-4 rounded-md flex-1 m-2 sm:m-4 mt-0">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-base sm:text-lg font-semibold">Expenses</h1>
+    <div className="bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 p-2 sm:p-4 rounded-xl flex-1 m-2 sm:m-4 mt-0 shadow-sm">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between bg-white rounded-xl p-4 shadow-sm border border-orange-100 mb-4">
+        <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
+          Expenses
+        </h1>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
           <TableSearch onSearch={setSearchTerm} />
           <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto">

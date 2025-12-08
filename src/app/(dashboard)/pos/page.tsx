@@ -225,7 +225,7 @@ export default function POSPage() {
   }
 
   return (
-    <main className="p-2 sm:p-4 md:p-6 lg:p-8 flex flex-col lg:flex-row gap-4 sm:gap-6 min-h-screen bg-gray-50">
+    <main className="p-2 sm:p-4 md:p-6 lg:p-8 flex flex-col lg:flex-row gap-4 sm:gap-6 min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50">
       <section className="flex-1">
         <header className="flex flex-col items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
           {/* Search */}
@@ -238,9 +238,9 @@ export default function POSPage() {
                 setSearchTerm(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full pl-10 pr-4 py-2 sm:py-3 rounded-md bg-lamaPurpleLight text-sm placeholder-gray-500 focus:border-lamaSky focus:ring-1 focus:ring-lamaSky focus:outline-none shadow-sm"
+              className="w-full pl-10 pr-4 py-2 sm:py-3 rounded-xl bg-white border-2 border-purple-200 text-sm placeholder-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 focus:outline-none shadow-sm transition-all"
             />
-            <FiSearch className="absolute left-3 top-2.5 sm:top-3.5 text-gray-500 text-base" />
+            <FiSearch className="absolute left-3 top-2.5 sm:top-3.5 text-purple-500 text-base" />
           </div>
         </header>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-5">

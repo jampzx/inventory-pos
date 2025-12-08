@@ -112,7 +112,7 @@ const ProductsListPage = () => {
   const renderRow = (item: Product) => (
     <tr
       key={item.id}
-      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight"
+      className="border-b border-gray-100 even:bg-gradient-to-r even:from-purple-50/30 even:to-pink-50/30 text-sm hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 transition-all duration-200"
     >
       <td className="p-2">
         {item.image_url ? (
@@ -122,7 +122,7 @@ const ProductsListPage = () => {
               alt={item.name}
               width={40}
               height={40}
-              className="rounded object-cover hover:opacity-80 transition"
+              className="rounded-lg object-cover hover:opacity-80 transition shadow-sm"
             />
           </a>
         ) : (
@@ -132,20 +132,42 @@ const ProductsListPage = () => {
       <td className="p-4">
         <button
           onClick={() => setSelectedProduct(item)}
-          className="text-left text-blue-600 hover:underline"
+          className="text-left text-blue-600 hover:text-blue-700 hover:underline font-medium"
         >
           {item.name}
         </button>
       </td>
-      <td className="p-2">₱{parseFloat(item.price.toString()).toFixed(2)}</td>
-      <td className="p-2">{item.product_type}</td>
-      <td className="p-2">{item.stock}</td> {/* Added stock field rendering */}
-      <td
-        className={`p-2 font-medium ${
-          item.status === "active" ? "text-green-600" : "text-red-600"
-        }`}
-      >
-        {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+      <td className="p-2 font-semibold text-green-600">
+        ₱{parseFloat(item.price.toString()).toFixed(2)}
+      </td>
+      <td className="p-2">
+        <span className="px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-700">
+          {item.product_type}
+        </span>
+      </td>
+      <td className="p-2">
+        <span
+          className={`px-2 py-1 rounded-full text-xs font-semibold ${
+            item.stock === 0
+              ? "bg-red-100 text-red-700"
+              : item.stock <= 10
+              ? "bg-yellow-100 text-yellow-700"
+              : "bg-green-100 text-green-700"
+          }`}
+        >
+          {item.stock}
+        </span>
+      </td>
+      <td className="p-2">
+        <span
+          className={`px-3 py-1 rounded-full text-xs font-semibold ${
+            item.status === "active"
+              ? "bg-green-100 text-green-700"
+              : "bg-red-100 text-red-700"
+          }`}
+        >
+          {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+        </span>
       </td>
       <td>
         <div className="flex items-center gap-2">
@@ -183,14 +205,16 @@ const ProductsListPage = () => {
   );
 
   return (
-    <div className="bg-white p-2 sm:p-4 rounded-md flex-1 m-2 sm:m-4 mt-0">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-base sm:text-lg font-semibold">All Products</h1>
+    <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 p-2 sm:p-4 rounded-xl flex-1 m-2 sm:m-4 mt-0 shadow-sm">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between bg-white rounded-xl p-4 shadow-sm border border-purple-100 mb-4">
+        <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          All Products
+        </h1>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
           <TableSearch onSearch={(term) => setSearchTerm(term)} />
           <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto">
             <select
-              className="text-sm px-3 py-2 rounded-lg border border-gray-300 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-lamaPurple focus:border-lamaPurple transition"
+              className="text-sm px-3 py-2 rounded-lg border-2 border-purple-200 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition hover:border-purple-300"
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
             >
@@ -201,7 +225,7 @@ const ProductsListPage = () => {
             </select>
 
             <select
-              className="text-sm px-3 py-2 rounded-lg border border-gray-300 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-lamaPurple focus:border-lamaPurple transition"
+              className="text-sm px-3 py-2 rounded-lg border-2 border-blue-200 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition hover:border-blue-300"
               value={sortKey}
               onChange={(e) => setSortKey(e.target.value)}
             >
@@ -214,7 +238,7 @@ const ProductsListPage = () => {
               onClick={() =>
                 setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))
               }
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow"
+              className="w-8 h-8 flex items-center justify-center rounded-full bg-gradient-to-r from-yellow-400 to-orange-400 hover:from-yellow-500 hover:to-orange-500 shadow-md transition-all duration-300"
             >
               <Image src="/sort.png" alt="sort" width={14} height={14} />
             </button>
