@@ -10,6 +10,13 @@ import {
   TopProductsChart,
   LowActivityProducts,
   PaymentBreakdownChart,
+  ProfitMetricsCard,
+  InventoryStatusChart,
+  CustomerInsightsCard,
+  TopCustomersChart,
+  HourlySalesChart,
+  CategoryPerformanceChart,
+  GrowthMetricsCard,
 } from "@/components/analytics";
 
 interface AnalyticsData {
@@ -18,6 +25,37 @@ interface AnalyticsData {
   paymentBreakdown: Array<{ name: string; value: number; count: number }>;
   topProducts: Array<{ name: string; quantity: number; revenue: number }>;
   worstProducts: Array<{ name: string; quantity: number; stock: number }>;
+  profitAnalysis: {
+    totalRevenue: number;
+    totalCost: number;
+    totalProfit: number;
+    orderCount: number;
+    profitMargin: number;
+  } | null;
+  inventoryStatus: Array<{ status: string; count: number; value: number }>;
+  customerInsights: {
+    total_customers: number;
+    active_customers: number;
+    new_customers_this_month: number;
+  };
+  topCustomers: Array<{
+    name: string;
+    totalSpent: number;
+    transactionCount: number;
+  }>;
+  hourlySales: Array<{ hour: number; sales: number; count: number }>;
+  categoryPerformance: Array<{
+    type: string;
+    sales: number;
+    quantity: number;
+    productCount: number;
+  }>;
+  growthMetrics: {
+    salesGrowth: number;
+    transactionGrowth: number;
+    currentMonthSales: number;
+    previousMonthSales: number;
+  };
 }
 
 const formatCurrency = (amount: number) =>
@@ -111,11 +149,14 @@ const Analytics = () => {
       : null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br via-white to-lamaPurpleLight p-2 sm:p-4 md:p-6 lg:p-8">
-      <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 p-2 sm:p-4 md:p-6 lg:p-8">
+      <div className="max-w-[1600px] mx-auto space-y-6">
         <AnalyticsHeader />
 
-        {/* Metric Cards */}
+        {/* Growth Metrics - Featured Section */}
+        <GrowthMetricsCard data={data.growthMetrics} />
+
+        {/* Primary Metric Cards */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
           <MetricCard
             title="Total Sales (Last 30 Days)"
@@ -149,11 +190,52 @@ const Analytics = () => {
           />
         </section>
 
-        <DailySalesChart data={data.dailySales} />
-        <MonthlyExpensesChart data={data.monthlyExpenses} />
-        <TopProductsChart data={data.topProducts} />
+        {/* Profit Analysis */}
+        {data.profitAnalysis && (
+          <ProfitMetricsCard data={data.profitAnalysis} />
+        )}
+
+        {/* Customer & Inventory Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <CustomerInsightsCard data={data.customerInsights} />
+          <InventoryStatusChart data={data.inventoryStatus} />
+        </div>
+
+        {/* Sales Pattern Charts */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <DailySalesChart data={data.dailySales} />
+          <HourlySalesChart data={data.hourlySales} />
+        </div>
+
+        {/* Customer Performance */}
+        {data.topCustomers.length > 0 && (
+          <TopCustomersChart data={data.topCustomers} />
+        )}
+
+        {/* Category & Product Performance */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {data.categoryPerformance.length > 0 && (
+            <CategoryPerformanceChart data={data.categoryPerformance} />
+          )}
+          <TopProductsChart data={data.topProducts} />
+        </div>
+
+        {/* Financial Analysis */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <MonthlyExpensesChart data={data.monthlyExpenses} />
+          <PaymentBreakdownChart data={data.paymentBreakdown} />
+        </div>
+
+        {/* Low Activity Products */}
         <LowActivityProducts data={data.worstProducts} />
-        <PaymentBreakdownChart data={data.paymentBreakdown} />
+
+        {/* Footer Info */}
+        <div className="text-center py-6">
+          <p className="text-sm text-gray-500">
+            Analytics data is updated in real-time based on your business
+            transactions
+          </p>
+        </div>
       </div>
     </div>
   );

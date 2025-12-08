@@ -100,6 +100,173 @@ export const GET = withAuth(async (req: NextRequest, user) => {
       LIMIT 10
     `;
 
+    // Get profit analysis from orders
+    const profitAnalysis = await prisma.$queryRaw<
+      Array<{
+        total_revenue: number;
+        total_cost: number;
+        total_profit: number;
+        order_count: number;
+      }>
+    >`
+      SELECT 
+        SUM(selling_price * quantity)::numeric as total_revenue,
+        SUM(order_price * quantity)::numeric as total_cost,
+        SUM(net_profit)::numeric as total_profit,
+        COUNT(*)::integer as order_count
+      FROM orders
+      WHERE company_id = ${company_id}
+        AND status = 'completed'
+    `;
+
+    // Get inventory status
+    const inventoryStatus = await prisma.$queryRaw<
+      Array<{ status: string; count: number; total_value: number }>
+    >`
+      SELECT 
+        CASE 
+          WHEN stock = 0 THEN 'out_of_stock'
+          WHEN stock <= 10 THEN 'low_stock'
+          WHEN stock <= 50 THEN 'medium_stock'
+          ELSE 'high_stock'
+        END as status,
+        COUNT(*)::integer as count,
+        SUM(stock * price)::numeric as total_value
+      FROM products
+      WHERE company_id = ${company_id}
+        AND status = 'active'
+      GROUP BY CASE 
+        WHEN stock = 0 THEN 'out_of_stock'
+        WHEN stock <= 10 THEN 'low_stock'
+        WHEN stock <= 50 THEN 'medium_stock'
+        ELSE 'high_stock'
+      END
+    `;
+
+    // Get customer insights
+    const customerInsights = await prisma.$queryRaw<
+      Array<{
+        total_customers: number;
+        active_customers: number;
+        new_customers_this_month: number;
+      }>
+    >`
+      SELECT 
+        COUNT(*)::integer as total_customers,
+        COUNT(CASE WHEN status = 'active' THEN 1 END)::integer as active_customers,
+        COUNT(CASE WHEN created_at >= ${startOfMonth(
+          new Date()
+        )} THEN 1 END)::integer as new_customers_this_month
+      FROM customers
+      WHERE company_id = ${company_id}
+    `;
+
+    // Get top customers by spending
+    const topCustomers = await prisma.$queryRaw<
+      Array<{
+        customer_name: string;
+        total_spent: number;
+        transaction_count: number;
+      }>
+    >`
+      SELECT 
+        c.name as customer_name,
+        SUM(t.total_paid)::numeric as total_spent,
+        COUNT(t.id)::integer as transaction_count
+      FROM customers c
+      INNER JOIN transactions t ON c.id = t.customer_id
+      WHERE t.status = 'completed'
+        AND c.company_id = ${company_id}
+      GROUP BY c.id, c.name
+      ORDER BY total_spent DESC
+      LIMIT 10
+    `;
+
+    // Get hourly sales pattern (for last 7 days)
+    const last7Days = subDays(new Date(), 7);
+    const hourlySales = await prisma.$queryRaw<
+      Array<{ hour: number; sales: number; transaction_count: number }>
+    >`
+      SELECT 
+        EXTRACT(HOUR FROM created_at)::integer as hour,
+        SUM(total_paid)::numeric as sales,
+        COUNT(*)::integer as transaction_count
+      FROM transactions
+      WHERE created_at >= ${last7Days}
+        AND status = 'completed'
+        AND company_id = ${company_id}
+      GROUP BY hour
+      ORDER BY hour ASC
+    `;
+
+    // Get product category performance (product vs service)
+    const categoryPerformance = await prisma.$queryRaw<
+      Array<{
+        product_type: string;
+        total_sales: number;
+        quantity_sold: number;
+        product_count: number;
+      }>
+    >`
+      SELECT 
+        p.product_type,
+        SUM(ti.quantity * ti.price)::numeric as total_sales,
+        SUM(ti.quantity)::integer as quantity_sold,
+        COUNT(DISTINCT p.id)::integer as product_count
+      FROM products p
+      INNER JOIN transaction_items ti ON p.id = ti.product_id
+      INNER JOIN transactions t ON ti.transaction_id = t.id
+      WHERE t.status = 'completed'
+        AND p.company_id = ${company_id}
+      GROUP BY p.product_type
+    `;
+
+    // Calculate growth metrics (compare this month vs last month)
+    const thisMonthStart = startOfMonth(new Date());
+    const lastMonthStart = startOfMonth(subDays(thisMonthStart, 1));
+    const lastMonthEnd = endOfMonth(subDays(thisMonthStart, 1));
+
+    const growthMetrics = await prisma.$queryRaw<
+      Array<{ period: string; total_sales: number; transaction_count: number }>
+    >`
+      SELECT 
+        CASE 
+          WHEN created_at >= ${thisMonthStart} THEN 'current'
+          ELSE 'previous'
+        END as period,
+        SUM(total_paid)::numeric as total_sales,
+        COUNT(*)::integer as transaction_count
+      FROM transactions
+      WHERE created_at >= ${lastMonthStart}
+        AND status = 'completed'
+        AND company_id = ${company_id}
+      GROUP BY period
+    `;
+
+    // Calculate growth percentages
+    const currentMonth = growthMetrics.find((m) => m.period === "current") || {
+      total_sales: 0,
+      transaction_count: 0,
+    };
+    const previousMonth = growthMetrics.find(
+      (m) => m.period === "previous"
+    ) || { total_sales: 0, transaction_count: 0 };
+
+    const salesGrowth =
+      previousMonth.total_sales > 0
+        ? ((Number(currentMonth.total_sales) -
+            Number(previousMonth.total_sales)) /
+            Number(previousMonth.total_sales)) *
+          100
+        : 0;
+
+    const transactionGrowth =
+      previousMonth.transaction_count > 0
+        ? ((currentMonth.transaction_count - previousMonth.transaction_count) /
+            previousMonth.transaction_count) *
+          100
+        : 0;
+
     return NextResponse.json({
       success: true,
       data: {
@@ -126,6 +293,52 @@ export const GET = withAuth(async (req: NextRequest, user) => {
           quantity: item.quantity_sold,
           stock: item.stock,
         })),
+        profitAnalysis: profitAnalysis[0]
+          ? {
+              totalRevenue: Number(profitAnalysis[0].total_revenue || 0),
+              totalCost: Number(profitAnalysis[0].total_cost || 0),
+              totalProfit: Number(profitAnalysis[0].total_profit || 0),
+              orderCount: profitAnalysis[0].order_count,
+              profitMargin:
+                profitAnalysis[0].total_revenue > 0
+                  ? (Number(profitAnalysis[0].total_profit) /
+                      Number(profitAnalysis[0].total_revenue)) *
+                    100
+                  : 0,
+            }
+          : null,
+        inventoryStatus: inventoryStatus.map((item) => ({
+          status: item.status,
+          count: item.count,
+          value: Number(item.total_value),
+        })),
+        customerInsights: customerInsights[0] || {
+          total_customers: 0,
+          active_customers: 0,
+          new_customers_this_month: 0,
+        },
+        topCustomers: topCustomers.map((item) => ({
+          name: item.customer_name,
+          totalSpent: Number(item.total_spent),
+          transactionCount: item.transaction_count,
+        })),
+        hourlySales: hourlySales.map((item) => ({
+          hour: item.hour,
+          sales: Number(item.sales),
+          count: item.transaction_count,
+        })),
+        categoryPerformance: categoryPerformance.map((item) => ({
+          type: item.product_type,
+          sales: Number(item.total_sales),
+          quantity: item.quantity_sold,
+          productCount: item.product_count,
+        })),
+        growthMetrics: {
+          salesGrowth: Number(salesGrowth.toFixed(2)),
+          transactionGrowth: Number(transactionGrowth.toFixed(2)),
+          currentMonthSales: Number(currentMonth.total_sales),
+          previousMonthSales: Number(previousMonth.total_sales),
+        },
       },
     });
   } catch (error) {
