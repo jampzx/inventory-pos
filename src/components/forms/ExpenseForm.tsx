@@ -22,18 +22,8 @@ type Props = {
 
 const schema = z.object({
   description: z.string().min(1, "Description is required"),
-  amount: z
-    .string()
-    .min(1, "Amount is required")
-    .refine((val) => !isNaN(Number(val)), {
-      message: "Amount must be a number",
-    })
-    .transform((val) => Number(val))
-    .refine((val) => val > 0, {
-      message: "Amount must be greater than 0",
-    }),
-
-  date: z.string().optional(),
+  amount: z.coerce.number().min(0.01, "Amount must be greater than 0"),
+  date: z.string().min(1, "Date is required"),
 });
 
 const ExpenseForm = ({ type, data, onClose, onSuccess }: Props) => {
@@ -42,24 +32,22 @@ const ExpenseForm = ({ type, data, onClose, onSuccess }: Props) => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<z.input<typeof schema>>({
+  } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
+    defaultValues:
+      type === "update" && data
+        ? {
+            description: data.description || "",
+            amount: Number(data.amount) || 0,
+            date: data.date?.split("T")[0] || "",
+          }
+        : {},
   });
 
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState<{ id: number; name: string }[]>(
     []
   );
-
-  useEffect(() => {
-    if (type === "update" && data) {
-      reset({
-        description: data.description,
-        amount: data.amount.toString(),
-        date: data.date.split("T")[0],
-      });
-    }
-  }, [type, data, reset]);
 
   const onSubmit = handleSubmit(async (formData) => {
     setIsLoading(true);

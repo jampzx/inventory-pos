@@ -32,24 +32,22 @@ const OrderForm = ({ type, data, onClose, onSuccess }: Props) => {
     formState: { errors },
   } = useForm<z.infer<typeof orderSchema>>({
     resolver: zodResolver(orderSchema),
+    defaultValues:
+      type === "update" && data
+        ? {
+            product_id: data.product_id,
+            quantity: data.quantity,
+            order_price: data.order_price,
+            selling_price: data.selling_price,
+            order_date: data.order_date?.split("T")[0] || "",
+          }
+        : {},
   });
 
   const [isLoading, setIsLoading] = useState(false);
   const [productOptions, setProductOptions] = useState<
     { label: string; value: string }[]
   >([]);
-
-  useEffect(() => {
-    if (type === "update" && data) {
-      reset({
-        product_id: data.product_id,
-        quantity: data.quantity,
-        order_price: data.order_price,
-        selling_price: data.selling_price,
-        order_date: data.order_date?.split("T")[0],
-      });
-    }
-  }, [type, data, reset]);
 
   useEffect(() => {
     const fetchProducts = async () => {

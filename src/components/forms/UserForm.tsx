@@ -22,6 +22,40 @@ const UserForm = ({ type, data, onClose, onSuccess }: Props) => {
   >([]);
   const [companyLoading, setCompanyLoading] = useState(true);
 
+  const schema = z
+    .object({
+      full_name: z.string().min(1, "Full name is required"),
+      username: z.string().optional(),
+      password: z
+        .string()
+        .optional()
+        .refine((val) => !val || val.length >= 6, {
+          message: "Password must be at least 6 characters",
+        }),
+      confirm_password: z.string().optional(),
+      user_type: z.enum(["admin", "user"]),
+      status: z.enum(["active", "inactive"]),
+      company_id: z.string().min(1, "Company is required"),
+    })
+    .refine(
+      (data) =>
+        !data.password ||
+        !data.confirm_password ||
+        data.password === data.confirm_password,
+      {
+        path: ["confirm_password"],
+        message: "Passwords do not match",
+      }
+    )
+    .refine((data) => type === "update" || data.username, {
+      path: ["username"],
+      message: "Username is required",
+    })
+    .refine((data) => type === "update" || data.password, {
+      path: ["password"],
+      message: "Password is required",
+    });
+
   useEffect(() => {
     const fetchCompanies = async () => {
       setCompanyLoading(true);
@@ -44,37 +78,6 @@ const UserForm = ({ type, data, onClose, onSuccess }: Props) => {
     };
     fetchCompanies();
   }, []);
-  const schema = z
-    .object({
-      full_name: z.string().min(1, "Full name is required"),
-      username:
-        type === "create"
-          ? z.string().min(1, "Username is required")
-          : z.string().optional(),
-      password:
-        type === "create"
-          ? z.string().min(6, "Password must be at least 6 characters")
-          : z
-              .string()
-              .optional()
-              .refine((val) => !val || val.length >= 6, {
-                message: "Password must be at least 6 characters",
-              }),
-      confirm_password: z.string().optional(),
-      user_type: z.enum(["admin", "user"]),
-      status: z.enum(["active", "inactive"]),
-      company_id: z.string().min(1, "Company is required"),
-    })
-    .refine(
-      (data) =>
-        !data.password ||
-        !data.confirm_password ||
-        data.password === data.confirm_password,
-      {
-        path: ["confirm_password"],
-        message: "Passwords do not match",
-      }
-    );
 
   const {
     control,
@@ -85,21 +88,19 @@ const UserForm = ({ type, data, onClose, onSuccess }: Props) => {
     setValue,
   } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
+    defaultValues:
+      type === "update" && data
+        ? {
+            full_name: data.full_name || data.name || "",
+            username: data.email?.split("@")[0] || data.username || "",
+            user_type: data.user_type || "user",
+            status: data.status || "active",
+            company_id: data.company?.company_id?.toString() || "",
+          }
+        : {},
   });
 
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (type === "update" && data && !companyLoading && companies.length > 0) {
-      reset({
-        full_name: data.name,
-        username: data.email?.split("@")[0] || data.username,
-        user_type: data.user_type,
-        status: data.status,
-        company_id: data.company?.company_id?.toString() || "",
-      });
-    }
-  }, [type, data, reset, companyLoading, companies]);
 
   const onSubmit = handleSubmit(async (formData) => {
     setIsLoading(true);

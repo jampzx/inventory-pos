@@ -25,10 +25,12 @@ const CompanyForm = ({
   type,
   data,
   onSuccess,
+  onClose,
 }: {
   type: "create" | "update";
   data?: any;
   onSuccess?: () => void;
+  onClose?: () => void;
 }) => {
   const {
     register,
@@ -97,6 +99,7 @@ const CompanyForm = ({
           reset();
         }
         onSuccess?.();
+        onClose?.();
       } else {
         toast.error(result.message || "Something went wrong");
         setMessage({

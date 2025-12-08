@@ -38,7 +38,17 @@ const ProductForm = ({ type, data, onClose, onSuccess }: Props) => {
     formState: { errors },
   } = useForm<Inputs>({
     resolver: zodResolver(schema),
-    defaultValues: data,
+    defaultValues:
+      type === "update" && data
+        ? {
+            name: data.name || "",
+            description: data.description || "",
+            productType: data.product_type || "",
+            price: Number(data.price) || 0,
+            stock: Number(data.stock) || 0,
+            status: data.status === "active" ? "Active" : "Inactive",
+          }
+        : {},
   });
 
   const [productTypes, setProductTypes] = useState([
@@ -49,19 +59,10 @@ const ProductForm = ({ type, data, onClose, onSuccess }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (type === "update" && data && Object.keys(data).length > 0) {
-      reset({
-        name: data.name || "",
-        description: data.description || "",
-        productType: data.product_type || "",
-        price: Number(data.price) || 0,
-        stock: Number(data.stock) || 0, // Added stock reset
-        status: data.status === "active" ? "Active" : "Inactive",
-      });
-
-      setPreviewUrl(data.image_url || null);
+    if (type === "update" && data?.image_url) {
+      setPreviewUrl(data.image_url);
     }
-  }, [type, data, reset]);
+  }, [type, data]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

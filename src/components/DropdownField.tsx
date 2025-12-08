@@ -44,7 +44,6 @@ const DropdownField = ({
           error ? "ring-red-400 focus:ring-red-500" : "focus:ring-blue-500"
         }`}
         {...selectProps}
-        defaultValue=""
         whileFocus={{
           scale: 1.01,
           boxShadow: "0 0 0 3px rgba(59, 130, 246, 0.1)",
