@@ -333,7 +333,7 @@ const OrdersPage = () => {
 
             fetchOrders();
           } else {
-            toast.error("Failed to void the order.");
+            toast.error(data.error || "Failed to void the order.");
           }
 
           setVoidingOrderId(null);

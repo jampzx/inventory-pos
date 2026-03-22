@@ -28,11 +28,18 @@ export const POST = withAuth(async (req: NextRequest, user) => {
         id: product_id,
         company_id: user.company_id,
       },
-      select: { name: true },
+      select: { name: true, product_type: true },
     });
 
     if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
+    }
+
+    if (product.product_type !== "product") {
+      return NextResponse.json(
+        { error: "Services cannot be used for purchase orders" },
+        { status: 400 },
+      );
     }
 
     const profit_per_unit = selling_price - order_price;
@@ -58,7 +65,7 @@ export const POST = withAuth(async (req: NextRequest, user) => {
     console.error("CREATE ORDER ERROR:", error);
     return NextResponse.json(
       { error: "Failed to create order" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 });

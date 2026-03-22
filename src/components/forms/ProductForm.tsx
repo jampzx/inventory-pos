@@ -15,7 +15,7 @@ const schema = z.object({
   description: z.string().min(1, { message: "Description is required!" }),
   productType: z.string().min(1, { message: "Product Type is required!" }),
   price: z.coerce.number().min(0, { message: "Price must be positive!" }),
-  stock: z.coerce.number().min(0, { message: "Stock must be non-negative!" }), // Added stock validation
+  stock: z.coerce.number().min(0, { message: "Stock must be non-negative!" }),
   status: z.enum(["Active", "Inactive"], { message: "Status is required" }),
   img: z.any().optional(),
 });
@@ -34,7 +34,8 @@ const ProductForm = ({ type, data, onClose, onSuccess }: Props) => {
     register,
     handleSubmit,
     control,
-    reset,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<Inputs>({
     resolver: zodResolver(schema),
@@ -48,7 +49,9 @@ const ProductForm = ({ type, data, onClose, onSuccess }: Props) => {
             stock: Number(data.stock) || 0,
             status: data.status === "active" ? "Active" : "Inactive",
           }
-        : {},
+        : {
+            stock: 0,
+          },
   });
 
   const [productTypes, setProductTypes] = useState([
@@ -57,12 +60,19 @@ const ProductForm = ({ type, data, onClose, onSuccess }: Props) => {
   ]);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const selectedProductType = watch("productType");
 
   useEffect(() => {
     if (type === "update" && data?.image_url) {
       setPreviewUrl(data.image_url);
     }
   }, [type, data]);
+
+  useEffect(() => {
+    if (selectedProductType === "service") {
+      setValue("stock", 0, { shouldValidate: true, shouldDirty: true });
+    }
+  }, [selectedProductType, setValue]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -94,7 +104,7 @@ const ProductForm = ({ type, data, onClose, onSuccess }: Props) => {
         description: formData.description,
         product_type: formData.productType,
         price: formData.price,
-        stock: formData.stock, // Added stock to payload
+        stock: formData.productType === "service" ? 0 : formData.stock,
         status: formData.status.toLowerCase(),
       };
 
@@ -163,13 +173,22 @@ const ProductForm = ({ type, data, onClose, onSuccess }: Props) => {
           register={register}
           error={errors.price}
         />
-        <InputField
-          label="Stock"
-          name="stock"
-          type="number"
-          register={register}
-          error={errors.stock}
-        />
+        {selectedProductType !== "service" ? (
+          <InputField
+            label="Stock"
+            name="stock"
+            type="number"
+            register={register}
+            error={errors.stock}
+          />
+        ) : (
+          <div className="flex flex-col gap-2 w-full rounded-xl border border-dashed border-black/10 bg-white/50 px-3 py-2.5 text-sm text-gray-500 sm:px-3.5 sm:py-3">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-gray-500 sm:text-xs">
+              Stock
+            </span>
+            <span>Services do not require stock quantity.</span>
+          </div>
+        )}
         <DropdownField
           label="Status"
           name="status"

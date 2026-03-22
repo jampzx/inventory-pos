@@ -7,15 +7,15 @@ const productSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
   product_type: z.enum(["product", "service"]),
-  price: z.number().positive(),
+  price: z.number().nonnegative(),
   image_url: z.string().optional(),
   status: z.enum(["active", "inactive"]),
-  stock: z.number().int().nonnegative(),
+  stock: z.number().int().nonnegative().optional(),
 });
 
 export async function PUT(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   return withAuth(async (req, user) => {
     try {
@@ -23,7 +23,7 @@ export async function PUT(
       if (isNaN(id)) {
         return NextResponse.json(
           { success: false, message: "Invalid ID" },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
@@ -33,7 +33,7 @@ export async function PUT(
       if (!parsed.success) {
         return NextResponse.json(
           { success: false, errors: parsed.error.flatten().fieldErrors },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
@@ -47,7 +47,8 @@ export async function PUT(
         stock,
       } = parsed.data;
 
-      // 1. Update the product
+      const normalizedStock = product_type === "service" ? 0 : (stock ?? 0);
+
       const updatedProduct = await prisma.product.update({
         where: {
           id,
@@ -60,7 +61,7 @@ export async function PUT(
           price,
           image_url,
           status,
-          stock,
+          stock: normalizedStock,
         },
       });
 
@@ -69,7 +70,7 @@ export async function PUT(
       console.error("❌ Failed to update product:", error);
       return NextResponse.json(
         { success: false, message: "Server error" },
-        { status: 500 }
+        { status: 500 },
       );
     }
   })(_req);

@@ -9,6 +9,12 @@ import DropdownField from "../DropdownField";
 import { toast } from "sonner";
 import Spinner from "@/components/Spinner";
 
+type ProductOption = {
+  id: number;
+  name: string;
+  product_type: string;
+};
+
 type Props = {
   type: "create" | "update";
   data?: any;
@@ -28,7 +34,6 @@ const OrderForm = ({ type, data, onClose, onSuccess }: Props) => {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<z.infer<typeof orderSchema>>({
     resolver: zodResolver(orderSchema),
@@ -56,12 +61,12 @@ const OrderForm = ({ type, data, onClose, onSuccess }: Props) => {
         const result = await res.json();
 
         if (Array.isArray(result.data)) {
-          const options = result.data.map(
-            (prod: { id: number; name: string }) => ({
+          const options = result.data
+            .filter((prod: ProductOption) => prod.product_type === "product")
+            .map((prod: ProductOption) => ({
               label: prod.name,
               value: prod.id.toString(),
-            })
-          );
+            }));
           setProductOptions(options);
         }
       } catch (error) {
@@ -98,7 +103,7 @@ const OrderForm = ({ type, data, onClose, onSuccess }: Props) => {
         }
       } else {
         toast.success(
-          `Order ${type === "create" ? "created" : "updated"} successfully`
+          `Order ${type === "create" ? "created" : "updated"} successfully`,
         );
         onClose?.();
         onSuccess?.();
@@ -125,6 +130,10 @@ const OrderForm = ({ type, data, onClose, onSuccess }: Props) => {
           error={errors.product_id}
           options={productOptions}
         />
+        <div className="rounded-xl border border-dashed border-black/10 bg-white/50 px-3 py-2.5 text-sm text-gray-500 sm:px-3.5 sm:py-3">
+          Purchase orders are limited to inventory products. Services are
+          excluded.
+        </div>
         <InputField
           label="Quantity"
           name="quantity"

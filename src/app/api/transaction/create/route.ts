@@ -9,13 +9,13 @@ const transactionSchema = z.object({
       productId: z.number(),
       quantity: z.number().min(1),
       price: z.number(),
-    })
+    }),
   ),
   payments: z.array(
     z.object({
       method: z.string(),
       amount: z.number().min(0),
-    })
+    }),
   ),
   discountType: z.enum(["AMOUNT", "PERCENT"]),
   discountValue: z.number().min(0),
@@ -28,6 +28,47 @@ export const POST = withAuth(async (req: NextRequest, user) => {
     const parsed = transactionSchema.parse(body);
     const { cartItems, payments, discountType, discountValue, customerId } =
       parsed;
+
+    const productIds = [...new Set(cartItems.map((item) => item.productId))];
+    const products = await prisma.product.findMany({
+      where: {
+        id: { in: productIds },
+        company_id: user.company_id,
+      },
+      select: {
+        id: true,
+        stock: true,
+        status: true,
+        product_type: true,
+      },
+    });
+    const productMap = new Map(
+      products.map((product) => [product.id, product]),
+    );
+
+    for (const item of cartItems) {
+      const product = productMap.get(item.productId);
+
+      if (!product || product.status !== "active") {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "One or more selected products are unavailable",
+          },
+          { status: 400 },
+        );
+      }
+
+      if (product.product_type !== "service" && item.quantity > product.stock) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "One or more items exceed the available stock",
+          },
+          { status: 400 },
+        );
+      }
+    }
 
     // Validate customer belongs to same company if provided
     if (customerId) {
@@ -42,14 +83,14 @@ export const POST = withAuth(async (req: NextRequest, user) => {
       if (!customer) {
         return NextResponse.json(
           { success: false, error: "Invalid customer selected" },
-          { status: 400 }
+          { status: 400 },
         );
       }
     }
 
     const subtotal = cartItems.reduce(
       (sum, item) => sum + item.price * item.quantity,
-      0
+      0,
     );
 
     const discountAmount =
@@ -87,8 +128,8 @@ export const POST = withAuth(async (req: NextRequest, user) => {
             price: item.price,
             company_id: user.company_id,
           },
-        })
-      )
+        }),
+      ),
     );
 
     await prisma.$transaction(
@@ -100,34 +141,40 @@ export const POST = withAuth(async (req: NextRequest, user) => {
             amount: p.amount,
             company_id: user.company_id,
           },
-        })
-      )
+        }),
+      ),
     );
 
-    await prisma.$transaction(
-      cartItems.map((item) =>
+    const stockUpdates = cartItems
+      .filter(
+        (item) => productMap.get(item.productId)?.product_type !== "service",
+      )
+      .map((item) =>
         prisma.product.update({
           where: { id: item.productId },
           data: { stock: { decrement: item.quantity } },
-        })
-      )
-    );
+        }),
+      );
+
+    if (stockUpdates.length > 0) {
+      await prisma.$transaction(stockUpdates);
+    }
 
     return NextResponse.json(
       { success: true, transactionId: transaction.id },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (err: any) {
     console.error("Transaction error:", err);
     if (err instanceof z.ZodError) {
       return NextResponse.json(
         { success: false, error: err.errors },
-        { status: 400 }
+        { status: 400 },
       );
     }
     return NextResponse.json(
       { success: false, error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 });

@@ -58,134 +58,132 @@ export default function ExportModal({
     });
   };
 
-  return (
-    (
-      <AnimatePresence>
-        {isOpen && (
+  return createPortal(
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 px-4 backdrop-blur-sm"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+        >
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 px-4 backdrop-blur-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            className="neo-panel-strong w-full max-w-md border border-black/10 p-6"
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
           >
-            <motion.div
-              className="neo-panel-strong w-full max-w-md border border-black/10 p-6"
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
+            <p className="neo-subtitle">Data Export</p>
+            <motion.h2
+              className="neo-title mb-4 text-2xl font-semibold text-gray-800"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
             >
-              <p className="neo-subtitle">Data Export</p>
-              <motion.h2
-                className="neo-title mb-4 text-2xl font-semibold text-gray-800"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.1 }}
-              >
-                Export Transactions
-              </motion.h2>
+              Export Transactions
+            </motion.h2>
 
-              <motion.div
-                className="space-y-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3, delay: 0.2 }}
-              >
+            <motion.div
+              className="space-y-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3, delay: 0.2 }}
+            >
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-gray-500">
+                  Start Date
+                </label>
+                <input
+                  type="date"
+                  value={from}
+                  onChange={(e) => setFrom(e.target.value)}
+                  className="mt-1.5 block w-full rounded-xl border border-black/15 bg-white/80 px-3 py-2 text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-gray-500">
+                  End Date
+                </label>
+                <input
+                  type="date"
+                  value={to}
+                  onChange={(e) => setTo(e.target.value)}
+                  className="mt-1.5 block w-full rounded-xl border border-black/15 bg-white/80 px-3 py-2 text-sm"
+                />
+              </div>
+
+              {showStatusFilter && (
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-gray-500">
-                    Start Date
+                    Status
                   </label>
-                  <input
-                    type="date"
-                    value={from}
-                    onChange={(e) => setFrom(e.target.value)}
+                  <select
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
                     className="mt-1.5 block w-full rounded-xl border border-black/15 bg-white/80 px-3 py-2 text-sm"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-gray-500">
-                    End Date
-                  </label>
-                  <input
-                    type="date"
-                    value={to}
-                    onChange={(e) => setTo(e.target.value)}
-                    className="mt-1.5 block w-full rounded-xl border border-black/15 bg-white/80 px-3 py-2 text-sm"
-                  />
-                </div>
-
-                {showStatusFilter && (
-                  <div>
-                    <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-gray-500">
-                      Status
-                    </label>
-                    <select
-                      value={status}
-                      onChange={(e) => setStatus(e.target.value)}
-                      className="mt-1.5 block w-full rounded-xl border border-black/15 bg-white/80 px-3 py-2 text-sm"
-                    >
-                      <option value="all">All</option>
-                      <option value="completed">Completed</option>
-                      <option value="voided">Voided</option>
-                      <option value="pending">Pending</option>
-                    </select>
-                  </div>
-                )}
-
-                {error && (
-                  <motion.p
-                    className="mt-2 text-sm font-medium text-red-600"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.2 }}
                   >
-                    {error}
-                  </motion.p>
-                )}
-              </motion.div>
+                    <option value="all">All</option>
+                    <option value="completed">Completed</option>
+                    <option value="voided">Voided</option>
+                    <option value="pending">Pending</option>
+                  </select>
+                </div>
+              )}
 
-              <motion.div
-                className="mt-6 flex justify-between gap-2"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.3 }}
+              {error && (
+                <motion.p
+                  className="mt-2 text-sm font-medium text-red-600"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {error}
+                </motion.p>
+              )}
+            </motion.div>
+
+            <motion.div
+              className="mt-6 flex justify-between gap-2"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.3 }}
+            >
+              <motion.button
+                onClick={onClose}
+                className="neo-btn-ghost w-full py-2 text-sm"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
+                Cancel
+              </motion.button>
+
+              {showTableExport && (
                 <motion.button
-                  onClick={onClose}
-                  className="neo-btn-ghost w-full py-2 text-sm"
+                  onClick={() => handleExport("table")}
+                  className="neo-btn w-full py-2 text-sm flex items-center justify-center gap-2"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  Cancel
+                  <FaTable /> View Table
                 </motion.button>
+              )}
 
-                {showTableExport && (
-                  <motion.button
-                    onClick={() => handleExport("table")}
-                    className="neo-btn w-full py-2 text-sm flex items-center justify-center gap-2"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <FaTable /> View Table
-                  </motion.button>
-                )}
-
-                <motion.button
-                  onClick={() => handleExport("excel")}
-                  className="w-full py-2 text-sm flex items-center justify-center gap-2 rounded-xl font-semibold text-white shadow-sm border border-emerald-600/20 bg-gradient-to-br from-emerald-500 to-emerald-700"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <FaFileExcel /> Export Excel
-                </motion.button>
-              </motion.div>
+              <motion.button
+                onClick={() => handleExport("excel")}
+                className="w-full py-2 text-sm flex items-center justify-center gap-2 rounded-xl font-semibold text-white shadow-sm border border-emerald-600/20 bg-gradient-to-br from-emerald-500 to-emerald-700"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <FaFileExcel /> Export Excel
+              </motion.button>
             </motion.div>
           </motion.div>
-        )}
-      </AnimatePresence>
-    ),
-    document.body
+        </motion.div>
+      )}
+    </AnimatePresence>,
+    document.body,
   );
 }

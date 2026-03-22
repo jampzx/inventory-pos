@@ -77,7 +77,13 @@ export default function POSPage() {
   const handleAddToCart = () => {
     if (!selectedProduct) return;
 
-    if (selectedQuantity > selectedProduct.stock) {
+    const isService = selectedProduct.product_type === "service";
+    const existingCartQuantity = cart.find(
+      (item) => item.product.id === selectedProduct.id,
+    )?.quantity;
+    const nextQuantity = (existingCartQuantity ?? 0) + selectedQuantity;
+
+    if (!isService && nextQuantity > selectedProduct.stock) {
       toast.error(
         `Cannot add more than ${selectedProduct.stock} of "${selectedProduct.name}" to the cart.`,
       );
@@ -105,12 +111,13 @@ export default function POSPage() {
     setCart((prev) =>
       prev.map((item) => {
         if (item.product.id === productId) {
+          const isService = item.product.product_type === "service";
           const newQty = item.quantity + delta;
           if (newQty < 1) {
             toast.error(`Minimum quantity is 1 for "${item.product.name}".`);
             return item;
           }
-          if (newQty > item.product.stock) {
+          if (!isService && newQty > item.product.stock) {
             toast.error(
               `Cannot exceed stock of ${item.product.stock} for "${item.product.name}".`,
             );
@@ -669,16 +676,39 @@ export default function POSPage() {
                         min={1}
                         value={selectedQuantity}
                         onChange={(e) =>
-                          setSelectedQuantity(
-                            Math.max(1, parseInt(e.target.value) || 1),
-                          )
+                          setSelectedQuantity(() => {
+                            const parsedValue = Math.max(
+                              1,
+                              parseInt(e.target.value) || 1,
+                            );
+
+                            if (
+                              selectedProduct.product_type !== "service" &&
+                              parsedValue > selectedProduct.stock
+                            ) {
+                              return selectedProduct.stock;
+                            }
+
+                            return parsedValue;
+                          })
                         }
                         className="w-full rounded-xl border border-black/15 bg-white/90 py-2.5 text-center text-lg font-semibold focus:border-lamaSky focus:outline-none focus:ring-2 focus:ring-lamaSky/25"
                       />
 
                       <button
                         className="flex h-11 w-11 items-center justify-center rounded-xl border border-black/15 bg-white/90 text-gray-700"
-                        onClick={() => setSelectedQuantity((q) => q + 1)}
+                        onClick={() =>
+                          setSelectedQuantity((quantity) => {
+                            if (selectedProduct.product_type === "service") {
+                              return quantity + 1;
+                            }
+
+                            return Math.min(
+                              selectedProduct.stock,
+                              quantity + 1,
+                            );
+                          })
+                        }
                       >
                         <FiPlus size={16} />
                       </button>

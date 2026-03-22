@@ -16,7 +16,7 @@ const updateOrderSchema = z.object({
 
 export async function PUT(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   return withAuth(async (req, user) => {
     const id = Number(params.id);
@@ -30,7 +30,7 @@ export async function PUT(
     if (!parse.success) {
       return NextResponse.json(
         { error: parse.error.flatten() },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -46,13 +46,20 @@ export async function PUT(
             id: product_id,
             company_id: user.company_id,
           },
-          select: { name: true },
+          select: { name: true, product_type: true },
         });
 
         if (!product) {
           return NextResponse.json(
             { error: "Product not found" },
-            { status: 404 }
+            { status: 404 },
+          );
+        }
+
+        if (product.product_type !== "product") {
+          return NextResponse.json(
+            { error: "Services cannot be used for purchase orders" },
+            { status: 400 },
           );
         }
 
@@ -93,7 +100,7 @@ export async function PUT(
       console.error("UPDATE ORDER ERROR:", error);
       return NextResponse.json(
         { error: "Failed to update order" },
-        { status: 500 }
+        { status: 500 },
       );
     }
   })(_req);
