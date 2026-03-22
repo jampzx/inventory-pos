@@ -7,8 +7,8 @@ import TableSearch from "@/components/TableSearch";
 import TransactionDetailModal from "@/components/TransactionDetailModal";
 import Spinner from "@/components/Spinner";
 import { TransactionType } from "@/types/types";
-import Image from "next/image";
 import { FaBan, FaFileExport } from "react-icons/fa";
+import { FiArrowDown, FiArrowUp, FiEye } from "react-icons/fi";
 import ConfirmationModal from "@/components/ConfirmationModal";
 import { toast } from "sonner";
 import ExportModal from "@/components/ExportModal";
@@ -105,7 +105,7 @@ const TransactionsListPage = () => {
   const renderRow = (transaction: TransactionType) => (
     <tr
       key={transaction.id}
-      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight"
+      className="text-sm transition-colors duration-150 hover:bg-lamaSkyLight/40"
     >
       <td className="p-2">{transaction.id}</td>
       <td className="p-2">₱{Number(transaction.subtotal).toFixed(2)}</td>
@@ -136,17 +136,17 @@ const TransactionsListPage = () => {
               setSelectedTransaction(transaction);
               setShowDetailModal(true);
             }}
-            className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaSky"
+            className="flex h-8 w-8 items-center justify-center rounded-lg bg-lamaSky/15 border border-lamaSky/30 text-[#0f9f9d] hover:bg-lamaSky/25 transition-colors"
           >
-            <Image src="/view.png" alt="View" width={16} height={16} />
+            <FiEye size={15} />
           </button>
           {/* Void Button - show only if not voided */}
           <button
             title="Void Transaction"
             onClick={() => setVoidingTransactionId(transaction.id)}
-            className="w-7 h-7 flex items-center justify-center rounded-full bg-red-300 text-white"
+            className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-100/80 border border-red-200/60 text-red-500 hover:bg-red-200/60 transition-colors"
           >
-            <FaBan size={14} />
+            <FaBan size={13} />
           </button>
         </div>
       </td>
@@ -154,17 +154,20 @@ const TransactionsListPage = () => {
   );
 
   return (
-    <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 p-2 sm:p-4 rounded-xl flex-1 m-2 sm:m-4 mt-0 shadow-sm">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between bg-white rounded-xl p-4 shadow-sm border border-purple-100 mb-4">
-        <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-          Transactions
-        </h1>
+    <div className="neo-panel rounded-2xl flex-1 m-2 sm:m-4 mt-0 p-2 sm:p-4">
+      <div className="neo-panel flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between p-4 mb-4">
+        <div>
+          <p className="neo-subtitle">POS Records</p>
+          <h1 className="neo-title text-xl font-semibold text-gray-800">
+            Transactions
+          </h1>
+        </div>
 
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
           <TableSearch onSearch={setSearchTerm} />
-          <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto">
+          <div className="flex items-center gap-2 sm:gap-3">
             <select
-              className="text-sm px-3 py-2 rounded-lg border border-gray-300 bg-white shadow-sm"
+              className="text-sm px-3 py-2 rounded-xl border border-black/15 bg-white/80 shadow-sm focus:outline-none focus:ring-2 focus:ring-lamaSky/30 focus:border-lamaSky transition"
               value={sortKey}
               onChange={(e) => setSortKey(e.target.value)}
             >
@@ -174,17 +177,22 @@ const TransactionsListPage = () => {
               <option value="change">Change</option>
             </select>
             <button
+              title="Toggle Sort"
               onClick={() =>
                 setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))
               }
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow text-white hover:bg-yellow-500"
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-black/10 bg-white/80 shadow-sm hover:-translate-y-0.5 transition-transform text-gray-600"
             >
-              <span>{sortOrder === "asc" ? "▲" : "▼"}</span>
+              {sortOrder === "asc" ? (
+                <FiArrowUp size={15} />
+              ) : (
+                <FiArrowDown size={15} />
+              )}
             </button>
             <button
               onClick={() => setShowExportModal(true)}
               title="Export Transactions"
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-green-300 text-white hover:bg-green-500"
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-emerald-200/60 bg-emerald-100/80 text-emerald-700 shadow-sm hover:-translate-y-0.5 transition-transform"
             >
               <FaFileExport size={14} />
             </button>
@@ -250,7 +258,7 @@ const TransactionsListPage = () => {
             `/api/transaction/void/${voidingTransactionId}`,
             {
               method: "POST",
-            }
+            },
           );
           const data = await res.json();
 
@@ -274,7 +282,7 @@ const TransactionsListPage = () => {
 
           if (options.format === "table") {
             router.push(
-              `/report/pos/${options.from}/${options.to}/${options.status}`
+              `/report/pos/${options.from}/${options.to}/${options.status}`,
             );
             return;
           }
@@ -318,7 +326,7 @@ const TransactionsListPage = () => {
                 Payments: tx.payments
                   .map(
                     (p) =>
-                      `${p.payment_method}: ₱${Number(p.amount).toFixed(2)}`
+                      `${p.payment_method}: ₱${Number(p.amount).toFixed(2)}`,
                   )
                   .join(", "),
                 Status: tx.status,

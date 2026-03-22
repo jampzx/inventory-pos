@@ -93,10 +93,10 @@ const Analytics = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-lamaSkyLight via-white to-lamaPurpleLight">
-        <div className="flex flex-col items-center gap-4 px-6 py-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-lamaSky/40">
+      <div className="flex min-h-screen items-center justify-center rounded-3xl border border-black/10 bg-white/45 backdrop-blur-sm">
+        <div className="neo-panel flex flex-col items-center gap-4 rounded-2xl border border-black/10 px-6 py-4">
           <Spinner size={40} color="lamaSky" />
-          <p className="text-sm font-medium text-gray-600 tracking-wide">
+          <p className="text-sm font-medium tracking-wide text-gray-600">
             Loading analytics…
           </p>
         </div>
@@ -106,8 +106,8 @@ const Analytics = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-lamaSkyLight via-white to-lamaPurpleLight">
-        <div className="px-6 py-4 bg-red-50 border border-red-200 rounded-2xl shadow-sm">
+      <div className="flex min-h-screen items-center justify-center rounded-3xl border border-black/10 bg-white/45 backdrop-blur-sm">
+        <div className="rounded-2xl border border-red-200 bg-red-50 px-6 py-4 shadow-sm">
           <p className="text-sm font-semibold text-red-700">{error}</p>
         </div>
       </div>
@@ -116,8 +116,8 @@ const Analytics = () => {
 
   if (!data) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-lamaSkyLight via-white to-lamaPurpleLight">
-        <div className="px-6 py-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200">
+      <div className="flex min-h-screen items-center justify-center rounded-3xl border border-black/10 bg-white/45 backdrop-blur-sm">
+        <div className="neo-panel rounded-2xl border border-black/10 px-6 py-4">
           <p className="text-sm font-medium text-gray-600">
             No analytics data available.
           </p>
@@ -133,23 +133,23 @@ const Analytics = () => {
 
   const totalExpenses = data.monthlyExpenses.reduce(
     (sum, m) => sum + m.expenses,
-    0
+    0,
   );
 
   const totalTransactions = data.paymentBreakdown.reduce(
     (sum, p) => sum + p.count,
-    0
+    0,
   );
 
   const topPaymentMethod =
     data.paymentBreakdown.length > 0
       ? data.paymentBreakdown.reduce((prev, cur) =>
-          cur.value > prev.value ? cur : prev
+          cur.value > prev.value ? cur : prev,
         )
       : null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 p-2 sm:p-4 md:p-6 lg:p-8">
+    <div className="neo-panel min-h-screen rounded-3xl border border-black/10 p-2 sm:p-4 md:p-6 lg:p-8">
       <div className="max-w-[1600px] mx-auto space-y-6">
         <AnalyticsHeader />
 

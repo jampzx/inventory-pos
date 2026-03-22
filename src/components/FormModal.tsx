@@ -2,17 +2,20 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import { useState } from "react";
+import { createPortal } from "react-dom";
+import { FiEdit2, FiPlus, FiTrash2, FiX } from "react-icons/fi";
 import { toast } from "sonner";
 import Spinner from "@/components/Spinner";
 
 const ProductForm = dynamic(() => import("./forms/ProductForm"), {
   loading: () => (
-    <div className="flex justify-center items-center p-8">
+    <div className="flex items-center justify-center p-8">
       <div className="flex flex-col items-center gap-3">
         <Spinner size={32} color="lamaSky" />
-        <span className="text-sm text-gray-500">Loading form...</span>
+        <span className="text-sm font-medium text-gray-500">
+          Loading form...
+        </span>
       </div>
     </div>
   ),
@@ -20,10 +23,12 @@ const ProductForm = dynamic(() => import("./forms/ProductForm"), {
 
 const OrderForm = dynamic(() => import("./forms/OrderForm"), {
   loading: () => (
-    <div className="flex justify-center items-center p-8">
+    <div className="flex items-center justify-center p-8">
       <div className="flex flex-col items-center gap-3">
         <Spinner size={32} color="lamaSky" />
-        <span className="text-sm text-gray-500">Loading form...</span>
+        <span className="text-sm font-medium text-gray-500">
+          Loading form...
+        </span>
       </div>
     </div>
   ),
@@ -31,10 +36,12 @@ const OrderForm = dynamic(() => import("./forms/OrderForm"), {
 
 const UserForm = dynamic(() => import("./forms/UserForm"), {
   loading: () => (
-    <div className="flex justify-center items-center p-8">
+    <div className="flex items-center justify-center p-8">
       <div className="flex flex-col items-center gap-3">
         <Spinner size={32} color="lamaSky" />
-        <span className="text-sm text-gray-500">Loading form...</span>
+        <span className="text-sm font-medium text-gray-500">
+          Loading form...
+        </span>
       </div>
     </div>
   ),
@@ -42,10 +49,12 @@ const UserForm = dynamic(() => import("./forms/UserForm"), {
 
 const ExpenseForm = dynamic(() => import("./forms/ExpenseForm"), {
   loading: () => (
-    <div className="flex justify-center items-center p-8">
+    <div className="flex items-center justify-center p-8">
       <div className="flex flex-col items-center gap-3">
         <Spinner size={32} color="lamaSky" />
-        <span className="text-sm text-gray-500">Loading form...</span>
+        <span className="text-sm font-medium text-gray-500">
+          Loading form...
+        </span>
       </div>
     </div>
   ),
@@ -53,10 +62,12 @@ const ExpenseForm = dynamic(() => import("./forms/ExpenseForm"), {
 
 const CompanyForm = dynamic(() => import("./forms/CompanyForm"), {
   loading: () => (
-    <div className="flex justify-center items-center p-8">
+    <div className="flex items-center justify-center p-8">
       <div className="flex flex-col items-center gap-3">
         <Spinner size={32} color="lamaSky" />
-        <span className="text-sm text-gray-500">Loading form...</span>
+        <span className="text-sm font-medium text-gray-500">
+          Loading form...
+        </span>
       </div>
     </div>
   ),
@@ -64,10 +75,12 @@ const CompanyForm = dynamic(() => import("./forms/CompanyForm"), {
 
 const CustomerForm = dynamic(() => import("./forms/CustomerForm"), {
   loading: () => (
-    <div className="flex justify-center items-center p-8">
+    <div className="flex items-center justify-center p-8">
       <div className="flex flex-col items-center gap-3">
         <Spinner size={32} color="lamaSky" />
-        <span className="text-sm text-gray-500">Loading form...</span>
+        <span className="text-sm font-medium text-gray-500">
+          Loading form...
+        </span>
       </div>
     </div>
   ),
@@ -126,10 +139,10 @@ const FormModal = ({
         onSuccess?.();
         handleClose();
       } else {
-        toast.error(result.message || "❌ Failed to delete.");
+        toast.error(result.message || "Failed to delete.");
       }
     } catch (error) {
-      toast.error("❌ Server error while deleting.");
+      toast.error("Server error while deleting.");
     } finally {
       setIsDeleting(false);
     }
@@ -138,23 +151,24 @@ const FormModal = ({
   const Form = () => {
     if (type === "delete" && id) {
       return (
-        <div className="p-4 flex flex-col gap-4">
-          <h2 className="text-center font-semibold text-lg">
+        <div className="flex flex-col gap-4 p-4">
+          <p className="neo-subtitle text-center">Danger Zone</p>
+          <h2 className="neo-title text-center text-2xl font-semibold">
             Confirm Deletion
           </h2>
           <p className="text-center text-sm text-gray-600">
             Are you sure you want to delete this {table}?
           </p>
-          <div className="flex justify-center gap-4 mt-4">
+          <div className="mt-4 flex justify-center gap-4">
             <button
-              className="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded"
+              className="neo-btn-ghost px-4 py-2"
               onClick={handleClose}
               disabled={isDeleting}
             >
               Cancel
             </button>
             <button
-              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+              className="neo-btn-danger px-4 py-2"
               onClick={handleDelete}
               disabled={isDeleting}
             >
@@ -175,51 +189,60 @@ const FormModal = ({
     return <>Form not found!</>;
   };
 
-  const size = type === "create" ? "w-8 h-8" : "w-7 h-7";
+  const iconMap = {
+    create: <FiPlus size={16} />,
+    update: <FiEdit2 size={14} />,
+    delete: <FiTrash2 size={14} />,
+  };
+
+  const size = type === "create" ? "h-9 w-9" : "h-8 w-8";
   const bgColor =
     type === "create"
-      ? "bg-lamaYellow"
+      ? "bg-lamaYellow/80 hover:bg-lamaYellow"
       : type === "update"
-      ? "bg-lamaSky"
-      : "bg-lamaPurple";
+        ? "bg-lamaSky/20 border-lamaSky/30 text-lamaSky hover:bg-lamaSky/30"
+        : "bg-red-100 border-red-200/60 text-red-500 hover:bg-red-200/60";
 
   return (
     <>
       <button
-        className={`${size} flex items-center justify-center rounded-full ${bgColor}`}
+        title={type.charAt(0).toUpperCase() + type.slice(1)}
+        className={`${size} ${bgColor} flex items-center justify-center rounded-lg border border-black/10 shadow-sm transition-all duration-200 hover:-translate-y-0.5`}
         onClick={() => setOpen(true)}
       >
-        <Image src={`/${type}.png`} alt={type} width={16} height={16} />
+        {iconMap[type]}
       </button>
-      {open && (
-        <AnimatePresence>
-          <motion.div
-            className="w-screen h-screen fixed left-0 top-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/30"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
+      {open &&
+        createPortal(
+          <AnimatePresence>
             <motion.div
-              className="bg-white p-3 sm:p-4 md:p-6 rounded-md relative w-[95%] max-w-4xl max-h-[95vh] overflow-y-auto"
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="fixed left-0 top-0 z-[9999] flex h-screen w-screen items-center justify-center bg-black/35 backdrop-blur-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
             >
-              <Form />
               <motion.div
-                className="absolute top-4 right-4 cursor-pointer"
-                onClick={handleClose}
-                whileHover={{ scale: 1.1, rotate: 90 }}
-                whileTap={{ scale: 0.9 }}
+                className="neo-panel-strong relative max-h-[95vh] w-[95%] max-w-4xl overflow-y-auto border border-black/10 p-4 sm:p-5 md:p-6"
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
               >
-                <Image src="/close.png" alt="close" width={14} height={14} />
+                <Form />
+                <motion.div
+                  className="absolute right-4 top-4 cursor-pointer rounded-lg border border-black/10 bg-white/80 p-1.5 text-gray-500 hover:text-gray-800"
+                  onClick={handleClose}
+                  whileHover={{ scale: 1.1, rotate: 90 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <FiX size={14} />
+                </motion.div>
               </motion.div>
             </motion.div>
-          </motion.div>
-        </AnimatePresence>
-      )}
+          </AnimatePresence>,
+          document.body,
+        )}
     </>
   );
 };

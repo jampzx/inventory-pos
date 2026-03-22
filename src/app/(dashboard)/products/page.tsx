@@ -9,6 +9,7 @@ import TableSearch from "components/TableSearch";
 import { useUser } from "@/hooks/useUser";
 import SingleProductModal from "@/components/forms/SingleProductModal";
 import Spinner from "@/components/Spinner";
+import { FiArrowDown, FiArrowUp, FiEye } from "react-icons/fi";
 
 interface Product {
   id: number;
@@ -80,7 +81,7 @@ const ProductsListPage = () => {
       filtered = filtered.filter(
         (p) =>
           p.name.toLowerCase().includes(lowerSearch) ||
-          p.description.toLowerCase().includes(lowerSearch)
+          p.description.toLowerCase().includes(lowerSearch),
       );
     }
 
@@ -102,7 +103,7 @@ const ProductsListPage = () => {
   }, [products, filterType, sortKey, sortOrder, searchTerm]);
 
   const totalPages = Math.ceil(
-    filteredAndSortedProducts.length / ITEMS_PER_PAGE
+    filteredAndSortedProducts.length / ITEMS_PER_PAGE,
   );
   const paginatedData = useMemo(() => {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -112,7 +113,7 @@ const ProductsListPage = () => {
   const renderRow = (item: Product) => (
     <tr
       key={item.id}
-      className="border-b border-gray-100 even:bg-gradient-to-r even:from-purple-50/30 even:to-pink-50/30 text-sm hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 transition-all duration-200"
+      className="text-sm transition-all duration-150 hover:bg-lamaSkyLight/40"
     >
       <td className="p-2">
         {item.image_url ? (
@@ -151,8 +152,8 @@ const ProductsListPage = () => {
             item.stock === 0
               ? "bg-red-100 text-red-700"
               : item.stock <= 10
-              ? "bg-yellow-100 text-yellow-700"
-              : "bg-green-100 text-green-700"
+                ? "bg-yellow-100 text-yellow-700"
+                : "bg-green-100 text-green-700"
           }`}
         >
           {item.stock}
@@ -174,9 +175,9 @@ const ProductsListPage = () => {
           <button
             title="View"
             onClick={() => setSelectedProduct(item)}
-            className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaSky"
+            className="flex h-8 w-8 items-center justify-center rounded-lg bg-lamaSky/15 border border-lamaSky/30 text-[#0f9f9d] hover:bg-lamaSky/25 transition-colors"
           >
-            <Image src="/view.png" alt="View" width={16} height={16} />
+            <FiEye size={15} />
           </button>
 
           <>
@@ -205,16 +206,19 @@ const ProductsListPage = () => {
   );
 
   return (
-    <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 p-2 sm:p-4 rounded-xl flex-1 m-2 sm:m-4 mt-0 shadow-sm">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between bg-white rounded-xl p-4 shadow-sm border border-purple-100 mb-4">
-        <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-          All Products
-        </h1>
+    <div className="neo-panel rounded-2xl flex-1 m-2 sm:m-4 mt-0 p-2 sm:p-4">
+      <div className="neo-panel flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between p-4 mb-4">
+        <div>
+          <p className="neo-subtitle">Inventory</p>
+          <h1 className="neo-title text-xl font-semibold text-gray-800">
+            All Products
+          </h1>
+        </div>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
           <TableSearch onSearch={(term) => setSearchTerm(term)} />
-          <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto">
+          <div className="flex items-center gap-2 sm:gap-3">
             <select
-              className="text-sm px-3 py-2 rounded-lg border-2 border-purple-200 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition hover:border-purple-300"
+              className="text-sm px-3 py-2 rounded-xl border border-black/15 bg-white/80 shadow-sm focus:outline-none focus:ring-2 focus:ring-lamaSky/30 focus:border-lamaSky transition"
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
             >
@@ -225,7 +229,7 @@ const ProductsListPage = () => {
             </select>
 
             <select
-              className="text-sm px-3 py-2 rounded-lg border-2 border-blue-200 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition hover:border-blue-300"
+              className="text-sm px-3 py-2 rounded-xl border border-black/15 bg-white/80 shadow-sm focus:outline-none focus:ring-2 focus:ring-lamaSky/30 focus:border-lamaSky transition"
               value={sortKey}
               onChange={(e) => setSortKey(e.target.value)}
             >
@@ -238,9 +242,13 @@ const ProductsListPage = () => {
               onClick={() =>
                 setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))
               }
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-gradient-to-r from-yellow-400 to-orange-400 hover:from-yellow-500 hover:to-orange-500 shadow-md transition-all duration-300"
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-black/10 bg-white/80 shadow-sm hover:-translate-y-0.5 transition-transform text-gray-600"
             >
-              <Image src="/sort.png" alt="sort" width={14} height={14} />
+              {sortOrder === "asc" ? (
+                <FiArrowUp size={15} />
+              ) : (
+                <FiArrowDown size={15} />
+              )}
             </button>
             <div title="add">
               <FormModal

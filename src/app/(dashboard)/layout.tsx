@@ -26,16 +26,27 @@ export default function DashboardLayout({
   };
 
   return (
-    <div className="h-screen flex relative">
-      {/* Mobile Menu Button */}
+    <div className="relative flex min-h-screen overflow-hidden">
+      <div className="pointer-events-none absolute inset-0">
+        <motion.div
+          className="absolute -left-10 top-20 h-80 w-80 rounded-full bg-lamaSky/15 blur-3xl"
+          animate={{ y: [0, 18, 0] }}
+          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute right-2 top-52 h-72 w-72 rounded-full bg-lamaYellow/20 blur-3xl"
+          animate={{ y: [0, -14, 0] }}
+          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </div>
+
       <button
         onClick={toggleMobileMenu}
-        className="md:hidden fixed top-4 left-4 z-50 bg-white rounded-lg shadow-lg p-2 transition-colors hover:bg-gray-50"
+        className="md:hidden fixed top-4 left-4 z-50 neo-panel px-3 py-2 text-gray-700"
       >
         {isMobileMenuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
       </button>
 
-      {/* Mobile Overlay */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -48,60 +59,62 @@ export default function DashboardLayout({
         )}
       </AnimatePresence>
 
-      {/* LEFT SIDEBAR */}
       <motion.div
         className={`
-          fixed md:static inset-y-0 left-0 z-40 md:z-auto
-          w-64 md:w-[14%] lg:w-[16%] xl:w-[14%] 
-          bg-white md:bg-transparent
-          p-4 md:p-4
+          fixed md:sticky md:top-0 inset-y-0 left-0 z-40 md:z-20
+          w-72 md:w-[17rem]
+          p-4 md:p-5
           transform transition-transform duration-300 ease-in-out
           ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
           md:translate-x-0 md:transform-none
-          shadow-lg md:shadow-none
         `}
       >
         <motion.div
-          className="pt-12 md:pt-0"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, ease: "easeOut", delay: 0.1 }}
+          className="neo-panel h-full px-4 pb-4 pt-12 md:px-5 md:pt-4"
+          initial={{ opacity: 0, x: -16 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.35, ease: "easeOut", delay: 0.05 }}
         >
           <Link
             href="/"
-            className="flex items-center justify-start md:justify-center lg:justify-start gap-2"
+            className="flex items-center justify-start gap-3"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             <motion.div
-              whileHover={{ rotate: 5 }}
-              transition={{ type: "spring", stiffness: 300 }}
+              whileHover={{ rotate: -6, scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 280 }}
+              className="rounded-xl border border-black/10 bg-white/70 p-1.5"
             >
               <Image
                 src="/logo.png"
                 alt="Logo"
-                width={40}
-                height={40}
-                className="md:w-[50px] md:h-[50px]"
+                width={42}
+                height={42}
+                className="h-[42px] w-[42px]"
               />
             </motion.div>
-            <motion.span
-              className="block md:hidden lg:block italic font-semibold text-gray-800 text-sm xl:text-base"
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2, duration: 0.3 }}
-            >
-              POS System
-            </motion.span>
+
+            <div className="min-w-0">
+              <p className="neo-subtitle">Retail Command</p>
+              <motion.span
+                className="neo-title block truncate text-lg font-semibold text-gray-800"
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.12, duration: 0.3 }}
+              >
+                JA POS
+              </motion.span>
+            </div>
           </Link>
+
+          <div className="neo-divider mt-5" />
+
+          <Menu onItemClick={() => setIsMobileMenuOpen(false)} />
         </motion.div>
-        <Menu onItemClick={() => setIsMobileMenuOpen(false)} />
       </motion.div>
 
-      {/* RIGHT CONTENT */}
       <motion.div
-        className="flex-1 md:w-[86%] lg:w-[84%] xl:w-[86%] bg-[#F7F8FA] overflow-auto flex flex-col min-h-screen"
+        className="relative z-10 flex min-h-screen flex-1 flex-col overflow-auto"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, delay: 0.1 }}
@@ -114,7 +127,7 @@ export default function DashboardLayout({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="flex-1"
+            className="flex-1 px-2 pb-4 pt-1 sm:px-4 md:px-6 md:pb-6 md:pt-2"
           >
             {children}
           </motion.div>

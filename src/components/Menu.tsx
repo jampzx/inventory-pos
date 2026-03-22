@@ -159,7 +159,7 @@ const Menu = ({ onItemClick }: MenuProps) => {
 
           return (
             <motion.div
-              className="flex flex-col gap-2"
+              className="mb-2 flex flex-col gap-1.5"
               key={section.title}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -171,11 +171,13 @@ const Menu = ({ onItemClick }: MenuProps) => {
             >
               <motion.button
                 onClick={() => toggleSection(section.title)}
-                className="flex items-center justify-between text-gray-400 font-light my-4 px-2 w-full"
+                className="flex w-full items-center justify-between rounded-lg px-2 py-2 text-gray-700"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <span>{section.title}</span>
+                <span className="neo-subtitle tracking-[0.16em] text-[0.65rem] text-gray-500">
+                  {section.title}
+                </span>
                 <motion.div
                   animate={{ rotate: isExpanded ? 180 : 0 }}
                   transition={{ duration: 0.2, ease: "easeInOut" }}
@@ -188,6 +190,14 @@ const Menu = ({ onItemClick }: MenuProps) => {
                 {isExpanded &&
                   visibleItems.map((item, itemIndex) => {
                     const isActive = pathname === item.href;
+                    const itemBaseClass =
+                      "group flex w-full items-center gap-3 rounded-xl border px-3 py-2.5 text-left transition-all duration-200";
+                    const itemStateClass = isActive
+                      ? "border-lamaSky/40 bg-lamaSky/15 text-gray-800 shadow-sm"
+                      : "border-transparent bg-transparent text-gray-600 hover:border-black/10 hover:bg-white/70 hover:text-gray-800";
+                    const iconClass = isActive
+                      ? "border-lamaSky/30 bg-lamaSky/20 text-lamaSky"
+                      : "border-black/10 bg-white/70 text-gray-500 group-hover:text-gray-700";
 
                     if (item.label === "Logout") {
                       return (
@@ -198,10 +208,8 @@ const Menu = ({ onItemClick }: MenuProps) => {
                             onItemClick?.();
                           }}
                           className={clsx(
-                            "flex items-center justify-start gap-4 py-2 md:px-2 rounded-md hover:bg-lamaSkyLight text-left w-full",
-                            isActive
-                              ? "text-gray-500 bg-lamaSky"
-                              : "text-gray-500"
+                            itemBaseClass,
+                            "mt-1 border-red-200/70 bg-red-50/70 text-red-700 hover:border-red-300 hover:bg-red-100/70",
                           )}
                           initial={{ opacity: 0, x: -10 }}
                           animate={{ opacity: 1, x: 0 }}
@@ -211,20 +219,19 @@ const Menu = ({ onItemClick }: MenuProps) => {
                             delay: itemIndex * 0.05,
                             ease: "easeOut",
                           }}
-                          whileHover={{
-                            scale: 1.02,
-                            backgroundColor: "rgba(195, 235, 250, 0.4)",
-                          }}
+                          whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                         >
                           <motion.span
-                            className="text-base sm:text-lg"
+                            className="flex h-8 w-8 items-center justify-center rounded-lg border border-red-300/70 bg-white/90 text-base sm:text-lg"
                             whileHover={{ scale: 1.1 }}
                             transition={{ type: "spring", stiffness: 400 }}
                           >
                             {item.icon}
                           </motion.span>
-                          <span>{item.label}</span>
+                          <span className="text-sm font-semibold tracking-[0.01em]">
+                            {item.label}
+                          </span>
                         </motion.button>
                       );
                     }
@@ -246,21 +253,22 @@ const Menu = ({ onItemClick }: MenuProps) => {
                         <Link
                           href={item.href}
                           onClick={onItemClick}
-                          className={clsx(
-                            "flex items-center justify-start gap-4 py-2 md:px-2 rounded-md hover:bg-lamaSkyLight transition-colors",
-                            isActive
-                              ? "text-gray-500 bg-lamaSky"
-                              : "text-gray-500"
-                          )}
+                          className={clsx(itemBaseClass, itemStateClass)}
                         >
                           <motion.span
-                            className="text-base sm:text-lg"
+                            className={clsx(
+                              "flex h-8 w-8 items-center justify-center rounded-lg border text-base sm:text-lg",
+                              iconClass,
+                            )}
                             whileHover={{ scale: 1.1 }}
                             transition={{ type: "spring", stiffness: 400 }}
                           >
                             {item.icon}
                           </motion.span>
-                          <span>{item.label}</span>
+
+                          <span className="text-sm font-medium tracking-[0.01em]">
+                            {item.label}
+                          </span>
                         </Link>
                       </motion.div>
                     );

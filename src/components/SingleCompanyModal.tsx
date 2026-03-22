@@ -1,4 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
+import { createPortal } from "react-dom";
+import { FiX } from "react-icons/fi";
 import React from "react";
 
 type Company = {
@@ -48,10 +50,10 @@ const SingleCompanyModal = ({ company, onClose }: Props) => {
 
   const subscriptionStatus = getSubscriptionStatus();
 
-  return (
+  return createPortal(
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4 backdrop-blur-sm"
         onClick={onClose}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -59,7 +61,7 @@ const SingleCompanyModal = ({ company, onClose }: Props) => {
         transition={{ duration: 0.2 }}
       >
         <motion.div
-          className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+          className="neo-panel-strong max-h-[90vh] w-full max-w-2xl overflow-y-auto border border-black/10"
           onClick={(e) => e.stopPropagation()}
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -68,33 +70,24 @@ const SingleCompanyModal = ({ company, onClose }: Props) => {
         >
           {/* Header */}
           <motion.div
-            className="flex items-center justify-between p-6 border-b border-gray-200"
+            className="flex items-center justify-between border-b border-black/10 p-6"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.1 }}
           >
-            <h2 className="text-xl font-semibold text-gray-800">
-              Company Details
-            </h2>
+            <div>
+              <p className="neo-subtitle">Account Details</p>
+              <h2 className="neo-title text-2xl font-semibold text-gray-800">
+                Company Details
+              </h2>
+            </div>
             <motion.button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 transition"
+              className="rounded-lg border border-black/10 bg-white/80 p-1.5 text-gray-500 transition hover:text-gray-700"
               whileHover={{ scale: 1.1, rotate: 90 }}
               whileTap={{ scale: 0.9 }}
             >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
+              <FiX size={16} />
             </motion.button>
           </motion.div>
 
@@ -107,18 +100,18 @@ const SingleCompanyModal = ({ company, onClose }: Props) => {
           >
             {/* Company Information */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-700 mb-4">
+              <h3 className="neo-title text-lg font-semibold text-gray-700 mb-4">
                 Company Information
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rounded-xl border border-black/10 bg-white/65 p-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-500 mb-1">
+                  <label className="block text-xs font-semibold uppercase tracking-[0.08em] text-gray-500 mb-1">
                     Company ID
                   </label>
                   <p className="text-gray-900">{company.company_id}</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-500 mb-1">
+                  <label className="block text-xs font-semibold uppercase tracking-[0.08em] text-gray-500 mb-1">
                     Company Name
                   </label>
                   <p className="text-gray-900 font-medium">
@@ -126,13 +119,13 @@ const SingleCompanyModal = ({ company, onClose }: Props) => {
                   </p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-500 mb-1">
+                  <label className="block text-xs font-semibold uppercase tracking-[0.08em] text-gray-500 mb-1">
                     Email
                   </label>
                   <p className="text-gray-900">{company.company_email}</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-500 mb-1">
+                  <label className="block text-xs font-semibold uppercase tracking-[0.08em] text-gray-500 mb-1">
                     Contact Number
                   </label>
                   <p className="text-gray-900">
@@ -140,7 +133,7 @@ const SingleCompanyModal = ({ company, onClose }: Props) => {
                   </p>
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-500 mb-1">
+                  <label className="block text-xs font-semibold uppercase tracking-[0.08em] text-gray-500 mb-1">
                     Address
                   </label>
                   <p className="text-gray-900">{company.company_address}</p>
@@ -150,23 +143,23 @@ const SingleCompanyModal = ({ company, onClose }: Props) => {
 
             {/* Subscription Information */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-700 mb-4">
+              <h3 className="neo-title text-lg font-semibold text-gray-700 mb-4">
                 Subscription Information
               </h3>
-              <div className="space-y-4">
+              <div className="space-y-4 rounded-xl border border-black/10 bg-white/65 p-4">
                 <div className="flex items-center justify-between">
-                  <label className="block text-sm font-medium text-gray-500">
+                  <label className="block text-xs font-semibold uppercase tracking-[0.08em] text-gray-500">
                     Status
                   </label>
                   <span
-                    className={`px-3 py-1 rounded-full text-sm font-medium ${subscriptionStatus.color}`}
+                    className={`px-3 py-1 rounded-full text-sm font-semibold border ${subscriptionStatus.color}`}
                   >
                     {subscriptionStatus.text}
                   </span>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-500 mb-1">
+                    <label className="block text-xs font-semibold uppercase tracking-[0.08em] text-gray-500 mb-1">
                       Subscription Start
                     </label>
                     <p className="text-gray-900">
@@ -174,7 +167,7 @@ const SingleCompanyModal = ({ company, onClose }: Props) => {
                     </p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-500 mb-1">
+                    <label className="block text-xs font-semibold uppercase tracking-[0.08em] text-gray-500 mb-1">
                       Subscription End
                     </label>
                     <p className="text-gray-900">
@@ -187,12 +180,12 @@ const SingleCompanyModal = ({ company, onClose }: Props) => {
 
             {/* Timestamps */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-700 mb-4">
+              <h3 className="neo-title text-lg font-semibold text-gray-700 mb-4">
                 Record Information
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rounded-xl border border-black/10 bg-white/65 p-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-500 mb-1">
+                  <label className="block text-xs font-semibold uppercase tracking-[0.08em] text-gray-500 mb-1">
                     Created At
                   </label>
                   <p className="text-gray-900">
@@ -200,7 +193,7 @@ const SingleCompanyModal = ({ company, onClose }: Props) => {
                   </p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-500 mb-1">
+                  <label className="block text-xs font-semibold uppercase tracking-[0.08em] text-gray-500 mb-1">
                     Last Updated
                   </label>
                   <p className="text-gray-900">
@@ -213,14 +206,14 @@ const SingleCompanyModal = ({ company, onClose }: Props) => {
 
           {/* Footer */}
           <motion.div
-            className="flex justify-end p-6 border-t border-gray-200"
+            className="flex justify-end border-t border-black/10 p-6"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.3 }}
           >
             <motion.button
               onClick={onClose}
-              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
+              className="neo-btn-ghost px-4 py-2"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -229,7 +222,8 @@ const SingleCompanyModal = ({ company, onClose }: Props) => {
           </motion.div>
         </motion.div>
       </motion.div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 };
 

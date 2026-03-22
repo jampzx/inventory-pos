@@ -6,9 +6,9 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { useUser } from "@/hooks/useUser";
-import Image from "next/image";
 import StockInModal from "@/components/StockInModal";
 import { FaCartPlus, FaBan, FaFileExport } from "react-icons/fa";
+import { FiArrowDown, FiArrowUp } from "react-icons/fi";
 import ConfirmationModal from "@/components/ConfirmationModal";
 import { toast } from "sonner";
 import ExportModal from "@/components/ExportModal";
@@ -116,7 +116,7 @@ const OrdersPage = () => {
     return (
       <tr
         key={item.id}
-        className="border-b border-gray-100 even:bg-gradient-to-r even:from-purple-50/30 even:to-pink-50/30 text-sm hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 transition-all duration-200"
+        className="text-sm transition-all duration-150 hover:bg-lamaSkyLight/40"
       >
         <td className="p-4">{item.product}</td>
         <td className="p-4">{item.quantity}</td>
@@ -126,8 +126,8 @@ const OrdersPage = () => {
               item.remaining_quantity === 0
                 ? "text-red-500"
                 : item.remaining_quantity === item.quantity
-                ? "text-green-500"
-                : "text-yellow-500"
+                  ? "text-green-500"
+                  : "text-yellow-500"
             }`}
           >
             {item.remaining_quantity}
@@ -144,8 +144,8 @@ const OrdersPage = () => {
             item.status === "completed"
               ? "text-green-500"
               : item.status === "pending"
-              ? "text-yellow-500"
-              : "text-red-500"
+                ? "text-yellow-500"
+                : "text-red-500"
           }`}
         >
           {item.status}
@@ -157,7 +157,7 @@ const OrdersPage = () => {
               <button
                 title="Stock In"
                 onClick={() => setSelectedStockInOrder(item)}
-                className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaPurple text-white"
+                className="flex h-8 w-8 items-center justify-center rounded-lg border border-lamaYellow/40 bg-lamaYellowLight text-amber-700 transition-colors hover:bg-lamaYellow/35"
               >
                 <FaCartPlus size={16} />
               </button>
@@ -186,7 +186,7 @@ const OrdersPage = () => {
                 <button
                   title="Void Order"
                   onClick={() => setVoidingOrderId(item.id)}
-                  className="w-7 h-7 flex items-center justify-center rounded-full bg-red-300 text-white"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-100/80 border border-red-200/60 text-red-500 hover:bg-red-200/60 transition-colors"
                 >
                   <FaBan size={14} />
                 </button>
@@ -199,16 +199,19 @@ const OrdersPage = () => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 p-2 sm:p-4 rounded-xl flex-1 m-2 sm:m-4 mt-0 shadow-sm">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between bg-white rounded-xl p-4 shadow-sm border border-purple-100 mb-4">
-        <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-          Orders
-        </h1>
+    <div className="neo-panel rounded-2xl flex-1 m-2 sm:m-4 mt-0 p-2 sm:p-4">
+      <div className="neo-panel flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between p-4 mb-4">
+        <div>
+          <p className="neo-subtitle">Procurement</p>
+          <h1 className="neo-title text-xl font-semibold text-gray-800">
+            Orders
+          </h1>
+        </div>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
           <TableSearch onSearch={setSearchTerm} />
-          <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto">
+          <div className="flex items-center gap-2 sm:gap-3">
             <select
-              className="text-sm px-3 py-2 rounded-lg border border-gray-300 bg-white shadow-sm"
+              className="text-sm px-3 py-2 rounded-xl border border-black/15 bg-white/80 shadow-sm focus:outline-none focus:ring-2 focus:ring-lamaSky/30 focus:border-lamaSky transition"
               value={sortKey}
               onChange={(e) => setSortKey(e.target.value)}
             >
@@ -219,17 +222,22 @@ const OrdersPage = () => {
               ))}
             </select>
             <button
+              title="Toggle Sort"
               onClick={() =>
                 setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))
               }
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow text-white hover:bg-yellow-500"
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-black/10 bg-white/80 shadow-sm hover:-translate-y-0.5 transition-transform text-gray-600"
             >
-              <span>{sortOrder === "asc" ? "▲" : "▼"}</span>
+              {sortOrder === "asc" ? (
+                <FiArrowUp size={15} />
+              ) : (
+                <FiArrowDown size={15} />
+              )}
             </button>
             <button
               onClick={() => setShowExportModal(true)}
-              title="Export Transactions"
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-green-300 text-white hover:bg-green-500"
+              title="Export Orders"
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-emerald-200/60 bg-emerald-100/80 text-emerald-700 shadow-sm hover:-translate-y-0.5 transition-transform"
             >
               <FaFileExport size={14} />
             </button>
@@ -265,7 +273,7 @@ const OrdersPage = () => {
                   sum +
                   (Number(o.selling_price) - Number(o.order_price)) *
                     o.quantity,
-                0
+                0,
               )
               .toLocaleString(undefined, {
                 minimumFractionDigits: 2,
@@ -340,7 +348,7 @@ const OrdersPage = () => {
 
           if (options.format === "table") {
             router.push(
-              `/report/order/${options.from}/${options.to}/${options.status}`
+              `/report/order/${options.from}/${options.to}/${options.status}`,
             );
             return;
           }

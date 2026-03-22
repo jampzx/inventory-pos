@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
@@ -9,6 +8,7 @@ import TableSearch from "@/components/TableSearch";
 import { useUser } from "@/hooks/useUser";
 import SingleCompanyModal from "@/components/SingleCompanyModal";
 import Spinner from "@/components/Spinner";
+import { FiArrowDown, FiArrowUp, FiEye } from "react-icons/fi";
 
 type Company = {
   company_id: number;
@@ -71,7 +71,7 @@ const CompanyListPage = () => {
         (c) =>
           c.company_name.toLowerCase().includes(lowerSearch) ||
           c.company_email.toLowerCase().includes(lowerSearch) ||
-          c.company_contact_number.toLowerCase().includes(lowerSearch)
+          c.company_contact_number.toLowerCase().includes(lowerSearch),
       );
     }
 
@@ -93,7 +93,7 @@ const CompanyListPage = () => {
   }, [companies, sortKey, sortOrder, searchTerm]);
 
   const totalPages = Math.ceil(
-    filteredAndSortedCompanies.length / ITEMS_PER_PAGE
+    filteredAndSortedCompanies.length / ITEMS_PER_PAGE,
   );
 
   const paginatedData = useMemo(() => {
@@ -125,7 +125,7 @@ const CompanyListPage = () => {
     return (
       <tr
         key={item.company_id}
-        className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight"
+        className="text-sm transition-colors duration-150 hover:bg-lamaSkyLight/40"
       >
         <td className="p-2 font-medium">{item.company_name}</td>
         <td className="p-2">{item.company_email}</td>
@@ -142,9 +142,10 @@ const CompanyListPage = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setSelectedCompany(item)}
-              className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaSky"
+              title="View"
+              className="flex h-8 w-8 items-center justify-center rounded-lg bg-lamaSky/15 border border-lamaSky/30 text-[#0f9f9d] hover:bg-lamaSky/25 transition-colors"
             >
-              <Image src="/view.png" alt="View" width={16} height={16} />
+              <FiEye size={15} />
             </button>
             <>
               <FormModal
@@ -169,16 +170,19 @@ const CompanyListPage = () => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-slate-50 via-indigo-50 to-purple-50 p-2 sm:p-4 rounded-xl flex-1 m-2 sm:m-4 mt-0 shadow-sm">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between bg-white rounded-xl p-4 shadow-sm border border-indigo-100 mb-4">
-        <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-          Companies
-        </h1>
+    <div className="neo-panel rounded-2xl flex-1 m-2 sm:m-4 mt-0 p-2 sm:p-4">
+      <div className="neo-panel flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between p-4 mb-4">
+        <div>
+          <p className="neo-subtitle">Management</p>
+          <h1 className="neo-title text-xl font-semibold text-gray-800">
+            Companies
+          </h1>
+        </div>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
           <TableSearch onSearch={(term) => setSearchTerm(term)} />
-          <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto">
+          <div className="flex items-center gap-2 sm:gap-3">
             <select
-              className="text-sm px-3 py-2 rounded-lg border border-gray-300 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-lamaPurple focus:border-lamaPurple transition"
+              className="text-sm px-3 py-2 rounded-xl border border-black/15 bg-white/80 shadow-sm focus:outline-none focus:ring-2 focus:ring-lamaSky/30 focus:border-lamaSky transition"
               value={sortKey}
               onChange={(e) => setSortKey(e.target.value)}
             >
@@ -191,9 +195,13 @@ const CompanyListPage = () => {
               onClick={() =>
                 setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))
               }
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow"
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-black/10 bg-white/80 shadow-sm hover:-translate-y-0.5 transition-transform text-gray-600"
             >
-              <Image src="/sort.png" alt="sort" width={14} height={14} />
+              {sortOrder === "asc" ? (
+                <FiArrowUp size={15} />
+              ) : (
+                <FiArrowDown size={15} />
+              )}
             </button>
             <FormModal
               table="company"

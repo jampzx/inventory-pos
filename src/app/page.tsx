@@ -25,8 +25,16 @@ const Homepage = () => {
   }, [user, loadingUseUser, router]);
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-white/30 backdrop-blur-sm z-50">
-      <Spinner size={48} color="lamaSky" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
+      <div className="neo-panel flex items-center gap-3 rounded-2xl border border-black/10 px-5 py-4">
+        <Spinner size={36} color="lamaSky" />
+        <div>
+          <p className="neo-subtitle">Redirecting</p>
+          <p className="text-sm font-medium text-gray-700">
+            Preparing dashboard...
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

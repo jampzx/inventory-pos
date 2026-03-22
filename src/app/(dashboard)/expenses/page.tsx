@@ -5,8 +5,8 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import Image from "next/image";
 import { FaFileExport } from "react-icons/fa";
+import { FiArrowDown, FiArrowUp } from "react-icons/fi";
 import * as XLSX from "xlsx";
 import { toast } from "sonner";
 import ExportModal from "@/components/ExportModal";
@@ -121,7 +121,7 @@ const ExpensesListPage = () => {
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       filtered = filtered.filter((e) =>
-        e.description.toLowerCase().includes(term)
+        e.description.toLowerCase().includes(term),
       );
     }
 
@@ -146,7 +146,7 @@ const ExpensesListPage = () => {
   const renderRow = (item: Expense) => (
     <tr
       key={item.id}
-      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight"
+      className="text-sm transition-colors duration-150 hover:bg-lamaSkyLight/40"
     >
       <td className="p-4">{item.description}</td>
       <td className="p-4">₱ {item.amount.toFixed(2)}</td>
@@ -174,16 +174,19 @@ const ExpensesListPage = () => {
   );
 
   return (
-    <div className="bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 p-2 sm:p-4 rounded-xl flex-1 m-2 sm:m-4 mt-0 shadow-sm">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between bg-white rounded-xl p-4 shadow-sm border border-orange-100 mb-4">
-        <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
-          Expenses
-        </h1>
+    <div className="neo-panel rounded-2xl flex-1 m-2 sm:m-4 mt-0 p-2 sm:p-4">
+      <div className="neo-panel flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between p-4 mb-4">
+        <div>
+          <p className="neo-subtitle">Finance</p>
+          <h1 className="neo-title text-xl font-semibold text-gray-800">
+            Expenses
+          </h1>
+        </div>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
           <TableSearch onSearch={setSearchTerm} />
-          <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto">
+          <div className="flex items-center gap-2 sm:gap-3">
             <select
-              className="text-sm px-3 py-2 rounded-lg border border-gray-300 bg-white shadow-sm"
+              className="text-sm px-3 py-2 rounded-xl border border-black/15 bg-white/80 shadow-sm focus:outline-none focus:ring-2 focus:ring-lamaSky/30 focus:border-lamaSky transition"
               value={sortKey}
               onChange={(e) => setSortKey(e.target.value)}
             >
@@ -193,12 +196,17 @@ const ExpensesListPage = () => {
               <option value="date">Date</option>
             </select>
             <button
+              title="Toggle Sort"
               onClick={() =>
                 setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))
               }
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow"
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-black/10 bg-white/80 shadow-sm hover:-translate-y-0.5 transition-transform text-gray-600"
             >
-              <Image src="/sort.png" alt="Sort" width={14} height={14} />
+              {sortOrder === "asc" ? (
+                <FiArrowUp size={15} />
+              ) : (
+                <FiArrowDown size={15} />
+              )}
             </button>
 
             <FormModal
@@ -209,7 +217,7 @@ const ExpensesListPage = () => {
             <button
               onClick={() => setShowExportModal(true)}
               title="Export Expenses"
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-green-300 text-white hover:bg-green-500"
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-emerald-200/60 bg-emerald-100/80 text-emerald-700 shadow-sm hover:-translate-y-0.5 transition-transform"
             >
               <FaFileExport size={14} />
             </button>

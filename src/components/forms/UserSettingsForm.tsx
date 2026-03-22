@@ -7,13 +7,42 @@ import { z } from "zod";
 import InputField from "../InputField";
 import { toast } from "sonner";
 import Spinner from "@/components/Spinner";
+import {
+  FiBriefcase,
+  FiCalendar,
+  FiCheckCircle,
+  FiInfo,
+  FiSave,
+  FiShield,
+  FiUser,
+} from "react-icons/fi";
 
 type Props = {
   onSuccess?: () => void;
 };
 
+type ProfileData = {
+  full_name: string;
+  username: string;
+  user_type: string;
+  status: string;
+  company?: {
+    company_name?: string;
+    subscription_start?: string | null;
+    subscription_end?: string | null;
+  };
+};
+
+type UpdatePayload = {
+  full_name: string;
+  username: string;
+  current_password?: string;
+  new_password?: string;
+  confirm_password?: string;
+};
+
 const UserSettingsForm = ({ onSuccess }: Props) => {
-  const [userProfile, setUserProfile] = useState<any>(null);
+  const [userProfile, setUserProfile] = useState<ProfileData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingProfile, setIsLoadingProfile] = useState(true);
 
@@ -41,7 +70,7 @@ const UserSettingsForm = ({ onSuccess }: Props) => {
       {
         path: ["current_password"],
         message: "Current password is required when setting a new password",
-      }
+      },
     )
     .refine(
       (data) => {
@@ -54,7 +83,7 @@ const UserSettingsForm = ({ onSuccess }: Props) => {
       {
         path: ["confirm_password"],
         message: "Passwords do not match",
-      }
+      },
     );
 
   const {
@@ -89,7 +118,7 @@ const UserSettingsForm = ({ onSuccess }: Props) => {
         } else {
           toast.error("Failed to load profile");
         }
-      } catch (error) {
+      } catch {
         toast.error("Error loading profile");
       } finally {
         setIsLoadingProfile(false);
@@ -102,7 +131,7 @@ const UserSettingsForm = ({ onSuccess }: Props) => {
     setIsLoading(true);
 
     try {
-      const payload: any = {
+      const payload: UpdatePayload = {
         full_name: formData.full_name,
         username: formData.username,
       };
@@ -138,7 +167,7 @@ const UserSettingsForm = ({ onSuccess }: Props) => {
           const field = Object.keys(result.errors)[0];
           const message = result.errors[field][0];
           toast.error(
-            `${field.charAt(0).toUpperCase() + field.slice(1)}: ${message}`
+            `${field.charAt(0).toUpperCase() + field.slice(1)}: ${message}`,
           );
         } else {
           toast.error(result.message || "Failed to update profile");
@@ -154,343 +183,207 @@ const UserSettingsForm = ({ onSuccess }: Props) => {
 
   if (isLoadingProfile) {
     return (
-      <div className="flex justify-center items-center py-16">
+      <div className="neo-panel-strong border border-black/10 flex justify-center items-center py-16 px-4">
         <div className="flex flex-col items-center gap-4">
           <Spinner size={40} color="lamaSky" />
-          <p className="text-gray-600 text-sm">Loading profile...</p>
+          <p className="text-gray-600 text-sm font-medium">
+            Loading profile...
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div>
-      <form
-        className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden"
-        onSubmit={onSubmit}
-      >
-        {/* Header */}
-        <div className="bg-gradient-to-r from-purple-500 to-purple-600 px-8 py-6">
-          <h1 className="text-2xl font-bold text-white flex items-center gap-3">
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+    <form
+      className="neo-panel-strong overflow-hidden border border-black/10"
+      onSubmit={onSubmit}
+    >
+      <div className="border-b border-black/10 bg-[linear-gradient(135deg,rgba(15,159,157,0.2),rgba(245,121,47,0.2))] px-6 py-5">
+        <p className="neo-subtitle text-gray-700">Account Preferences</p>
+        <h1 className="neo-title mt-1 text-2xl font-semibold text-gray-900">
+          Profile Settings
+        </h1>
+        <p className="mt-2 text-sm text-gray-700">
+          Update your personal details and security information.
+        </p>
+      </div>
+
+      <div className="p-4 sm:p-6 md:p-7">
+        <div className="grid gap-5 lg:grid-cols-2">
+          <section className="neo-panel h-full border border-black/10 p-5">
+            <div className="mb-5 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-lamaSky/30 bg-lamaSky/15 text-[#0f9f9d]">
+                <FiShield size={18} />
+              </div>
+              <div>
+                <h2 className="neo-title text-lg font-semibold text-gray-800">
+                  Basic Information
+                </h2>
+                <p className="text-xs uppercase tracking-[0.1em] text-gray-500">
+                  Identity And Credentials
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <InputField
+                label="Full Name"
+                name="full_name"
+                register={register}
+                error={errors.full_name}
               />
-            </svg>
-            Profile Settings
-          </h1>
-          <p className="text-blue-100 mt-1">
-            Update your personal information and security settings
-          </p>
-        </div>
-
-        <div className="p-8">
-          <div className="grid lg:grid-cols-2 gap-8">
-            {/* Left Column - Form Sections */}
-            <div className="space-y-8 h-full flex flex-col">
-              {/* Basic Information Section */}
-              <div className="space-y-6 h-full flex flex-col">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <svg
-                      className="w-5 h-5 text-blue-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-semibold text-gray-800">
-                      Basic Information
-                    </h2>
-                    <p className="text-sm text-gray-600">
-                      Update your personal details
-                    </p>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 h-full flex flex-col">
-                  <div className="space-y-6">
-                    {" "}
-                    <InputField
-                      label="Full Name"
-                      name="full_name"
-                      register={register}
-                      error={errors.full_name}
-                    />
-                    <InputField
-                      label="Username"
-                      name="username"
-                      register={register}
-                      error={errors.username}
-                    />
-                    <InputField
-                      label="Current Password"
-                      name="current_password"
-                      type="password"
-                      register={register}
-                      error={errors.current_password}
-                      inputProps={{
-                        placeholder: "Enter current password to change",
-                      }}
-                    />
-                    <InputField
-                      label="New Password"
-                      name="new_password"
-                      type="password"
-                      register={register}
-                      error={errors.new_password}
-                      inputProps={{
-                        placeholder: "Enter new password (min. 6 characters)",
-                      }}
-                    />
-                    {newPassword && (
-                      <InputField
-                        label="Confirm New Password"
-                        name="confirm_password"
-                        type="password"
-                        register={register}
-                        error={errors.confirm_password}
-                        inputProps={{ placeholder: "Confirm new password" }}
-                      />
-                    )}
-                  </div>
-                </div>
-              </div>
+              <InputField
+                label="Username"
+                name="username"
+                register={register}
+                error={errors.username}
+              />
+              <InputField
+                label="Current Password"
+                name="current_password"
+                type="password"
+                register={register}
+                error={errors.current_password}
+                inputProps={{
+                  placeholder: "Required only when changing password",
+                }}
+              />
+              <InputField
+                label="New Password"
+                name="new_password"
+                type="password"
+                register={register}
+                error={errors.new_password}
+                inputProps={{ placeholder: "Minimum 6 characters" }}
+              />
+              {newPassword && (
+                <InputField
+                  label="Confirm New Password"
+                  name="confirm_password"
+                  type="password"
+                  register={register}
+                  error={errors.confirm_password}
+                  inputProps={{ placeholder: "Repeat your new password" }}
+                />
+              )}
             </div>
+          </section>
 
-            {/* Right Column - Current Information */}
-            {userProfile && (
-              <div className="space-y-6 h-full flex flex-col">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                    <svg
-                      className="w-5 h-5 text-green-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-semibold text-gray-800">
-                      Account Information
-                    </h2>
-                    <p className="text-sm text-gray-600">
-                      Your current account details
-                    </p>
-                  </div>
+          {userProfile && (
+            <section className="neo-panel h-full border border-black/10 p-5">
+              <div className="mb-5 flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-black/10 bg-white/80 text-gray-700">
+                  <FiInfo size={18} />
                 </div>
-
-                <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 h-full flex flex-col">
-                  <div className="space-y-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <svg
-                          className="w-4 h-4 text-blue-600"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                          />
-                        </svg>
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-gray-700">
-                          Company
-                        </p>
-                        <p className="text-sm text-gray-900">
-                          {userProfile.company?.company_name || "N/A"}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                        <svg
-                          className="w-4 h-4 text-purple-600"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                          />
-                        </svg>
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-gray-700">
-                          User Type
-                        </p>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                          {userProfile.user_type}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                        <svg
-                          className="w-4 h-4 text-green-600"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
-                        </svg>
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-gray-700">
-                          Status
-                        </p>
-                        <span
-                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            userProfile.status === "active"
-                              ? "bg-green-100 text-green-800"
-                              : "bg-gray-100 text-gray-800"
-                          }`}
-                        >
-                          {userProfile.status}
-                        </span>
-                      </div>
-                    </div>
-
-                    {userProfile.company?.subscription_start && (
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
-                          <svg
-                            className="w-4 h-4 text-indigo-600"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            />
-                          </svg>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-gray-700">
-                            Subscription Start
-                          </p>
-                          <p className="text-sm text-gray-900">
-                            {new Date(
-                              userProfile.company.subscription_start
-                            ).toLocaleDateString()}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-
-                    {userProfile.company?.subscription_end && (
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
-                          <svg
-                            className="w-4 h-4 text-red-600"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            />
-                          </svg>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-gray-700">
-                            Subscription End
-                          </p>
-                          <p className="text-sm text-gray-900">
-                            {new Date(
-                              userProfile.company.subscription_end
-                            ).toLocaleDateString()}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                <div>
+                  <h2 className="neo-title text-lg font-semibold text-gray-800">
+                    Current Account Details
+                  </h2>
+                  <p className="text-xs uppercase tracking-[0.1em] text-gray-500">
+                    Snapshot
+                  </p>
                 </div>
               </div>
-            )}
-          </div>
 
-          {/* Action Button */}
-          <div className="  pt-8">
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                className="group relative bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-700 hover:to-purple-800 text-white font-semibold px-8 py-3 rounded-lg transition-all duration-200 transform hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none flex items-center gap-2"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <Spinner size={16} color="lamaYellow" />
-                    Updating Profile...
-                  </>
-                ) : (
-                  <>
-                    <svg
-                      className="w-4 h-4 group-hover:rotate-12 transition-transform"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+              <div className="space-y-3">
+                <div className="rounded-xl border border-black/10 bg-white/70 p-3.5 text-sm">
+                  <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-gray-500">
+                    Company
+                  </p>
+                  <div className="flex items-center gap-2 text-gray-800">
+                    <FiBriefcase size={14} className="text-gray-500" />
+                    <span>{userProfile.company?.company_name || "N/A"}</span>
+                  </div>
+                </div>
+
+                <div className="rounded-xl border border-black/10 bg-white/70 p-3.5 text-sm">
+                  <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-gray-500">
+                    User Type
+                  </p>
+                  <div className="flex items-center gap-2 text-gray-800">
+                    <FiUser size={14} className="text-gray-500" />
+                    <span className="inline-flex rounded-full border border-lamaSky/30 bg-lamaSky/15 px-2.5 py-0.5 text-xs font-semibold capitalize text-[#0f9f9d]">
+                      {userProfile.user_type}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="rounded-xl border border-black/10 bg-white/70 p-3.5 text-sm">
+                  <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-gray-500">
+                    Status
+                  </p>
+                  <div className="flex items-center gap-2 text-gray-800">
+                    <FiCheckCircle size={14} className="text-gray-500" />
+                    <span
+                      className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-semibold capitalize ${
+                        userProfile.status === "active"
+                          ? "border-emerald-300/60 bg-emerald-100 text-emerald-700"
+                          : "border-gray-300/70 bg-gray-100 text-gray-700"
+                      }`}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    Update Profile
-                  </>
+                      {userProfile.status}
+                    </span>
+                  </div>
+                </div>
+
+                {userProfile.company?.subscription_start && (
+                  <div className="rounded-xl border border-black/10 bg-white/70 p-3.5 text-sm">
+                    <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-gray-500">
+                      Subscription Start
+                    </p>
+                    <div className="flex items-center gap-2 text-gray-800">
+                      <FiCalendar size={14} className="text-gray-500" />
+                      <span>
+                        {new Date(
+                          userProfile.company.subscription_start,
+                        ).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </div>
                 )}
-              </button>
-            </div>
-          </div>
+
+                {userProfile.company?.subscription_end && (
+                  <div className="rounded-xl border border-black/10 bg-white/70 p-3.5 text-sm">
+                    <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-gray-500">
+                      Subscription End
+                    </p>
+                    <div className="flex items-center gap-2 text-gray-800">
+                      <FiCalendar size={14} className="text-gray-500" />
+                      <span>
+                        {new Date(
+                          userProfile.company.subscription_end,
+                        ).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
         </div>
-      </form>
-    </div>
+
+        <div className="mt-6 flex justify-end border-t border-black/10 pt-5">
+          <button
+            type="submit"
+            className="neo-btn flex items-center gap-2 px-5 py-2.5 text-sm disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <Spinner size={14} color="white" />
+                <span>Updating Profile...</span>
+              </>
+            ) : (
+              <>
+                <FiSave size={14} />
+                <span>Update Profile</span>
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+    </form>
   );
 };
 

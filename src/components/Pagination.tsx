@@ -11,9 +11,25 @@ const Pagination = ({
 }) => {
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
+  const visiblePages = (() => {
+    if (totalPages <= 7) return pages;
+
+    const neighbors = [
+      1,
+      totalPages,
+      currentPage - 2,
+      currentPage - 1,
+      currentPage,
+      currentPage + 1,
+      currentPage + 2,
+    ].filter((page) => page >= 1 && page <= totalPages);
+
+    return [...new Set(neighbors)].sort((a, b) => a - b);
+  })();
+
   return (
     <motion.div
-      className="p-2 sm:p-4 flex items-center justify-between text-gray-500"
+      className="neo-panel mt-3 flex items-center justify-between gap-2 rounded-xl border border-black/10 bg-white/70 px-2 py-2 text-gray-600 sm:gap-3 sm:px-4 sm:py-3"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
@@ -21,57 +37,59 @@ const Pagination = ({
       <motion.button
         disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}
-        className="py-1 sm:py-2 px-2 sm:px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+        className="neo-btn-ghost px-2.5 py-1.5 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-50 sm:px-4 sm:py-2"
         whileHover={{
           scale: currentPage === 1 ? 1 : 1.05,
-          backgroundColor: currentPage === 1 ? undefined : "rgb(203, 213, 225)",
         }}
         whileTap={{ scale: currentPage === 1 ? 1 : 0.95 }}
       >
         Prev
       </motion.button>
+
       <motion.div
-        className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm overflow-x-auto max-w-[50%] scrollbar-hide"
+        className="neo-scrollbar flex max-w-[58%] items-center gap-1 overflow-x-auto text-xs sm:gap-2 sm:text-sm"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3, delay: 0.1 }}
       >
-        {pages.slice(0, 7).map((page, index) => (
-          <motion.button
-            key={page}
-            onClick={() => onPageChange(page)}
-            className={`px-2 py-1 rounded-sm transition-colors min-w-[24px] flex-shrink-0 ${
-              page === currentPage ? "bg-lamaSky text-white" : ""
-            }`}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              duration: 0.2,
-              delay: 0.1 + index * 0.02,
-              ease: "easeOut",
-            }}
-            whileHover={{
-              scale: 1.1,
-              backgroundColor:
-                page === currentPage
-                  ? "rgb(195, 235, 250)"
-                  : "rgb(241, 245, 249)",
-            }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {page}
-          </motion.button>
-        ))}
-        {pages.length > 7 && <span className="text-gray-400 px-1">...</span>}
+        {visiblePages.map((page, index) => {
+          const previousPage = visiblePages[index - 1];
+          const showEllipsis =
+            typeof previousPage === "number" && page - previousPage > 1;
+
+          return (
+            <div key={page} className="flex items-center gap-1 sm:gap-2">
+              {showEllipsis && <span className="px-1 text-gray-400">...</span>}
+              <motion.button
+                onClick={() => onPageChange(page)}
+                className={`min-w-[30px] flex-shrink-0 rounded-lg border px-2 py-1 transition-colors ${
+                  page === currentPage
+                    ? "border-lamaSky/40 bg-lamaSky/20 text-gray-800"
+                    : "border-black/10 bg-white/70 text-gray-600 hover:bg-white"
+                }`}
+                initial={{ opacity: 0, scale: 0.85 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                  duration: 0.2,
+                  delay: 0.1 + index * 0.03,
+                  ease: "easeOut",
+                }}
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {page}
+              </motion.button>
+            </div>
+          );
+        })}
       </motion.div>
+
       <motion.button
         disabled={currentPage === totalPages}
         onClick={() => onPageChange(currentPage + 1)}
-        className="py-1 sm:py-2 px-2 sm:px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+        className="neo-btn-ghost px-2.5 py-1.5 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-50 sm:px-4 sm:py-2"
         whileHover={{
           scale: currentPage === totalPages ? 1 : 1.05,
-          backgroundColor:
-            currentPage === totalPages ? undefined : "rgb(203, 213, 225)",
         }}
         whileTap={{ scale: currentPage === totalPages ? 1 : 0.95 }}
       >

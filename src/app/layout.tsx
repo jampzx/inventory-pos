@@ -1,10 +1,20 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Fraunces, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { PermissionProvider } from "@/context/PermissionContext";
 
-const inter = Inter({ subsets: ["latin"] });
+const display = Fraunces({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-display",
+});
+
+const body = IBM_Plex_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-body",
+});
 
 export const metadata: Metadata = {
   title: "JA POS Management System",
@@ -21,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${display.variable} ${body.variable} antialiased`}>
         <PermissionProvider>
           {children}
           <Toaster richColors position="top-center" />

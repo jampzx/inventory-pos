@@ -30,7 +30,7 @@ const InputField = ({
       transition={{ duration: 0.3, ease: "easeOut" }}
     >
       <motion.label
-        className="text-xs sm:text-sm text-gray-500 font-medium"
+        className="text-[11px] font-semibold uppercase tracking-[0.12em] text-gray-500 sm:text-xs"
         initial={{ opacity: 0, x: -5 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.2, delay: 0.1 }}
@@ -40,21 +40,23 @@ const InputField = ({
       <motion.input
         type={type}
         {...register(name)}
-        className={`ring-[1.5px] ring-gray-300 p-2 sm:p-3 rounded-md text-sm w-full transition-all duration-200 ${
-          error ? "ring-red-400 focus:ring-red-500" : "focus:ring-blue-500"
-        } focus:outline-none`}
+        className={`w-full rounded-xl border px-3 py-2.5 text-sm transition-all duration-200 sm:px-3.5 sm:py-3 ${
+          error
+            ? "border-red-300 bg-red-50/70 focus:border-red-400 focus:ring-red-200"
+            : "border-black/15 bg-white/80 focus:border-lamaSky focus:ring-lamaSky/25"
+        }`}
         {...inputProps}
         defaultValue={defaultValue}
         whileFocus={{
           scale: 1.01,
-          boxShadow: "0 0 0 3px rgba(59, 130, 246, 0.1)",
+          boxShadow: "0 0 0 3px rgba(15, 159, 157, 0.14)",
         }}
         transition={{ duration: 0.2 }}
       />
       <AnimatePresence>
         {error?.message && (
           <motion.p
-            className="text-xs text-red-400"
+            className="text-xs font-medium text-red-500"
             initial={{ opacity: 0, y: -5, height: 0 }}
             animate={{ opacity: 1, y: 0, height: "auto" }}
             exit={{ opacity: 0, y: -5, height: 0 }}

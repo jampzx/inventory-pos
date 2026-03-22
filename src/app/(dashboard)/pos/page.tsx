@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { Product, CartItem, Customer } from "@/types/types";
 import { addItemsToCart } from "@/app/utils/cartUtils";
@@ -9,7 +11,16 @@ import Spinner from "@/components/Spinner";
 import ConfirmationModal from "@/components/ConfirmationModal";
 import Pagination from "@/components/Pagination";
 import CustomerSelector from "@/components/CustomerSelector";
-import { FiSearch, FiPackage, FiShoppingBag } from "react-icons/fi";
+import {
+  FiCreditCard,
+  FiMinus,
+  FiPackage,
+  FiPlus,
+  FiSearch,
+  FiShoppingBag,
+  FiTrash2,
+  FiX,
+} from "react-icons/fi";
 
 export default function POSPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -29,12 +40,10 @@ export default function POSPage() {
   ];
 
   const [payment, setPayment] = useState<Record<string, number>>(
-    Object.fromEntries(paymentMethods.map((method) => [method.key, 0]))
+    Object.fromEntries(paymentMethods.map((method) => [method.key, 0])),
   );
-  const [discountType, setDiscountType] = useState("AMOUNT");
-  const [discountValue, setDiscountValue] = useState(0);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
-    null
+    null,
   );
 
   const fetchData = async () => {
@@ -55,13 +64,13 @@ export default function POSPage() {
   }, []);
 
   const searchedProducts = products.filter((p) =>
-    p.name.toLowerCase().includes(searchTerm.toLowerCase())
+    p.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const totalPages = Math.ceil(searchedProducts.length / itemsPerPage);
   const paginatedProducts = searchedProducts.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
   // Add validation to ensure selected quantity does not exceed stock in handleAddToCart
@@ -70,7 +79,7 @@ export default function POSPage() {
 
     if (selectedQuantity > selectedProduct.stock) {
       toast.error(
-        `Cannot add more than ${selectedProduct.stock} of "${selectedProduct.name}" to the cart.`
+        `Cannot add more than ${selectedProduct.stock} of "${selectedProduct.name}" to the cart.`,
       );
       return;
     }
@@ -103,20 +112,20 @@ export default function POSPage() {
           }
           if (newQty > item.product.stock) {
             toast.error(
-              `Cannot exceed stock of ${item.product.stock} for "${item.product.name}".`
+              `Cannot exceed stock of ${item.product.stock} for "${item.product.name}".`,
             );
             return item;
           }
           return { ...item, quantity: newQty };
         }
         return item;
-      })
+      }),
     );
   };
 
   const subtotal = cart.reduce(
     (total, item) => total + item.product.price * item.quantity,
-    0
+    0,
   );
 
   const handleQuickCreateCustomer = async (name: string, phone?: string) => {
@@ -155,7 +164,7 @@ export default function POSPage() {
 
     const totalPayment = Object.values(payment).reduce(
       (sum, amount) => sum + amount,
-      0
+      0,
     );
     if (totalPayment < subtotal) {
       toast.error("Total payment must not be less than the subtotal.");
@@ -163,7 +172,7 @@ export default function POSPage() {
     }
 
     const selectedPaymentMethods = Object.entries(payment).filter(
-      ([, amount]) => amount > 0
+      ([, amount]) => amount > 0,
     );
     if (selectedPaymentMethods.length === 0) {
       toast.error("Please select at least one payment method.");
@@ -204,7 +213,7 @@ export default function POSPage() {
         setCart([]);
         setSelectedCustomer(null);
         setPayment(
-          Object.fromEntries(paymentMethods.map((method) => [method.key, 0]))
+          Object.fromEntries(paymentMethods.map((method) => [method.key, 0])),
         );
         await fetchData(); // Refresh stock count after transaction
       } else {
@@ -218,16 +227,31 @@ export default function POSPage() {
 
   if (isLoading) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-white/30 backdrop-blur-sm z-50">
-        <Spinner size={48} color="lamaSky" />
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
+        <div className="neo-panel flex items-center gap-3 rounded-2xl border border-black/10 px-5 py-4">
+          <Spinner size={34} color="lamaSky" />
+          <div>
+            <p className="neo-subtitle">POS Workspace</p>
+            <p className="text-sm font-medium text-gray-700">
+              Loading products...
+            </p>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <main className="p-2 sm:p-4 md:p-6 lg:p-8 flex flex-col lg:flex-row gap-4 sm:gap-6 min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50">
+    <main className="neo-panel flex min-h-screen flex-col gap-4 rounded-3xl border border-black/10 p-2 sm:p-4 md:p-6 lg:flex-row lg:gap-6">
       <section className="flex-1">
-        <header className="flex flex-col items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+        <header className="mb-4 neo-panel rounded-2xl border border-black/10 p-4 sm:mb-5">
+          <div className="mb-3">
+            <p className="neo-subtitle">Checkout</p>
+            <h1 className="neo-title text-xl font-semibold text-gray-800">
+              Point Of Sale
+            </h1>
+          </div>
+
           {/* Search */}
           <div className="relative w-full">
             <input
@@ -238,11 +262,12 @@ export default function POSPage() {
                 setSearchTerm(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full pl-10 pr-4 py-2 sm:py-3 rounded-xl bg-white border-2 border-purple-200 text-sm placeholder-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 focus:outline-none shadow-sm transition-all"
+              className="w-full rounded-xl border border-black/15 bg-white/80 py-2.5 pl-10 pr-4 text-sm placeholder-gray-400 shadow-sm transition-all focus:border-lamaSky focus:outline-none focus:ring-2 focus:ring-lamaSky/25"
             />
-            <FiSearch className="absolute left-3 top-2.5 sm:top-3.5 text-purple-500 text-base" />
+            <FiSearch className="absolute left-3 top-3 text-base text-gray-500" />
           </div>
         </header>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-5">
           {paginatedProducts.map((product) => (
             <button
@@ -254,10 +279,10 @@ export default function POSPage() {
                 }
                 setSelectedProduct(product);
               }}
-              className="group bg-white rounded-xl shadow-sm hover:shadow-xl border border-gray-100 overflow-hidden transition-all duration-300 transform hover:-translate-y-1 text-left focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="neo-panel group overflow-hidden rounded-2xl border border-black/10 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-lamaSky/35"
             >
               {/* Product Image */}
-              <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 aspect-square overflow-hidden">
+              <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-white to-[#f4efe4]">
                 {product.image_url ? (
                   <Image
                     src={product.image_url}
@@ -278,7 +303,7 @@ export default function POSPage() {
 
                 {/* Status Badge */}
                 {product.status !== "active" && (
-                  <div className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full font-medium shadow-lg">
+                  <div className="absolute left-2 top-2 rounded-full border border-red-300/60 bg-red-100 px-2 py-1 text-xs font-semibold text-red-700 shadow-sm">
                     Inactive
                   </div>
                 )}
@@ -286,18 +311,18 @@ export default function POSPage() {
                 {/* Stock Badge */}
                 <div className="absolute top-2 right-2">
                   {product.product_type === "service" ? (
-                    <div className="bg-blue-500 text-white text-xs px-2.5 py-1 rounded-full font-medium shadow-lg flex items-center gap-1">
+                    <div className="flex items-center gap-1 rounded-full border border-lamaSky/30 bg-lamaSky/15 px-2.5 py-1 text-xs font-semibold text-[#0f9f9d] shadow-sm">
                       <FiShoppingBag className="w-3 h-3" />
                       Service
                     </div>
                   ) : (
                     <div
-                      className={`text-xs px-2.5 py-1 rounded-full font-medium shadow-lg ${
+                      className={`rounded-full px-2.5 py-1 text-xs font-semibold shadow-sm ${
                         product.stock === 0
-                          ? "bg-red-500 text-white"
+                          ? "border border-red-300/60 bg-red-100 text-red-700"
                           : product.stock <= 10
-                          ? "bg-orange-500 text-white"
-                          : "bg-green-500 text-white"
+                            ? "border border-amber-300/60 bg-amber-100 text-amber-700"
+                            : "border border-emerald-300/60 bg-emerald-100 text-emerald-700"
                       }`}
                     >
                       Stock: {product.stock}
@@ -310,13 +335,13 @@ export default function POSPage() {
               <div className="p-4 space-y-2">
                 {/* Category */}
                 {product.category?.name && (
-                  <div className="text-xs text-blue-600 font-medium uppercase tracking-wide">
+                  <div className="text-xs font-semibold uppercase tracking-[0.12em] text-lamaSky">
                     {product.category.name}
                   </div>
                 )}
 
                 {/* Product Name */}
-                <h2 className="text-base font-bold text-gray-800 line-clamp-2 group-hover:text-blue-600 transition-colors min-h-[3rem]">
+                <h2 className="neo-title min-h-[3rem] text-base font-semibold text-gray-800 transition-colors group-hover:text-[#0f9f9d] line-clamp-2">
                   {product.name}
                 </h2>
 
@@ -333,7 +358,7 @@ export default function POSPage() {
                     <span className="text-xs text-gray-500 font-medium">
                       Price
                     </span>
-                    <span className="text-xl font-bold text-blue-600">
+                    <span className="text-xl font-bold text-[#0f9f9d]">
                       ₱{Number(product.price).toFixed(2)}
                     </span>
                   </div>
@@ -354,9 +379,12 @@ export default function POSPage() {
         />
       </section>
 
-      <aside className="w-full lg:w-96 rounded shadow-md p-3 sm:p-4 space-y-3 sm:space-y-4 bg-lamaPurpleLight">
-        <div className="text-base sm:text-lg font-bold text-gray-800">
-          🧾 Order Information
+      <aside className="neo-panel w-full space-y-3 rounded-2xl border border-black/10 p-3 sm:space-y-4 sm:p-4 lg:w-96">
+        <div>
+          <p className="neo-subtitle">Current Ticket</p>
+          <div className="neo-title text-base font-semibold text-gray-800 sm:text-lg">
+            Order Information
+          </div>
         </div>
 
         {cart.length > 0 ? (
@@ -364,10 +392,10 @@ export default function POSPage() {
             {cart.map((item) => (
               <div
                 key={item.product.id}
-                className="rounded border bg-white p-5 space-y-4"
+                className="rounded-xl border border-black/10 bg-white/80 p-4 space-y-3"
               >
                 {/* Item */}
-                <div className="flex justify-between items-start border-b pb-3 text-sm">
+                <div className="flex items-start justify-between border-b border-black/10 pb-3 text-sm">
                   <div className="space-y-1">
                     <div className="text-gray-800 font-medium">
                       {item.product.name}
@@ -378,16 +406,16 @@ export default function POSPage() {
                         onClick={() =>
                           handleQuantityChange(item.product.id, -1)
                         }
-                        className="px-2 py-0.5 border rounded"
+                        className="flex h-7 w-7 items-center justify-center rounded-lg border border-black/15 bg-white/90 text-gray-700"
                       >
-                        -
+                        <FiMinus size={12} />
                       </button>
                       <span>{item.quantity}</span>
                       <button
                         onClick={() => handleQuantityChange(item.product.id, 1)}
-                        className="px-2 py-0.5 border rounded"
+                        className="flex h-7 w-7 items-center justify-center rounded-lg border border-black/15 bg-white/90 text-gray-700"
                       >
-                        +
+                        <FiPlus size={12} />
                       </button>
                       <span>x ₱{Number(item.product.price).toFixed(2)}</span>
                     </div>
@@ -398,9 +426,10 @@ export default function POSPage() {
                     </span>
                     <button
                       onClick={() => handleRemoveFromCart(item.product.id)}
-                      className="text-red-500 text-xs"
+                      title="Remove"
+                      className="flex h-7 w-7 items-center justify-center rounded-lg border border-red-200/60 bg-red-100/80 text-red-500 hover:bg-red-200/70"
                     >
-                      ✕
+                      <FiTrash2 size={12} />
                     </button>
                   </div>
                 </div>
@@ -408,13 +437,15 @@ export default function POSPage() {
             ))}
           </div>
         ) : (
-          <p className="text-sm text-gray-500 italic">No items added yet.</p>
+          <p className="rounded-xl border border-black/10 bg-white/70 px-3 py-3 text-sm italic text-gray-500">
+            No items added yet.
+          </p>
         )}
 
-        <div className="text-sm">
-          <div className="flex justify-between mt-2">
+        <div className="neo-panel rounded-xl border border-black/10 px-3 py-2.5 text-sm">
+          <div className="flex justify-between">
             <span className="text-gray-700">Subtotal</span>
-            <span className="font-semibold text-gray-500">
+            <span className="font-semibold text-gray-800">
               ₱{Number(subtotal).toFixed(2)}
             </span>
           </div>
@@ -430,8 +461,11 @@ export default function POSPage() {
         </div>
 
         <div>
-          <div className="font-medium mb-2 text-gray-700">Payment Method</div>
-          <div className="space-y-2">
+          <div className="mb-2 flex items-center gap-2 font-medium text-gray-700">
+            <FiCreditCard size={15} className="text-gray-500" />
+            Payment Method
+          </div>
+          <div className="space-y-2 rounded-xl border border-black/10 bg-white/70 p-3">
             {paymentMethods.map((method) => (
               <div key={method.key} className="flex items-center gap-2">
                 <input
@@ -456,7 +490,7 @@ export default function POSPage() {
                       [method.key]: parseFloat(e.target.value) || 0,
                     }))
                   }
-                  className="border border-gray-300 rounded px-2 py-1 w-full text-right text-sm"
+                  className="w-full rounded-lg border border-black/15 bg-white/90 px-2 py-1 text-right text-sm"
                 />
               </div>
             ))}
@@ -465,215 +499,226 @@ export default function POSPage() {
 
         <button
           onClick={handleCheckout}
-          className="bg-lamaYellow hover:bg-yellow-300 text-gray-500 font-semibold w-full py-2 rounded mt-4 shadow"
+          className="neo-btn mt-4 w-full py-2.5 text-sm"
         >
-          🧾 Check Out
+          Check Out
         </button>
       </aside>
 
       {/* MODAL */}
-      {selectedProduct && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 px-2 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-xl relative max-h-[80vh] flex flex-col animate-fadeIn">
-            {/* Close Button */}
-            <button
-              className="absolute top-4 right-4 z-10 text-gray-400 hover:text-gray-600 transition bg-white rounded-full p-2 shadow-lg hover:shadow-xl"
+      {selectedProduct &&
+        createPortal(
+          <AnimatePresence>
+            <motion.div
+              className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/45 px-2 backdrop-blur-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
               onClick={() => setSelectedProduct(null)}
             >
-              ✕
-            </button>
-
-            {/* Product Image Header */}
-            <div className="relative bg-gradient-to-br from-blue-50 to-purple-50 h-36 overflow-hidden rounded-t-2xl">
-              {selectedProduct.image_url ? (
-                <Image
-                  src={selectedProduct.image_url}
-                  alt={selectedProduct.name}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 672px"
-                  className="object-cover"
-                  priority
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = "/placeholder-product.png";
-                  }}
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <FiPackage className="w-24 h-24 text-gray-300" />
-                </div>
-              )}
-
-              {/* Overlay Gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-            </div>
-
-            <div className="p-4 sm:p-5 space-y-4 flex-1 overflow-y-auto">
-              {/* Header */}
-              <div>
-                <div className="flex items-start justify-between gap-4 mb-2">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 leading-tight">
-                    {selectedProduct.name}
-                  </h2>
-                  <div className="text-right">
-                    <div className="text-3xl font-bold text-blue-600">
-                      ₱{Number(selectedProduct.price).toFixed(2)}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Category & Type Badges */}
-                <div className="flex flex-wrap gap-2 mt-3">
-                  {selectedProduct.category?.name && (
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
-                      {selectedProduct.category.name}
-                    </span>
-                  )}
-                  <span
-                    className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${
-                      selectedProduct.product_type === "service"
-                        ? "bg-purple-100 text-purple-700"
-                        : "bg-green-100 text-green-700"
-                    }`}
-                  >
-                    {selectedProduct.product_type === "service" ? (
-                      <>
-                        <FiShoppingBag className="w-3 h-3" /> Service
-                      </>
-                    ) : (
-                      <>
-                        <FiPackage className="w-3 h-3" /> Product
-                      </>
-                    )}
-                  </span>
-                  {selectedProduct.product_type !== "service" && (
-                    <span
-                      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                        selectedProduct.stock === 0
-                          ? "bg-red-100 text-red-700"
-                          : selectedProduct.stock <= 10
-                          ? "bg-orange-100 text-orange-700"
-                          : "bg-green-100 text-green-700"
-                      }`}
-                    >
-                      {selectedProduct.stock === 0
-                        ? "Out of Stock"
-                        : `${selectedProduct.stock} in stock`}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {/* Description */}
-              {selectedProduct.description && (
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <h3 className="text-sm font-semibold text-gray-700 mb-2">
-                    Description
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {selectedProduct.description}
-                  </p>
-                </div>
-              )}
-
-              {/* Product Details Grid */}
-              <div className="grid grid-cols-2 gap-4 bg-gradient-to-br from-gray-50 to-blue-50 rounded-lg p-4">
-                <div>
-                  <div className="text-xs text-gray-500 mb-1 font-medium">
-                    Unit Price
-                  </div>
-                  <div className="text-lg font-bold text-gray-800">
-                    ₱{Number(selectedProduct.price).toFixed(2)}
-                  </div>
-                </div>
-                <div>
-                  <div className="text-xs text-gray-500 mb-1 font-medium">
-                    Type
-                  </div>
-                  <div className="text-lg font-semibold text-gray-800 capitalize">
-                    {selectedProduct.product_type}
-                  </div>
-                </div>
-                {selectedProduct.commissionCategory?.name && (
-                  <div className="col-span-2">
-                    <div className="text-xs text-gray-500 mb-1 font-medium">
-                      Commission Category
-                    </div>
-                    <div className="text-sm font-medium text-gray-800">
-                      {selectedProduct.commissionCategory.name}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Quantity Control */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-3">
-                  Quantity
-                </label>
-                <div className="flex items-center gap-3">
-                  <button
-                    className="w-12 h-12 rounded-lg border-2 border-gray-300 text-xl font-bold hover:bg-gray-100 hover:border-gray-400 transition-all active:scale-95"
-                    onClick={() =>
-                      setSelectedQuantity((q) => Math.max(1, q - 1))
-                    }
-                  >
-                    -
-                  </button>
-
-                  <input
-                    type="number"
-                    min={1}
-                    value={selectedQuantity}
-                    onChange={(e) =>
-                      setSelectedQuantity(
-                        Math.max(1, parseInt(e.target.value) || 1)
-                      )
-                    }
-                    className="flex-1 text-center border-2 border-gray-300 rounded-lg py-3 text-lg font-semibold focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
-                  />
-
-                  <button
-                    className="w-12 h-12 rounded-lg border-2 border-gray-300 text-xl font-bold hover:bg-gray-100 hover:border-gray-400 transition-all active:scale-95"
-                    onClick={() => setSelectedQuantity((q) => q + 1)}
-                  >
-                    +
-                  </button>
-                </div>
-
-                {/* Total Price Preview */}
-                <div className="mt-4 bg-blue-50 rounded-lg p-3 border border-blue-100">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Total Price</span>
-                    <span className="text-2xl font-bold text-blue-600">
-                      ₱
-                      {(
-                        Number(selectedProduct.price) * selectedQuantity
-                      ).toFixed(2)}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div className="flex gap-2 pt-2 sticky bottom-0 bg-white pb-2 z-10">
-                <button
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-all active:scale-95"
+              <motion.div
+                className="neo-panel-strong relative flex max-h-[84vh] w-full max-w-xl flex-col overflow-hidden border border-black/10"
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                onClick={(event) => event.stopPropagation()}
+              >
+                <motion.button
+                  className="absolute right-4 top-4 z-10 rounded-lg border border-black/10 bg-white/80 p-1.5 text-gray-500 hover:text-gray-700"
                   onClick={() => setSelectedProduct(null)}
+                  whileHover={{ scale: 1.1, rotate: 90 }}
+                  whileTap={{ scale: 0.9 }}
                 >
-                  Cancel
-                </button>
-                <button
-                  className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-md text-sm font-semibold hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl transition-all active:scale-95"
-                  onClick={handleAddToCart}
-                >
-                  🛒 Add to Cart
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+                  <FiX size={16} />
+                </motion.button>
+
+                <div className="relative h-36 overflow-hidden bg-gradient-to-br from-white to-[#f4efe4]">
+                  {selectedProduct.image_url ? (
+                    <Image
+                      src={selectedProduct.image_url}
+                      alt={selectedProduct.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 672px"
+                      className="object-cover"
+                      priority
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = "/placeholder-product.png";
+                      }}
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center">
+                      <FiPackage className="h-20 w-20 text-gray-300" />
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                </div>
+
+                <div className="flex-1 space-y-4 overflow-y-auto p-4 sm:p-5">
+                  <div>
+                    <div className="mb-2 flex items-start justify-between gap-4">
+                      <h2 className="neo-title text-2xl font-semibold leading-tight text-gray-800 sm:text-3xl">
+                        {selectedProduct.name}
+                      </h2>
+                      <div className="text-right">
+                        <div className="text-3xl font-bold text-[#0f9f9d]">
+                          ₱{Number(selectedProduct.price).toFixed(2)}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {selectedProduct.category?.name && (
+                        <span className="inline-flex items-center rounded-full border border-lamaSky/30 bg-lamaSky/15 px-3 py-1 text-xs font-semibold text-[#0f9f9d]">
+                          {selectedProduct.category.name}
+                        </span>
+                      )}
+                      <span
+                        className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold ${
+                          selectedProduct.product_type === "service"
+                            ? "border border-lamaPurple/40 bg-lamaPurpleLight text-indigo-700"
+                            : "border border-emerald-300/60 bg-emerald-100 text-emerald-700"
+                        }`}
+                      >
+                        {selectedProduct.product_type === "service" ? (
+                          <>
+                            <FiShoppingBag className="h-3 w-3" /> Service
+                          </>
+                        ) : (
+                          <>
+                            <FiPackage className="h-3 w-3" /> Product
+                          </>
+                        )}
+                      </span>
+                      {selectedProduct.product_type !== "service" && (
+                        <span
+                          className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${
+                            selectedProduct.stock === 0
+                              ? "border-red-300/60 bg-red-100 text-red-700"
+                              : selectedProduct.stock <= 10
+                                ? "border-amber-300/60 bg-amber-100 text-amber-700"
+                                : "border-emerald-300/60 bg-emerald-100 text-emerald-700"
+                          }`}
+                        >
+                          {selectedProduct.stock === 0
+                            ? "Out of Stock"
+                            : `${selectedProduct.stock} in stock`}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {selectedProduct.description && (
+                    <div className="rounded-xl border border-black/10 bg-white/70 p-4">
+                      <h3 className="mb-2 text-sm font-semibold text-gray-700">
+                        Description
+                      </h3>
+                      <p className="text-sm leading-relaxed text-gray-600">
+                        {selectedProduct.description}
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-2 gap-4 rounded-xl border border-black/10 bg-white/70 p-4">
+                    <div>
+                      <div className="mb-1 text-xs font-medium text-gray-500">
+                        Unit Price
+                      </div>
+                      <div className="text-lg font-bold text-gray-800">
+                        ₱{Number(selectedProduct.price).toFixed(2)}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="mb-1 text-xs font-medium text-gray-500">
+                        Type
+                      </div>
+                      <div className="text-lg font-semibold capitalize text-gray-800">
+                        {selectedProduct.product_type}
+                      </div>
+                    </div>
+                    {selectedProduct.commissionCategory?.name && (
+                      <div className="col-span-2">
+                        <div className="mb-1 text-xs font-medium text-gray-500">
+                          Commission Category
+                        </div>
+                        <div className="text-sm font-medium text-gray-800">
+                          {selectedProduct.commissionCategory.name}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="mb-3 block text-sm font-semibold text-gray-700">
+                      Quantity
+                    </label>
+                    <div className="flex items-center gap-3">
+                      <button
+                        className="flex h-11 w-11 items-center justify-center rounded-xl border border-black/15 bg-white/90 text-gray-700"
+                        onClick={() =>
+                          setSelectedQuantity((q) => Math.max(1, q - 1))
+                        }
+                      >
+                        <FiMinus size={16} />
+                      </button>
+
+                      <input
+                        type="number"
+                        min={1}
+                        value={selectedQuantity}
+                        onChange={(e) =>
+                          setSelectedQuantity(
+                            Math.max(1, parseInt(e.target.value) || 1),
+                          )
+                        }
+                        className="w-full rounded-xl border border-black/15 bg-white/90 py-2.5 text-center text-lg font-semibold focus:border-lamaSky focus:outline-none focus:ring-2 focus:ring-lamaSky/25"
+                      />
+
+                      <button
+                        className="flex h-11 w-11 items-center justify-center rounded-xl border border-black/15 bg-white/90 text-gray-700"
+                        onClick={() => setSelectedQuantity((q) => q + 1)}
+                      >
+                        <FiPlus size={16} />
+                      </button>
+                    </div>
+
+                    <div className="mt-4 rounded-xl border border-lamaSky/25 bg-lamaSky/10 p-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600">
+                          Total Price
+                        </span>
+                        <span className="text-2xl font-bold text-[#0f9f9d]">
+                          ₱
+                          {(
+                            Number(selectedProduct.price) * selectedQuantity
+                          ).toFixed(2)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="sticky bottom-0 z-10 flex gap-2 border-t border-black/10 bg-[#fffaf0]/95 pt-3 backdrop-blur-sm">
+                    <button
+                      className="neo-btn-ghost flex-1 px-4 py-2 text-sm"
+                      onClick={() => setSelectedProduct(null)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="neo-btn flex-1 px-4 py-2 text-sm"
+                      onClick={handleAddToCart}
+                    >
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          </AnimatePresence>,
+          document.body,
+        )}
 
       <ConfirmationModal
         isOpen={showConfirmModal}

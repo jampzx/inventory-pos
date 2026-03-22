@@ -1,6 +1,8 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
+import { createPortal } from "react-dom";
+import { FiX } from "react-icons/fi";
 import { TransactionType } from "@/types/types";
 import React from "react";
 
@@ -22,33 +24,34 @@ const TransactionDetailModal: React.FC<Props> = ({ transaction, onClose }) => {
     itemsByStaff[key].push(item);
   }
 
-  return (
+  return createPortal(
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 px-4 backdrop-blur-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2 }}
       >
         <motion.div
-          className="bg-white max-w-2xl w-full rounded-lg p-6 relative shadow-lg overflow-y-auto max-h-[90vh]"
+          className="neo-panel-strong relative max-h-[90vh] w-full max-w-2xl overflow-y-auto border border-black/10 p-6"
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
         >
           <motion.button
-            className="absolute top-2 right-2 text-gray-500 hover:text-red-500"
+            className="absolute right-3 top-3 rounded-lg border border-black/10 bg-white/80 p-1.5 text-gray-500 hover:text-red-500"
             onClick={onClose}
             whileHover={{ scale: 1.1, rotate: 90 }}
             whileTap={{ scale: 0.9 }}
           >
-            ✕
+            <FiX size={14} />
           </motion.button>
 
+          <p className="neo-subtitle">Transaction Breakdown</p>
           <motion.h2
-            className="text-lg font-semibold mb-4"
+            className="neo-title mb-4 text-2xl font-semibold"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.1 }}
@@ -57,7 +60,7 @@ const TransactionDetailModal: React.FC<Props> = ({ transaction, onClose }) => {
           </motion.h2>
 
           <motion.div
-            className="text-sm space-y-2"
+            className="space-y-2 rounded-xl border border-black/10 bg-white/70 p-4 text-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4, delay: 0.2, staggerChildren: 0.05 }}
@@ -95,7 +98,7 @@ const TransactionDetailModal: React.FC<Props> = ({ transaction, onClose }) => {
             <div>
               <strong>Payments:</strong> ₱
               {Number(transaction.change).toFixed(2)}
-              <ul className="list-disc list-inside">
+              <ul className="list-disc list-inside mt-1 space-y-1">
                 {transaction.payments.map((p, i) => (
                   <li key={i}>
                     {p.payment_method}: ₱{Number(p.amount).toFixed(2)}
@@ -108,8 +111,13 @@ const TransactionDetailModal: React.FC<Props> = ({ transaction, onClose }) => {
               <strong>Items by Staff:</strong>
               <div className="space-y-4 mt-2">
                 {Object.entries(itemsByStaff).map(([staffName, items], i) => (
-                  <div key={i}>
-                    <div className="font-semibold mb-1">{staffName}</div>
+                  <div
+                    key={i}
+                    className="rounded-lg border border-black/10 bg-white/80 p-3"
+                  >
+                    <div className="mb-1 font-semibold text-gray-700">
+                      {staffName}
+                    </div>
                     <ul className="list-disc list-inside ml-4 space-y-1">
                       {items.map((item, j) => {
                         const price = Number(item.price);
@@ -120,7 +128,7 @@ const TransactionDetailModal: React.FC<Props> = ({ transaction, onClose }) => {
                             {price.toFixed(2)} each ={" "}
                             <strong>₱{total.toFixed(2)}</strong>
                             {item.bundledWith && (
-                              <span className="text-xs text-gray-500 ml-2">
+                              <span className="ml-2 text-xs text-gray-500">
                                 (bundled with {item.bundledWith.product.name})
                               </span>
                             )}
@@ -135,7 +143,8 @@ const TransactionDetailModal: React.FC<Props> = ({ transaction, onClose }) => {
           </motion.div>
         </motion.div>
       </motion.div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 };
 

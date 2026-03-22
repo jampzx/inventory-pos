@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { toast } from "sonner";
 import Spinner from "@/components/Spinner";
 
@@ -55,23 +56,24 @@ const StockInModal = ({ order, onClose, onSuccess }: StockInModalProps) => {
     }
   };
 
-  return (
+  return createPortal(
     <motion.div
-      className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm z-50 flex items-center justify-center"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 backdrop-blur-sm"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
     >
       <motion.div
-        className="bg-white rounded-lg p-6 w-full max-w-md relative"
+        className="neo-panel-strong relative w-full max-w-md border border-black/10 p-6"
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
       >
+        <p className="neo-subtitle">Inventory Update</p>
         <motion.h2
-          className="text-lg font-semibold mb-4"
+          className="neo-title mb-4 text-2xl font-semibold"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
@@ -79,13 +81,13 @@ const StockInModal = ({ order, onClose, onSuccess }: StockInModalProps) => {
           Stock In: {order.product}
         </motion.h2>
 
-        <p className="text-sm mb-3 text-gray-500">
+        <p className="mb-3 text-sm text-gray-500">
           Available quantity to stock in:{" "}
-          <strong>{order.remaining_quantity}</strong>
+          <strong className="text-gray-700">{order.remaining_quantity}</strong>
         </p>
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+        <div className="mb-4 rounded-xl border border-black/10 bg-white/65 p-3">
+          <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.1em] text-gray-500">
             Quantity to Stock In
           </label>
           <input
@@ -94,25 +96,25 @@ const StockInModal = ({ order, onClose, onSuccess }: StockInModalProps) => {
             max={order.remaining_quantity}
             value={quantity}
             onChange={(e) => setQuantity(parseInt(e.target.value) || 0)}
-            className="border px-3 py-2 w-full rounded text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full rounded-xl border border-black/15 bg-white/90 px-3 py-2 text-sm"
             placeholder="Enter quantity"
           />
           {quantity > order.remaining_quantity && (
-            <p className="text-sm text-red-500 mt-1">
+            <p className="mt-1 text-sm font-medium text-red-500">
               Exceeds available quantity!
             </p>
           )}
         </div>
 
         <motion.div
-          className="flex justify-end gap-3 mt-6"
+          className="mt-6 flex justify-end gap-3"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.2 }}
         >
           <motion.button
             onClick={onClose}
-            className="px-4 py-2 text-sm border rounded text-gray-600 hover:bg-gray-100"
+            className="neo-btn-ghost px-4 py-2 text-sm"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -125,13 +127,13 @@ const StockInModal = ({ order, onClose, onSuccess }: StockInModalProps) => {
               quantity <= 0 ||
               quantity > order.remaining_quantity
             }
-            className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="neo-btn flex items-center justify-center gap-2 px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50"
             whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
             whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
           >
             {isSubmitting ? (
               <>
-                <Spinner size={14} color="lamaYellow" />
+                <Spinner size={14} color="white" />
                 <span>Processing...</span>
               </>
             ) : (
@@ -140,7 +142,8 @@ const StockInModal = ({ order, onClose, onSuccess }: StockInModalProps) => {
           </motion.button>
         </motion.div>
       </motion.div>
-    </motion.div>
+    </motion.div>,
+    document.body,
   );
 };
 

@@ -11,13 +11,13 @@ const Table = ({
 }) => {
   return (
     <motion.div
-      className="w-full overflow-x-auto mt-3 sm:mt-4 bg-white rounded-xl border border-gray-200 shadow-lg"
+      className="neo-panel neo-scrollbar mt-3 w-full overflow-x-auto rounded-2xl border border-black/10 sm:mt-4"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
       <motion.table
-        className="min-w-full w-full text-xs sm:text-sm"
+        className="min-w-full w-full text-xs text-gray-700 sm:text-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, delay: 0.2 }}
@@ -27,11 +27,11 @@ const Table = ({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
         >
-          <tr className="text-left text-gray-700 whitespace-nowrap bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 border-b-2 border-purple-100">
+          <tr className="whitespace-nowrap border-b border-black/10 bg-[linear-gradient(135deg,rgba(15,159,157,0.14),rgba(245,121,47,0.1))] text-left text-gray-800">
             {columns.map((col, index) => (
               <motion.th
                 key={col.accessor}
-                className={`p-2 sm:p-3 font-medium text-xs sm:text-sm ${
+                className={`px-3 py-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] sm:px-4 sm:py-3 ${
                   col.className || ""
                 }`}
                 initial={{ opacity: 0, x: -10 }}
@@ -48,6 +48,7 @@ const Table = ({
           </tr>
         </motion.thead>
         <motion.tbody
+          className="divide-y divide-black/5"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.3 }}

@@ -80,13 +80,13 @@ export default function OrderReportPage() {
       order.status === "completed"
         ? "text-green-600"
         : order.status === "voided"
-        ? "text-red-600"
-        : "text-yellow-500";
+          ? "text-red-600"
+          : "text-yellow-500";
 
     return (
       <tr
         key={order.id}
-        className="border-b border-gray-200 even:bg-slate-50 text-sm"
+        className="text-sm transition-colors duration-150 hover:bg-lamaSkyLight/40"
       >
         <td className="p-4">
           {new Date(order.order_date).toLocaleDateString()}
@@ -108,10 +108,13 @@ export default function OrderReportPage() {
   };
 
   return (
-    <div className="bg-white p-2 sm:p-4 rounded-md flex-1 m-2 sm:m-4 mt-0">
-      <h1 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">
-        Order Report
-      </h1>
+    <div className="neo-panel rounded-2xl flex-1 m-2 sm:m-4 mt-0 p-2 sm:p-4">
+      <div className="neo-panel mb-3 rounded-xl border border-black/10 p-4 sm:mb-4">
+        <p className="neo-subtitle">Report</p>
+        <h1 className="neo-title text-base font-semibold text-gray-800 sm:text-lg">
+          Order Report
+        </h1>
+      </div>
       {loading ? (
         <div className="flex justify-center items-center p-6 sm:p-8">
           <div className="flex flex-col items-center gap-3">
@@ -120,12 +123,12 @@ export default function OrderReportPage() {
           </div>
         </div>
       ) : orders.length === 0 ? (
-        <div className="text-center text-sm text-gray-500 p-4 sm:p-8 bg-gray-50 rounded">
+        <div className="rounded-xl border border-black/10 bg-white/70 p-4 text-center text-sm text-gray-500 sm:p-8">
           No data found for the selected date range and status.
         </div>
       ) : (
         <>
-          <div className="mb-3 sm:mb-4 p-2 sm:p-3 bg-gray-50 rounded text-xs sm:text-sm">
+          <div className="neo-panel mb-3 rounded-xl border border-black/10 p-2 text-xs sm:mb-4 sm:p-3 sm:text-sm">
             <div className="font-medium text-gray-700">
               Total Orders: {orders.length}
             </div>
