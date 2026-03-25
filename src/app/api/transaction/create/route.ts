@@ -29,7 +29,9 @@ export const POST = withAuth(async (req: NextRequest, user) => {
     const { cartItems, payments, discountType, discountValue, customerId } =
       parsed;
 
-    const productIds = [...new Set(cartItems.map((item) => item.productId))];
+    const productIds = Array.from(
+      new Set(cartItems.map((item) => item.productId)),
+    );
     const products = await prisma.product.findMany({
       where: {
         id: { in: productIds },

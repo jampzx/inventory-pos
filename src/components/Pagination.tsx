@@ -24,7 +24,7 @@ const Pagination = ({
       currentPage + 2,
     ].filter((page) => page >= 1 && page <= totalPages);
 
-    return [...new Set(neighbors)].sort((a, b) => a - b);
+    return Array.from(new Set(neighbors)).sort((a, b) => a - b);
   })();
 
   return (

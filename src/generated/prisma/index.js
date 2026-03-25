@@ -268,7 +268,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\Acer\\Desktop\\jam\\jam-pos\\src\\generated\\prisma",
+      "value": "C:\\Users\\Acer\\Desktop\\jam\\inventory-pos\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -282,7 +282,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\Acer\\Desktop\\jam\\jam-pos\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\Acer\\Desktop\\jam\\inventory-pos\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
