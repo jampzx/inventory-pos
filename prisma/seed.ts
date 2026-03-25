@@ -12,7 +12,7 @@ async function main() {
       company_address: "123 Main St",
       subscription_start: new Date(),
       subscription_end: new Date(
-        new Date().setFullYear(new Date().getFullYear() + 1)
+        new Date().setFullYear(new Date().getFullYear() + 1),
       ),
     },
   });

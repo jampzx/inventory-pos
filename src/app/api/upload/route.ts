@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { writeFile } from "fs/promises";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
+import { withAuth } from "@/lib/authMiddleware";
 
-export async function POST(req: NextRequest) {
+export const POST = withAuth(async (req: NextRequest) => {
   try {
     const formData = await req.formData();
     const file: File | null = formData.get("file") as unknown as File;
@@ -11,7 +12,7 @@ export async function POST(req: NextRequest) {
     if (!file) {
       return NextResponse.json(
         { success: false, message: "No file uploaded" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -31,7 +32,7 @@ export async function POST(req: NextRequest) {
     console.error("Upload failed:", error);
     return NextResponse.json(
       { success: false, message: "Upload error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
-}
+});

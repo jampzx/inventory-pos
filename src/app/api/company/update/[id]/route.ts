@@ -14,20 +14,23 @@ const companySchema = z.object({
 
 export async function PUT(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   return withAuth(async (req, user) => {
     try {
-      const currentUser = await prisma.user.findUnique({
-        where: { id: user.id },
-        select: { username: true },
-      });
+      const isSuperAdmin = user.user_type === process.env.AUTHORIZED_USE_TYPE;
+      if (!isSuperAdmin) {
+        return NextResponse.json(
+          { success: false, message: "Forbidden" },
+          { status: 403 },
+        );
+      }
 
       const id = parseInt(params.id);
       if (isNaN(id)) {
         return NextResponse.json(
           { success: false, message: "Invalid ID" },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
@@ -37,7 +40,7 @@ export async function PUT(
       if (!parsed.success) {
         return NextResponse.json(
           { success: false, errors: parsed.error.flatten().fieldErrors },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
@@ -71,7 +74,7 @@ export async function PUT(
       console.error("❌ Failed to update company:", error);
       return NextResponse.json(
         { success: false, message: "Server error" },
-        { status: 500 }
+        { status: 500 },
       );
     }
   })(_req);

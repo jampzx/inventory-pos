@@ -4,20 +4,23 @@ import { withAuth } from "@/lib/authMiddleware";
 
 export async function DELETE(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   return withAuth(async (req, user) => {
     try {
-      const currentUser = await prisma.user.findUnique({
-        where: { id: user.id },
-        select: { username: true },
-      });
+      const isSuperAdmin = user.user_type === process.env.AUTHORIZED_USE_TYPE;
+      if (!isSuperAdmin) {
+        return NextResponse.json(
+          { success: false, message: "Forbidden" },
+          { status: 403 },
+        );
+      }
 
       const id = parseInt(params.id);
       if (isNaN(id)) {
         return NextResponse.json(
           { success: false, message: "Invalid ID" },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
@@ -33,7 +36,7 @@ export async function DELETE(
       if (!existingCompany) {
         return NextResponse.json(
           { success: false, message: "Company not found" },
-          { status: 404 }
+          { status: 404 },
         );
       }
 
@@ -49,7 +52,7 @@ export async function DELETE(
             message:
               "Cannot delete company with existing users, products, or transactions",
           },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
@@ -62,7 +65,7 @@ export async function DELETE(
       console.error("❌ Failed to delete company:", error);
       return NextResponse.json(
         { success: false, message: "Server error" },
-        { status: 500 }
+        { status: 500 },
       );
     }
   })(_req);

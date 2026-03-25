@@ -6,7 +6,10 @@ export const dynamic = "force-dynamic";
 
 export const GET = withAuth(async (req: NextRequest, user) => {
   try {
+    const isSuperAdmin = user.user_type === process.env.AUTHORIZED_USE_TYPE;
+
     const users = await prisma.user.findMany({
+      where: isSuperAdmin ? undefined : { company_id: user.company_id },
       orderBy: { created_at: "desc" },
       include: {
         company: true,
@@ -30,7 +33,7 @@ export const GET = withAuth(async (req: NextRequest, user) => {
     console.error("❌ Failed to fetch users:", error);
     return NextResponse.json(
       { success: false, message: "Server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 });

@@ -14,10 +14,13 @@ const companySchema = z.object({
 
 export const POST = withAuth(async (req: NextRequest, user) => {
   try {
-    const currentUser = await prisma.user.findUnique({
-      where: { id: user.id },
-      select: { username: true },
-    });
+    const isSuperAdmin = user.user_type === process.env.AUTHORIZED_USE_TYPE;
+    if (!isSuperAdmin) {
+      return NextResponse.json(
+        { success: false, message: "Forbidden" },
+        { status: 403 },
+      );
+    }
 
     const body = await req.json();
     const parsed = companySchema.safeParse(body);
@@ -25,7 +28,7 @@ export const POST = withAuth(async (req: NextRequest, user) => {
     if (!parsed.success) {
       return NextResponse.json(
         { success: false, errors: parsed.error.flatten().fieldErrors },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -56,7 +59,7 @@ export const POST = withAuth(async (req: NextRequest, user) => {
     console.error("❌ Failed to create company:", error);
     return NextResponse.json(
       { success: false, message: "Server error creating company" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 });

@@ -16,24 +16,41 @@ const userSchema = z.object({
 
 export const POST = withAuth(async (req: NextRequest, user) => {
   try {
+    const isSuperAdmin = user.user_type === process.env.AUTHORIZED_USE_TYPE;
+
     const body = await req.json();
     const parsed = userSchema.safeParse(body);
 
     if (!parsed.success) {
       return NextResponse.json(
         { success: false, errors: parsed.error.flatten().fieldErrors },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     const { username, password, company_id, ...rest } = parsed.data;
+    const requestedCompanyId = parseInt(company_id);
+
+    if (isNaN(requestedCompanyId)) {
+      return NextResponse.json(
+        { success: false, message: "Invalid company" },
+        { status: 400 },
+      );
+    }
+
+    if (!isSuperAdmin && requestedCompanyId !== user.company_id) {
+      return NextResponse.json(
+        { success: false, message: "Forbidden" },
+        { status: 403 },
+      );
+    }
 
     const existingUser = await prisma.user.findUnique({ where: { username } });
 
     if (existingUser) {
       return NextResponse.json(
         { success: false, message: "Username already exists." },
-        { status: 409 }
+        { status: 409 },
       );
     }
 
@@ -45,7 +62,7 @@ export const POST = withAuth(async (req: NextRequest, user) => {
         username,
         ...rest,
         password: hashedPassword,
-        company_id: parseInt(company_id),
+        company_id: isSuperAdmin ? requestedCompanyId : user.company_id,
       },
     });
 
@@ -54,7 +71,7 @@ export const POST = withAuth(async (req: NextRequest, user) => {
     console.error("❌ Failed to create user:", error);
     return NextResponse.json(
       { success: false, message: "Server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 });

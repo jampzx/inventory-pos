@@ -6,21 +6,23 @@ export const dynamic = "force-dynamic";
 
 export const GET = withAuth(async (req: NextRequest, user) => {
   try {
-    const currentUser = await prisma.user.findUnique({
-      where: { id: user.id },
-      select: { username: true },
-    });
+    const isSuperAdmin = user.user_type === process.env.AUTHORIZED_USE_TYPE;
 
-    const companies = await prisma.company.findMany({
-      orderBy: { created_at: "desc" },
-    });
+    const companies = isSuperAdmin
+      ? await prisma.company.findMany({
+          orderBy: { created_at: "desc" },
+        })
+      : await prisma.company.findMany({
+          where: { company_id: user.company_id },
+          orderBy: { created_at: "desc" },
+        });
 
     return NextResponse.json({ success: true, data: companies });
   } catch (error) {
     console.error("Failed to fetch companies:", error);
     return NextResponse.json(
       { success: false, message: "Error fetching companies" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 });

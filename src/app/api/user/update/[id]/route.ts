@@ -16,15 +16,17 @@ const userUpdateSchema = z.object({
 
 export async function PUT(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   return withAuth(async (req, user) => {
     try {
+      const isSuperAdmin = user.user_type === process.env.AUTHORIZED_USE_TYPE;
+
       const id = parseInt(params.id);
       if (isNaN(id)) {
         return NextResponse.json(
           { success: false, message: "Invalid user ID" },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
@@ -34,11 +36,19 @@ export async function PUT(
       if (!parsed.success) {
         return NextResponse.json(
           { success: false, errors: parsed.error.flatten().fieldErrors },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
       const { username, password, company_id, ...rest } = parsed.data;
+      const requestedCompanyId = parseInt(company_id);
+
+      if (isNaN(requestedCompanyId)) {
+        return NextResponse.json(
+          { success: false, message: "Invalid company" },
+          { status: 400 },
+        );
+      }
 
       const existingUser = await prisma.user.findUnique({
         where: {
@@ -49,7 +59,21 @@ export async function PUT(
       if (!existingUser) {
         return NextResponse.json(
           { success: false, message: "User not found" },
-          { status: 404 }
+          { status: 404 },
+        );
+      }
+
+      if (!isSuperAdmin && existingUser.company_id !== user.company_id) {
+        return NextResponse.json(
+          { success: false, message: "Forbidden" },
+          { status: 403 },
+        );
+      }
+
+      if (!isSuperAdmin && requestedCompanyId !== user.company_id) {
+        return NextResponse.json(
+          { success: false, message: "Forbidden" },
+          { status: 403 },
         );
       }
 
@@ -57,7 +81,7 @@ export async function PUT(
       const updatedData: any = {
         username,
         ...rest,
-        company_id: parseInt(company_id),
+        company_id: isSuperAdmin ? requestedCompanyId : user.company_id,
       };
 
       if (password) {
@@ -77,7 +101,7 @@ export async function PUT(
       console.error("Failed to update user:", error);
       return NextResponse.json(
         { success: false, message: "Server error" },
-        { status: 500 }
+        { status: 500 },
       );
     }
   })(_req);
