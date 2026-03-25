@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
-import path from "path";
+import { put } from "@vercel/blob";
 import { v4 as uuidv4 } from "uuid";
 import { withAuth } from "@/lib/authMiddleware";
 
@@ -16,17 +15,12 @@ export const POST = withAuth(async (req: NextRequest) => {
       );
     }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
     const fileName = `${uuidv4()}_${file.name}`;
-    const filePath = path.join(process.cwd(), "public", "uploads", fileName);
-
-    await writeFile(filePath, buffer as Uint8Array);
+    const blob = await put(fileName, file, { access: "public" });
 
     return NextResponse.json({
       success: true,
-      url: `/uploads/${fileName}`,
+      url: blob.url,
     });
   } catch (error) {
     console.error("Upload failed:", error);
