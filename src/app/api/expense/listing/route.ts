@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { withAuth } from "@/lib/authMiddleware";
 
-export const dynamic = "force-dynamic";
-
 export const GET = withAuth(async (req: NextRequest, user) => {
   try {
     const expenses = await prisma.expense.findMany({
@@ -14,7 +12,7 @@ export const GET = withAuth(async (req: NextRequest, user) => {
   } catch (error) {
     return NextResponse.json(
       { success: false, message: "Failed to fetch expenses" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 });

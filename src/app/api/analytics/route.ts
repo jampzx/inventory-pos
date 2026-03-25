@@ -1,255 +1,235 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import {
-  startOfMonth,
-  endOfMonth,
-  format,
-  subDays,
-  startOfDay,
-  endOfDay,
-} from "date-fns";
+import { startOfMonth, format, subDays } from "date-fns";
 import { withAuth } from "@/lib/authMiddleware";
-
-export const dynamic = "force-dynamic";
 
 export const GET = withAuth(async (req: NextRequest, user) => {
   try {
     const company_id = user.company_id;
 
-    // Get daily sales for the last 30 days
-    const last30Days = subDays(new Date(), 30);
-    const dailySales = await prisma.$queryRaw<
-      Array<{ date: string; sales: number }>
-    >`
-      SELECT 
-        DATE(created_at) as date,
-        SUM(total_paid)::numeric as sales
-      FROM transactions
-      WHERE created_at >= ${last30Days}
-        AND status = 'completed'
-        AND company_id = ${company_id}
-      GROUP BY DATE(created_at)
-      ORDER BY date ASC
-    `;
+    const now = new Date();
+    const last30Days = subDays(now, 30);
+    const last12Months = subDays(now, 365);
+    const last7Days = subDays(now, 7);
+    const thisMonthStart = startOfMonth(now);
+    const lastMonthStart = startOfMonth(subDays(thisMonthStart, 1));
 
-    // Get monthly expenses for the last 12 months
-    const last12Months = subDays(new Date(), 365);
-    const monthlyExpenses = await prisma.$queryRaw<
-      Array<{ month: string; expenses: number }>
-    >`
-      SELECT 
-        TO_CHAR(date, 'YYYY-MM') as month,
-        SUM(amount)::numeric as expenses
-      FROM expenses
-      WHERE date >= ${last12Months}
-        AND company_id = ${company_id}
-      GROUP BY TO_CHAR(date, 'YYYY-MM')
-      ORDER BY month ASC
-    `;
-
-    // Get payment method breakdown
-    const paymentBreakdown = await prisma.$queryRaw<
-      Array<{ payment_method: string; total: number; count: number }>
-    >`
-      SELECT 
-        payment_method,
-        SUM(amount)::numeric as total,
-        COUNT(*)::integer as count
-      FROM transaction_payments
-      WHERE transaction_id IN (
-        SELECT id FROM transactions WHERE status = 'completed' AND company_id = ${company_id}
-      )
-        AND company_id = ${company_id}
-      GROUP BY payment_method
-      ORDER BY total DESC
-    `;
-
-    // Get top-selling products (by quantity sold)
-    const topProducts = await prisma.$queryRaw<
-      Array<{ product_name: string; quantity_sold: number; revenue: number }>
-    >`
-      SELECT 
-        p.name as product_name,
-        SUM(ti.quantity)::integer as quantity_sold,
-        SUM(ti.quantity * ti.price)::numeric as revenue
-      FROM transaction_items ti
-      INNER JOIN products p ON ti.product_id = p.id
-      INNER JOIN transactions t ON ti.transaction_id = t.id
-      WHERE t.status = 'completed'
-        AND ti.company_id = ${company_id}
-      GROUP BY p.id, p.name
-      ORDER BY quantity_sold DESC
-      LIMIT 10
-    `;
-
-    // Get worst-selling/low-activity products (least sold but still in stock)
-    const worstProducts = await prisma.$queryRaw<
-      Array<{ product_name: string; quantity_sold: number; stock: number }>
-    >`
-      SELECT 
-        p.name as product_name,
-        COALESCE(SUM(ti.quantity), 0)::integer as quantity_sold,
-        p.stock::integer
-      FROM products p
-      LEFT JOIN transaction_items ti ON p.id = ti.product_id
-      LEFT JOIN transactions t ON ti.transaction_id = t.id AND t.status = 'completed'
-      WHERE p.status = 'active'
-        AND p.company_id = ${company_id}
-      GROUP BY p.id, p.name, p.stock
-      ORDER BY quantity_sold ASC, p.stock DESC
-      LIMIT 10
-    `;
-
-    // Get profit analysis from orders
-    const profitAnalysis = await prisma.$queryRaw<
-      Array<{
-        total_revenue: number;
-        total_cost: number;
-        total_profit: number;
-        order_count: number;
-      }>
-    >`
-      SELECT 
-        SUM(selling_price * quantity)::numeric as total_revenue,
-        SUM(order_price * quantity)::numeric as total_cost,
-        SUM(net_profit)::numeric as total_profit,
-        COUNT(*)::integer as order_count
-      FROM orders
-      WHERE company_id = ${company_id}
-        AND status = 'completed'
-    `;
-
-    // Get inventory status
-    const inventoryStatus = await prisma.$queryRaw<
-      Array<{ status: string; count: number; total_value: number }>
-    >`
-      SELECT 
-        CASE 
+    const [
+      dailySales,
+      monthlyExpenses,
+      paymentBreakdown,
+      topProducts,
+      worstProducts,
+      profitAnalysis,
+      inventoryStatus,
+      customerInsights,
+      topCustomers,
+      hourlySales,
+      categoryPerformance,
+      growthMetrics,
+    ] = await Promise.all([
+      prisma.$queryRaw<Array<{ date: string; sales: number }>>`
+        SELECT 
+          DATE(created_at) as date,
+          SUM(total_paid)::numeric as sales
+        FROM transactions
+        WHERE created_at >= ${last30Days}
+          AND status = 'completed'
+          AND company_id = ${company_id}
+        GROUP BY DATE(created_at)
+        ORDER BY date ASC
+      `,
+      prisma.$queryRaw<Array<{ month: string; expenses: number }>>`
+        SELECT 
+          TO_CHAR(date, 'YYYY-MM') as month,
+          SUM(amount)::numeric as expenses
+        FROM expenses
+        WHERE date >= ${last12Months}
+          AND company_id = ${company_id}
+        GROUP BY TO_CHAR(date, 'YYYY-MM')
+        ORDER BY month ASC
+      `,
+      prisma.$queryRaw<
+        Array<{ payment_method: string; total: number; count: number }>
+      >`
+        SELECT 
+          payment_method,
+          SUM(amount)::numeric as total,
+          COUNT(*)::integer as count
+        FROM transaction_payments
+        WHERE transaction_id IN (
+          SELECT id FROM transactions WHERE status = 'completed' AND company_id = ${company_id}
+        )
+          AND company_id = ${company_id}
+        GROUP BY payment_method
+        ORDER BY total DESC
+      `,
+      prisma.$queryRaw<
+        Array<{ product_name: string; quantity_sold: number; revenue: number }>
+      >`
+        SELECT 
+          p.name as product_name,
+          SUM(ti.quantity)::integer as quantity_sold,
+          SUM(ti.quantity * ti.price)::numeric as revenue
+        FROM transaction_items ti
+        INNER JOIN products p ON ti.product_id = p.id
+        INNER JOIN transactions t ON ti.transaction_id = t.id
+        WHERE t.status = 'completed'
+          AND ti.company_id = ${company_id}
+        GROUP BY p.id, p.name
+        ORDER BY quantity_sold DESC
+        LIMIT 10
+      `,
+      prisma.$queryRaw<
+        Array<{ product_name: string; quantity_sold: number; stock: number }>
+      >`
+        SELECT 
+          p.name as product_name,
+          COALESCE(SUM(ti.quantity), 0)::integer as quantity_sold,
+          p.stock::integer
+        FROM products p
+        LEFT JOIN transaction_items ti ON p.id = ti.product_id
+        LEFT JOIN transactions t ON ti.transaction_id = t.id AND t.status = 'completed'
+        WHERE p.status = 'active'
+          AND p.company_id = ${company_id}
+        GROUP BY p.id, p.name, p.stock
+        ORDER BY quantity_sold ASC, p.stock DESC
+        LIMIT 10
+      `,
+      prisma.$queryRaw<
+        Array<{
+          total_revenue: number;
+          total_cost: number;
+          total_profit: number;
+          order_count: number;
+        }>
+      >`
+        SELECT 
+          SUM(selling_price * quantity)::numeric as total_revenue,
+          SUM(order_price * quantity)::numeric as total_cost,
+          SUM(net_profit)::numeric as total_profit,
+          COUNT(*)::integer as order_count
+        FROM orders
+        WHERE company_id = ${company_id}
+          AND status = 'completed'
+      `,
+      prisma.$queryRaw<
+        Array<{ status: string; count: number; total_value: number }>
+      >`
+        SELECT 
+          CASE 
+            WHEN stock = 0 THEN 'out_of_stock'
+            WHEN stock <= 10 THEN 'low_stock'
+            WHEN stock <= 50 THEN 'medium_stock'
+            ELSE 'high_stock'
+          END as status,
+          COUNT(*)::integer as count,
+          SUM(stock * price)::numeric as total_value
+        FROM products
+        WHERE company_id = ${company_id}
+          AND status = 'active'
+        GROUP BY CASE 
           WHEN stock = 0 THEN 'out_of_stock'
           WHEN stock <= 10 THEN 'low_stock'
           WHEN stock <= 50 THEN 'medium_stock'
           ELSE 'high_stock'
-        END as status,
-        COUNT(*)::integer as count,
-        SUM(stock * price)::numeric as total_value
-      FROM products
-      WHERE company_id = ${company_id}
-        AND status = 'active'
-      GROUP BY CASE 
-        WHEN stock = 0 THEN 'out_of_stock'
-        WHEN stock <= 10 THEN 'low_stock'
-        WHEN stock <= 50 THEN 'medium_stock'
-        ELSE 'high_stock'
-      END
-    `;
+        END
+      `,
+      prisma.$queryRaw<
+        Array<{
+          total_customers: number;
+          active_customers: number;
+          new_customers_this_month: number;
+        }>
+      >`
+        SELECT 
+          COUNT(*)::integer as total_customers,
+          COUNT(CASE WHEN status = 'active' THEN 1 END)::integer as active_customers,
+          COUNT(CASE WHEN created_at >= ${thisMonthStart} THEN 1 END)::integer as new_customers_this_month
+        FROM customers
+        WHERE company_id = ${company_id}
+      `,
+      prisma.$queryRaw<
+        Array<{
+          customer_name: string;
+          total_spent: number;
+          transaction_count: number;
+        }>
+      >`
+        SELECT 
+          c.name as customer_name,
+          SUM(t.total_paid)::numeric as total_spent,
+          COUNT(t.id)::integer as transaction_count
+        FROM customers c
+        INNER JOIN transactions t ON c.id = t.customer_id
+        WHERE t.status = 'completed'
+          AND c.company_id = ${company_id}
+        GROUP BY c.id, c.name
+        ORDER BY total_spent DESC
+        LIMIT 10
+      `,
+      prisma.$queryRaw<
+        Array<{ hour: number; sales: number; transaction_count: number }>
+      >`
+        SELECT 
+          EXTRACT(HOUR FROM created_at)::integer as hour,
+          SUM(total_paid)::numeric as sales,
+          COUNT(*)::integer as transaction_count
+        FROM transactions
+        WHERE created_at >= ${last7Days}
+          AND status = 'completed'
+          AND company_id = ${company_id}
+        GROUP BY hour
+        ORDER BY hour ASC
+      `,
+      prisma.$queryRaw<
+        Array<{
+          product_type: string;
+          total_sales: number;
+          quantity_sold: number;
+          product_count: number;
+        }>
+      >`
+        SELECT 
+          p.product_type,
+          SUM(ti.quantity * ti.price)::numeric as total_sales,
+          SUM(ti.quantity)::integer as quantity_sold,
+          COUNT(DISTINCT p.id)::integer as product_count
+        FROM products p
+        INNER JOIN transaction_items ti ON p.id = ti.product_id
+        INNER JOIN transactions t ON ti.transaction_id = t.id
+        WHERE t.status = 'completed'
+          AND p.company_id = ${company_id}
+        GROUP BY p.product_type
+      `,
+      prisma.$queryRaw<
+        Array<{
+          period: string;
+          total_sales: number;
+          transaction_count: number;
+        }>
+      >`
+        SELECT 
+          CASE 
+            WHEN created_at >= ${thisMonthStart} THEN 'current'
+            ELSE 'previous'
+          END as period,
+          SUM(total_paid)::numeric as total_sales,
+          COUNT(*)::integer as transaction_count
+        FROM transactions
+        WHERE created_at >= ${lastMonthStart}
+          AND status = 'completed'
+          AND company_id = ${company_id}
+        GROUP BY period
+      `,
+    ]);
 
-    // Get customer insights
-    const customerInsights = await prisma.$queryRaw<
-      Array<{
-        total_customers: number;
-        active_customers: number;
-        new_customers_this_month: number;
-      }>
-    >`
-      SELECT 
-        COUNT(*)::integer as total_customers,
-        COUNT(CASE WHEN status = 'active' THEN 1 END)::integer as active_customers,
-        COUNT(CASE WHEN created_at >= ${startOfMonth(
-          new Date()
-        )} THEN 1 END)::integer as new_customers_this_month
-      FROM customers
-      WHERE company_id = ${company_id}
-    `;
-
-    // Get top customers by spending
-    const topCustomers = await prisma.$queryRaw<
-      Array<{
-        customer_name: string;
-        total_spent: number;
-        transaction_count: number;
-      }>
-    >`
-      SELECT 
-        c.name as customer_name,
-        SUM(t.total_paid)::numeric as total_spent,
-        COUNT(t.id)::integer as transaction_count
-      FROM customers c
-      INNER JOIN transactions t ON c.id = t.customer_id
-      WHERE t.status = 'completed'
-        AND c.company_id = ${company_id}
-      GROUP BY c.id, c.name
-      ORDER BY total_spent DESC
-      LIMIT 10
-    `;
-
-    // Get hourly sales pattern (for last 7 days)
-    const last7Days = subDays(new Date(), 7);
-    const hourlySales = await prisma.$queryRaw<
-      Array<{ hour: number; sales: number; transaction_count: number }>
-    >`
-      SELECT 
-        EXTRACT(HOUR FROM created_at)::integer as hour,
-        SUM(total_paid)::numeric as sales,
-        COUNT(*)::integer as transaction_count
-      FROM transactions
-      WHERE created_at >= ${last7Days}
-        AND status = 'completed'
-        AND company_id = ${company_id}
-      GROUP BY hour
-      ORDER BY hour ASC
-    `;
-
-    // Get product category performance (product vs service)
-    const categoryPerformance = await prisma.$queryRaw<
-      Array<{
-        product_type: string;
-        total_sales: number;
-        quantity_sold: number;
-        product_count: number;
-      }>
-    >`
-      SELECT 
-        p.product_type,
-        SUM(ti.quantity * ti.price)::numeric as total_sales,
-        SUM(ti.quantity)::integer as quantity_sold,
-        COUNT(DISTINCT p.id)::integer as product_count
-      FROM products p
-      INNER JOIN transaction_items ti ON p.id = ti.product_id
-      INNER JOIN transactions t ON ti.transaction_id = t.id
-      WHERE t.status = 'completed'
-        AND p.company_id = ${company_id}
-      GROUP BY p.product_type
-    `;
-
-    // Calculate growth metrics (compare this month vs last month)
-    const thisMonthStart = startOfMonth(new Date());
-    const lastMonthStart = startOfMonth(subDays(thisMonthStart, 1));
-    const lastMonthEnd = endOfMonth(subDays(thisMonthStart, 1));
-
-    const growthMetrics = await prisma.$queryRaw<
-      Array<{ period: string; total_sales: number; transaction_count: number }>
-    >`
-      SELECT 
-        CASE 
-          WHEN created_at >= ${thisMonthStart} THEN 'current'
-          ELSE 'previous'
-        END as period,
-        SUM(total_paid)::numeric as total_sales,
-        COUNT(*)::integer as transaction_count
-      FROM transactions
-      WHERE created_at >= ${lastMonthStart}
-        AND status = 'completed'
-        AND company_id = ${company_id}
-      GROUP BY period
-    `;
-
-    // Calculate growth percentages
     const currentMonth = growthMetrics.find((m) => m.period === "current") || {
       total_sales: 0,
       transaction_count: 0,
     };
     const previousMonth = growthMetrics.find(
-      (m) => m.period === "previous"
+      (m) => m.period === "previous",
     ) || { total_sales: 0, transaction_count: 0 };
 
     const salesGrowth =
@@ -345,7 +325,7 @@ export const GET = withAuth(async (req: NextRequest, user) => {
     console.error("Failed to fetch analytics data:", error);
     return NextResponse.json(
       { success: false, error: "Failed to load analytics data" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 });
