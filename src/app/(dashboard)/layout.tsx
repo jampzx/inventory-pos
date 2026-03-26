@@ -6,7 +6,6 @@ import Menu from "components/Menu";
 import Navbar from "components/Navbar";
 import Image from "next/image";
 import Link from "next/link";
-import { useSessionMonitor } from "@/hooks/useSessionMonitor";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 
@@ -17,9 +16,6 @@ export default function DashboardLayout({
 }>) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  // Monitor session status and handle automatic logout
-  useSessionMonitor();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);

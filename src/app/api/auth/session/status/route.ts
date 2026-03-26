@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyJwt } from "@/lib/jwt";
-import { prisma } from "@/lib/prisma";
 import { JwtUserPayload } from "@/types/auth";
 import { cookies } from "next/headers";
+import { validateSession } from "@/lib/sessionValidation";
 
 export const dynamic = "force-dynamic";
 
@@ -19,21 +19,9 @@ export async function GET() {
       return NextResponse.json({ valid: false, reason: "invalid_token" });
     }
 
-    // Check if session exists and is still valid in database
-    const dbUser = await prisma.user.findUnique({
-      where: { id: decoded.id },
-      select: {
-        session_token: true,
-        session_expires_at: true,
-      },
-    });
+    const session = await validateSession(decoded);
 
-    if (
-      !dbUser ||
-      !dbUser.session_token ||
-      dbUser.session_token !== decoded.session_id ||
-      (dbUser.session_expires_at && dbUser.session_expires_at < new Date())
-    ) {
+    if (!session.valid) {
       return NextResponse.json({
         valid: false,
         reason: "session_invalidated",

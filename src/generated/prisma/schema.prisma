@@ -33,6 +33,8 @@ model Product {
   transactionItems TransactionItem[]
   orders           Order[]
 
+  @@index([company_id])
+  @@index([company_id, status])
   @@map("products")
 }
 
@@ -56,6 +58,7 @@ model User {
   company      Company       @relation(fields: [company_id], references: [company_id])
   transactions Transaction[]
 
+  @@index([company_id])
   @@map("users")
 }
 
@@ -71,6 +74,7 @@ model PaymentType {
   company_id Int
   company    Company @relation(fields: [company_id], references: [company_id])
 
+  @@index([company_id])
   @@map("payment_types")
 }
 
@@ -96,6 +100,8 @@ model Transaction {
   details    TransactionDetail[]
 
   @@index([customer_id])
+  @@index([company_id, created_at])
+  @@index([company_id, status])
   @@map("transactions")
 }
 
@@ -112,6 +118,8 @@ model TransactionItem {
   transaction Transaction @relation(fields: [transaction_id], references: [id])
   product     Product     @relation(fields: [product_id], references: [id])
 
+  @@index([transaction_id])
+  @@index([product_id])
   @@map("transaction_items")
 }
 
@@ -126,6 +134,7 @@ model TransactionPayment {
   company     Company     @relation(fields: [company_id], references: [company_id])
   transaction Transaction @relation(fields: [transaction_id], references: [id])
 
+  @@index([transaction_id])
   @@map("transaction_payments")
 }
 
@@ -144,6 +153,7 @@ model TransactionDetail {
   company     Company     @relation(fields: [company_id], references: [company_id])
   transaction Transaction @relation(fields: [transaction_id], references: [id])
 
+  @@index([transaction_id])
   @@map("transaction_details")
 }
 
@@ -165,6 +175,8 @@ model Order {
   company    Company @relation(fields: [company_id], references: [company_id])
   productRef Product @relation(fields: [product_id], references: [id])
 
+  @@index([company_id])
+  @@index([company_id, order_date])
   @@map("orders")
 }
 
@@ -180,6 +192,8 @@ model Expense {
   company_id Int
   company    Company @relation(fields: [company_id], references: [company_id])
 
+  @@index([company_id])
+  @@index([company_id, date])
   @@map("expenses")
 }
 

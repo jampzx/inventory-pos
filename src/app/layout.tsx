@@ -3,6 +3,8 @@ import { Fraunces, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { PermissionProvider } from "@/context/PermissionContext";
+import { UserProvider } from "@/context/UserContext";
+import SessionMonitorBootstrap from "@/components/SessionMonitorBootstrap";
 
 const display = Fraunces({
   subsets: ["latin"],
@@ -33,8 +35,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${display.variable} ${body.variable} antialiased`}>
         <PermissionProvider>
-          {children}
-          <Toaster richColors position="top-center" />
+          <UserProvider>
+            <SessionMonitorBootstrap />
+            {children}
+            <Toaster richColors position="top-center" />
+          </UserProvider>
         </PermissionProvider>
       </body>
     </html>
