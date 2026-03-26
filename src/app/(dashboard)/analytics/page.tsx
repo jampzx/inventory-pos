@@ -66,6 +66,48 @@ const Analytics = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const {
+    totalSales,
+    avgDailySales,
+    totalExpenses,
+    totalTransactions,
+    topPaymentMethod,
+  } = useMemo(() => {
+    if (!data) {
+      return {
+        totalSales: 0,
+        avgDailySales: 0,
+        totalExpenses: 0,
+        totalTransactions: 0,
+        topPaymentMethod: null,
+      };
+    }
+    const totalSales = data.dailySales.reduce((sum, day) => sum + day.sales, 0);
+    const avgDailySales =
+      data.dailySales.length > 0 ? totalSales / data.dailySales.length : 0;
+    const totalExpenses = data.monthlyExpenses.reduce(
+      (sum, m) => sum + m.expenses,
+      0,
+    );
+    const totalTransactions = data.paymentBreakdown.reduce(
+      (sum, p) => sum + p.count,
+      0,
+    );
+    const topPaymentMethod =
+      data.paymentBreakdown.length > 0
+        ? data.paymentBreakdown.reduce((prev, cur) =>
+            cur.value > prev.value ? cur : prev,
+          )
+        : null;
+    return {
+      totalSales,
+      avgDailySales,
+      totalExpenses,
+      totalTransactions,
+      topPaymentMethod,
+    };
+  }, [data]);
+
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
@@ -123,40 +165,6 @@ const Analytics = () => {
       </div>
     );
   }
-
-  // ---- Derived Metrics for Cards ----
-  const {
-    totalSales,
-    avgDailySales,
-    totalExpenses,
-    totalTransactions,
-    topPaymentMethod,
-  } = useMemo(() => {
-    const totalSales = data.dailySales.reduce((sum, day) => sum + day.sales, 0);
-    const avgDailySales =
-      data.dailySales.length > 0 ? totalSales / data.dailySales.length : 0;
-    const totalExpenses = data.monthlyExpenses.reduce(
-      (sum, m) => sum + m.expenses,
-      0,
-    );
-    const totalTransactions = data.paymentBreakdown.reduce(
-      (sum, p) => sum + p.count,
-      0,
-    );
-    const topPaymentMethod =
-      data.paymentBreakdown.length > 0
-        ? data.paymentBreakdown.reduce((prev, cur) =>
-            cur.value > prev.value ? cur : prev,
-          )
-        : null;
-    return {
-      totalSales,
-      avgDailySales,
-      totalExpenses,
-      totalTransactions,
-      topPaymentMethod,
-    };
-  }, [data.dailySales, data.monthlyExpenses, data.paymentBreakdown]);
 
   return (
     <div className="neo-panel min-h-screen rounded-3xl border border-black/10 p-2 sm:p-4 md:p-6 lg:p-8">
