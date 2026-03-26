@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   AreaChart,
@@ -23,15 +24,23 @@ interface Props {
 }
 
 const HourlySalesChart = ({ data }: Props) => {
-  const chartData = data.map((item) => ({
-    hour: `${item.hour}:00`,
-    sales: item.sales,
-    transactions: item.count,
-  }));
+  const chartData = useMemo(
+    () =>
+      data.map((item) => ({
+        hour: `${item.hour}:00`,
+        sales: item.sales,
+        transactions: item.count,
+      })),
+    [data],
+  );
 
-  const peakHour = data.reduce(
-    (max, item) => (item.sales > max.sales ? item : max),
-    data[0]
+  const peakHour = useMemo(
+    () =>
+      data.reduce(
+        (max, item) => (item.sales > max.sales ? item : max),
+        data[0],
+      ),
+    [data],
   );
 
   return (

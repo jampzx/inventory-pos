@@ -1,23 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Spinner from "@/components/Spinner";
-import {
-  AnalyticsHeader,
-  MetricCard,
-  DailySalesChart,
-  MonthlyExpensesChart,
-  TopProductsChart,
-  LowActivityProducts,
-  PaymentBreakdownChart,
-  ProfitMetricsCard,
-  InventoryStatusChart,
-  CustomerInsightsCard,
-  TopCustomersChart,
-  HourlySalesChart,
-  CategoryPerformanceChart,
-  GrowthMetricsCard,
-} from "@/components/analytics";
+import AnalyticsHeader from "@/components/analytics/AnalyticsHeader";
+import MetricCard from "@/components/analytics/MetricCard";
+import DailySalesChart from "@/components/analytics/DailySalesChart";
+import MonthlyExpensesChart from "@/components/analytics/MonthlyExpensesChart";
+import TopProductsChart from "@/components/analytics/TopProductsChart";
+import LowActivityProducts from "@/components/analytics/LowActivityProducts";
+import PaymentBreakdownChart from "@/components/analytics/PaymentBreakdownChart";
+import ProfitMetricsCard from "@/components/analytics/ProfitMetricsCard";
+import InventoryStatusChart from "@/components/analytics/InventoryStatusChart";
+import CustomerInsightsCard from "@/components/analytics/CustomerInsightsCard";
+import TopCustomersChart from "@/components/analytics/TopCustomersChart";
+import HourlySalesChart from "@/components/analytics/HourlySalesChart";
+import CategoryPerformanceChart from "@/components/analytics/CategoryPerformanceChart";
+import GrowthMetricsCard from "@/components/analytics/GrowthMetricsCard";
 
 interface AnalyticsData {
   dailySales: Array<{ date: string; sales: number }>;
@@ -127,26 +125,38 @@ const Analytics = () => {
   }
 
   // ---- Derived Metrics for Cards ----
-  const totalSales = data.dailySales.reduce((sum, day) => sum + day.sales, 0);
-  const avgDailySales =
-    data.dailySales.length > 0 ? totalSales / data.dailySales.length : 0;
-
-  const totalExpenses = data.monthlyExpenses.reduce(
-    (sum, m) => sum + m.expenses,
-    0,
-  );
-
-  const totalTransactions = data.paymentBreakdown.reduce(
-    (sum, p) => sum + p.count,
-    0,
-  );
-
-  const topPaymentMethod =
-    data.paymentBreakdown.length > 0
-      ? data.paymentBreakdown.reduce((prev, cur) =>
-          cur.value > prev.value ? cur : prev,
-        )
-      : null;
+  const {
+    totalSales,
+    avgDailySales,
+    totalExpenses,
+    totalTransactions,
+    topPaymentMethod,
+  } = useMemo(() => {
+    const totalSales = data.dailySales.reduce((sum, day) => sum + day.sales, 0);
+    const avgDailySales =
+      data.dailySales.length > 0 ? totalSales / data.dailySales.length : 0;
+    const totalExpenses = data.monthlyExpenses.reduce(
+      (sum, m) => sum + m.expenses,
+      0,
+    );
+    const totalTransactions = data.paymentBreakdown.reduce(
+      (sum, p) => sum + p.count,
+      0,
+    );
+    const topPaymentMethod =
+      data.paymentBreakdown.length > 0
+        ? data.paymentBreakdown.reduce((prev, cur) =>
+            cur.value > prev.value ? cur : prev,
+          )
+        : null;
+    return {
+      totalSales,
+      avgDailySales,
+      totalExpenses,
+      totalTransactions,
+      topPaymentMethod,
+    };
+  }, [data.dailySales, data.monthlyExpenses, data.paymentBreakdown]);
 
   return (
     <div className="neo-panel min-h-screen rounded-3xl border border-black/10 p-2 sm:p-4 md:p-6 lg:p-8">

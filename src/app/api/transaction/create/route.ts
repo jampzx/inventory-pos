@@ -107,60 +107,57 @@ export const POST = withAuth(async (req: NextRequest, user) => {
       payments.find((p) => p.method.toLowerCase() === "cash")?.amount || 0;
     const change = Math.max(0, cashAmount - discountedTotal);
 
-    const transaction = await prisma.transaction.create({
-      data: {
-        subtotal,
-        total_paid: totalPaid,
-        change,
-        discount_type: discountType,
-        discount_value: discountValue,
-        company_id: user.company_id,
-        user_id: user.id,
-        customer_id: customerId || null,
-      },
+    const transaction = await prisma.$transaction(async (tx) => {
+      const newTx = await tx.transaction.create({
+        data: {
+          subtotal,
+          total_paid: totalPaid,
+          change,
+          discount_type: discountType,
+          discount_value: discountValue,
+          company_id: user.company_id,
+          user_id: user.id,
+          customer_id: customerId || null,
+        },
+      });
+
+      await Promise.all([
+        ...cartItems.map((item) =>
+          tx.transactionItem.create({
+            data: {
+              transaction_id: newTx.id,
+              product_id: item.productId,
+              quantity: item.quantity,
+              price: item.price,
+              company_id: user.company_id,
+            },
+          }),
+        ),
+        ...payments.map((p) =>
+          tx.transactionPayment.create({
+            data: {
+              transaction_id: newTx.id,
+              payment_method: p.method,
+              amount: p.amount,
+              company_id: user.company_id,
+            },
+          }),
+        ),
+        ...cartItems
+          .filter(
+            (item) =>
+              productMap.get(item.productId)?.product_type !== "service",
+          )
+          .map((item) =>
+            tx.product.update({
+              where: { id: item.productId },
+              data: { stock: { decrement: item.quantity } },
+            }),
+          ),
+      ]);
+
+      return newTx;
     });
-
-    await prisma.$transaction(
-      cartItems.map((item) =>
-        prisma.transactionItem.create({
-          data: {
-            transaction_id: transaction.id,
-            product_id: item.productId,
-            quantity: item.quantity,
-            price: item.price,
-            company_id: user.company_id,
-          },
-        }),
-      ),
-    );
-
-    await prisma.$transaction(
-      payments.map((p) =>
-        prisma.transactionPayment.create({
-          data: {
-            transaction_id: transaction.id,
-            payment_method: p.method,
-            amount: p.amount,
-            company_id: user.company_id,
-          },
-        }),
-      ),
-    );
-
-    const stockUpdates = cartItems
-      .filter(
-        (item) => productMap.get(item.productId)?.product_type !== "service",
-      )
-      .map((item) =>
-        prisma.product.update({
-          where: { id: item.productId },
-          data: { stock: { decrement: item.quantity } },
-        }),
-      );
-
-    if (stockUpdates.length > 0) {
-      await prisma.$transaction(stockUpdates);
-    }
 
     return NextResponse.json(
       { success: true, transactionId: transaction.id },

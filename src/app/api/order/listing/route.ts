@@ -6,16 +6,10 @@ export const GET = withAuth(async (req: NextRequest, user) => {
   try {
     const orders = await prisma.order.findMany({
       where: { company_id: user.company_id },
-      include: {
-        productRef: true,
-      },
+      orderBy: { order_date: "desc" },
     });
 
-    const formatted = orders.map((order) => ({
-      ...order,
-    }));
-
-    return NextResponse.json(formatted);
+    return NextResponse.json(orders);
   } catch (error) {
     console.error("Failed to fetch orders:", error);
     return NextResponse.json(

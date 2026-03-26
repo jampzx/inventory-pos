@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   BarChart,
@@ -37,14 +38,18 @@ const COLORS = [
 ];
 
 const TopCustomersChart = ({ data }: Props) => {
-  const chartData = data.map((customer) => ({
-    name:
-      customer.name.length > 15
-        ? customer.name.substring(0, 15) + "..."
-        : customer.name,
-    amount: customer.totalSpent,
-    transactions: customer.transactionCount,
-  }));
+  const chartData = useMemo(
+    () =>
+      data.map((customer) => ({
+        name:
+          customer.name.length > 15
+            ? customer.name.substring(0, 15) + "..."
+            : customer.name,
+        amount: customer.totalSpent,
+        transactions: customer.transactionCount,
+      })),
+    [data],
+  );
 
   return (
     <motion.div

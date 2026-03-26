@@ -66,7 +66,7 @@ const ProductForm = ({ type, data, onClose, onSuccess }: Props) => {
     if (type === "update" && data?.image_url) {
       setPreviewUrl(data.image_url);
     }
-  }, [type, data]);
+  }, [type, data?.image_url]);
 
   useEffect(() => {
     if (selectedProductType === "service") {

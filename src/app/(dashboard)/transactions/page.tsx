@@ -102,6 +102,16 @@ const TransactionsListPage = () => {
 
   const totalPages = Math.ceil(filteredAndSorted.length / ITEMS_PER_PAGE);
 
+  const totalSales = useMemo(
+    () =>
+      filteredAndSorted.reduce(
+        (sum, tx) =>
+          tx.status !== "voided" ? sum + Number(tx.total_paid || 0) : sum,
+        0,
+      ),
+    [filteredAndSorted],
+  );
+
   const renderRow = (transaction: TransactionType) => (
     <tr
       key={transaction.id}
@@ -205,13 +215,10 @@ const TransactionsListPage = () => {
         <span className="block sm:inline">Total Sales:</span>
         <span className="text-black font-semibold text-sm sm:text-base block sm:inline sm:ml-2">
           ₱
-          {filteredAndSorted
-            .filter((tx) => tx.status !== "voided")
-            .reduce((sum, tx) => sum + Number(tx.total_paid || 0), 0)
-            .toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
+          {totalSales.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
         </span>
       </div>
 

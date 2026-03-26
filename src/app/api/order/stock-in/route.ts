@@ -9,7 +9,7 @@ export const POST = withAuth(async (req: NextRequest, user) => {
     if (!orderId || !quantity || quantity <= 0) {
       return NextResponse.json(
         { success: false, message: "Invalid order ID or quantity." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -19,13 +19,16 @@ export const POST = withAuth(async (req: NextRequest, user) => {
         id: orderId,
         company_id: user.company_id,
       },
-      include: { productRef: true },
+      select: {
+        product_id: true,
+        remaining_quantity: true,
+      },
     });
 
     if (!order) {
       return NextResponse.json(
         { success: false, message: "Order not found." },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -35,37 +38,31 @@ export const POST = withAuth(async (req: NextRequest, user) => {
           success: false,
           message: "Quantity exceeds remaining order quantity.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    // Update the product stock
-    await prisma.product.update({
-      where: {
-        id: order.product_id,
-        company_id: user.company_id,
-      },
-      data: {
-        stock: {
-          increment: quantity, // Add the quantity to the product's stock
+    // Atomically update product stock and order remaining quantity
+    await prisma.$transaction([
+      prisma.product.update({
+        where: {
+          id: order.product_id,
+          company_id: user.company_id,
         },
-      },
-    });
-
-    // Update the order's remaining quantity and status if completed
-    await prisma.order.update({
-      where: {
-        id: orderId,
-        company_id: user.company_id,
-      },
-      data: {
-        remaining_quantity: {
-          decrement: quantity, // Subtract the quantity from the order's remaining quantity
+        data: { stock: { increment: quantity } },
+      }),
+      prisma.order.update({
+        where: {
+          id: orderId,
+          company_id: user.company_id,
         },
-        // Update status to "completed" if this stock-in completes the order
-        status: quantity === order.remaining_quantity ? "completed" : "pending",
-      },
-    });
+        data: {
+          remaining_quantity: { decrement: quantity },
+          status:
+            quantity === order.remaining_quantity ? "completed" : "pending",
+        },
+      }),
+    ]);
 
     return NextResponse.json({
       success: true,
@@ -75,7 +72,7 @@ export const POST = withAuth(async (req: NextRequest, user) => {
     console.error("Error in stock-in API:", error);
     return NextResponse.json(
       { success: false, message: "Server error during stock operation." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 });

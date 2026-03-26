@@ -4,7 +4,7 @@ import { withAuth } from "@/lib/authMiddleware";
 
 export async function POST(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   return withAuth(async (req, user) => {
     const transactionId = parseInt(params.id);
@@ -12,7 +12,7 @@ export async function POST(
     if (isNaN(transactionId)) {
       return NextResponse.json(
         { success: false, error: "Invalid transaction ID" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -30,28 +30,26 @@ export async function POST(
       if (!transaction) {
         return NextResponse.json(
           { success: false, error: "Transaction not found" },
-          { status: 404 }
+          { status: 404 },
         );
       }
 
       if (transaction.status === "voided") {
         return NextResponse.json(
           { success: false, error: "Transaction is already voided" },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
-      await prisma.$transaction([
-        prisma.transaction.update({
-          where: {
-            id: transactionId,
-            company_id: user.company_id,
-          },
-          data: {
-            status: "voided",
-          },
-        }),
-      ]);
+      await prisma.transaction.update({
+        where: {
+          id: transactionId,
+          company_id: user.company_id,
+        },
+        data: {
+          status: "voided",
+        },
+      });
 
       return NextResponse.json({
         success: true,
@@ -61,7 +59,7 @@ export async function POST(
       console.error("Error voiding transaction:", err);
       return NextResponse.json(
         { success: false, error: "Internal server error" },
-        { status: 500 }
+        { status: 500 },
       );
     }
   })(_req);

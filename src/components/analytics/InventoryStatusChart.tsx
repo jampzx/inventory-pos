@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   PieChart,
@@ -29,13 +30,20 @@ const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
 };
 
 const InventoryStatusChart = ({ data }: Props) => {
-  const chartData = data.map((item) => ({
-    name: STATUS_CONFIG[item.status]?.label || item.status,
-    value: item.count,
-    color: STATUS_CONFIG[item.status]?.color || "#gray",
-  }));
+  const chartData = useMemo(
+    () =>
+      data.map((item) => ({
+        name: STATUS_CONFIG[item.status]?.label || item.status,
+        value: item.count,
+        color: STATUS_CONFIG[item.status]?.color || "#gray",
+      })),
+    [data],
+  );
 
-  const totalProducts = data.reduce((sum, item) => sum + item.count, 0);
+  const totalProducts = useMemo(
+    () => data.reduce((sum, item) => sum + item.count, 0),
+    [data],
+  );
 
   return (
     <motion.div

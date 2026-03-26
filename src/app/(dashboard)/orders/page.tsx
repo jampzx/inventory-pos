@@ -109,6 +109,20 @@ const OrdersPage = () => {
 
   const totalPages = Math.ceil(filteredAndSorted.length / ITEMS_PER_PAGE);
 
+  const orderSummary = useMemo(() => {
+    return filteredAndSorted.reduce(
+      (acc, o) => {
+        if (o.status !== "voided") {
+          acc.totalExpenses += Number(o.order_price) * o.quantity;
+          acc.netProfit +=
+            (Number(o.selling_price) - Number(o.order_price)) * o.quantity;
+        }
+        return acc;
+      },
+      { totalExpenses: 0, netProfit: 0 },
+    );
+  }, [filteredAndSorted]);
+
   const renderRow = (item: Order) => {
     const profitPerUnit = item.selling_price - item.order_price;
     const netProfit = item.quantity * profitPerUnit;
@@ -252,13 +266,10 @@ const OrdersPage = () => {
           <span className="text-gray-600">Total Expenses:</span>
           <span className="text-red-600 font-semibold text-sm sm:text-base">
             ₱
-            {filteredAndSorted
-              .filter((o) => o.status !== "voided")
-              .reduce((sum, o) => sum + Number(o.order_price) * o.quantity, 0)
-              .toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}
+            {orderSummary.totalExpenses.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
           </span>
         </div>
 
@@ -266,19 +277,10 @@ const OrdersPage = () => {
           <span className="text-gray-600">Net Profit:</span>
           <span className="text-blue-600 font-semibold text-sm sm:text-base">
             ₱
-            {filteredAndSorted
-              .filter((o) => o.status !== "voided")
-              .reduce(
-                (sum, o) =>
-                  sum +
-                  (Number(o.selling_price) - Number(o.order_price)) *
-                    o.quantity,
-                0,
-              )
-              .toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}
+            {orderSummary.netProfit.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
           </span>
         </div>
       </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   BarChart,
@@ -25,12 +26,16 @@ interface Props {
 }
 
 const CategoryPerformanceChart = ({ data }: Props) => {
-  const chartData = data.map((item) => ({
-    category: item.type.charAt(0).toUpperCase() + item.type.slice(1),
-    sales: item.sales,
-    quantity: item.quantity,
-    products: item.productCount,
-  }));
+  const chartData = useMemo(
+    () =>
+      data.map((item) => ({
+        category: item.type.charAt(0).toUpperCase() + item.type.slice(1),
+        sales: item.sales,
+        quantity: item.quantity,
+        products: item.productCount,
+      })),
+    [data],
+  );
 
   return (
     <motion.div
